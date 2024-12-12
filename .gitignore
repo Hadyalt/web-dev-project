@@ -426,3 +426,24 @@ webdev.sqlite-wal
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,react
 webdevproject/obj/Debug/net8.0/staticwebassets.build.json
+webdevproject/obj/project.assets.json
+webdevproject/obj/project.nuget.cache
+webdevproject/obj/webdevproject.csproj.nuget.dgspec.json
+webdevproject/obj/webdevproject.csproj.nuget.g.props
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfo.cs
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfoInputs.cache
+webdevproject/obj/Debug/net8.0/webdevproject.assets.cache
+webdevproject/obj/Debug/net8.0/webdevproject.csproj.AssemblyReference.cache
+webdevproject/obj/Debug/net8.0/webdevproject.GeneratedMSBuildEditorConfig.editorconfig
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfo.cs
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfoInputs.cache
+webdevproject/bin/Debug/net8.0/webdevproject.dll
+webdevproject/bin/Debug/net8.0/webdevproject.exe
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfo.cs
+webdevproject/bin/Debug/net8.0/webdevproject.dll
+webdevproject/bin/Debug/net8.0/webdevproject.exe
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfo.cs
+webdevproject/bin/Debug/net8.0/webdevproject.dll
+webdevproject/bin/Debug/net8.0/webdevproject.exe
+webdevproject/bin/Debug/net8.0/webdevproject.dll
+webdevproject/bin/Debug/net8.0/webdevproject.exe
