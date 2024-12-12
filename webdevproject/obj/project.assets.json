@@ -5149,26 +5149,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zina\\.nuget\\packages\\": {}
+    "C:\\Users\\Jasper van der Laan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj",
+      "projectUniqueName": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\webdevproject.csproj",
       "projectName": "webdevproject",
-      "projectPath": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj",
-      "packagesPath": "C:\\Users\\zina\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\obj\\",
+      "projectPath": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\webdevproject.csproj",
+      "packagesPath": "C:\\Users\\Jasper van der Laan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\zina\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Jasper van der Laan\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
