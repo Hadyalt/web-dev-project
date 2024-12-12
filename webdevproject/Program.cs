@@ -10,7 +10,7 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddHttpContextAccessor();
