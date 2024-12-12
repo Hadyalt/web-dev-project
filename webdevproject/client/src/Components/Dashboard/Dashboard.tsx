@@ -1,5 +1,5 @@
 import React from "react";
-import { DashboardState, Event, initDashboardState } from "./dashboard.state";
+import { DashboardState, Event, initDashboardState } from "./dashboard.state.tsx";
 import { loadEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "./DashboardPost.tsx";
 
