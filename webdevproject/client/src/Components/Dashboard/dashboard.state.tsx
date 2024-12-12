@@ -11,9 +11,9 @@ export type Event_Attendance =
 
 export type Event = 
 {
-    EventId : number,
-    Title : string,
-    Description : string,
+    eventId : number,
+    title : string,
+    description : string,
     EventDate : DateOnly,
     StartTime : TimeSpan,
     EndTime : TimeSpan,
