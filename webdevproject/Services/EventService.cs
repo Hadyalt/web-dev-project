@@ -4,7 +4,7 @@ using StarterKit.Models;
 
 public class EventService
 {
-    private readonly string _connectionString = "Data Source=webdev.sqlite";
+    private readonly string _connectionString = "Data Source=webdevproject.db";
 
     // Method to get all events
     public List<Event> GetAllEvents()
