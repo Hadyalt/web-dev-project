@@ -13,26 +13,26 @@ export type Event_Attendance =
 
 export type Event = 
 {
-    eventId : number,
-    title : string,
-    description : string,
-    eventDate : DateOnly,
-    startTime : TimeSpan,
-    endTime : TimeSpan,
-    location : string,
-    adminApproval : boolean,
-    event_Attendances : Event_Attendance[]
+    EventId : number,
+    Title : string,
+    Description : string,
+    EventDate : DateOnly,
+    StartTime : TimeSpan,
+    EndTime : TimeSpan,
+    Location : string,
+    AdminApproval : boolean,
+    Event_Attendances : Event_Attendance[]
 }
 
-export type DashboardState = {
-    events: Event[],
-    loading: boolean,
-    error: string,
-    view: ViewState,
-    updateViewState: (view: ViewState) => (state: DashboardState) => DashboardState
+export interface DashboardState {
+    events: Event[];
+    loading: boolean;
+    error: string | null;
+    view: ViewState
+    updateViewState : (view:ViewState) => (state:DashboardState) => DashboardState
 }
 
-export const initDashboardState: DashboardState = {
+export const initDashboardState : DashboardState ={
     events : [],
     loading: true,
     error: "",
@@ -44,5 +44,4 @@ export const initDashboardState: DashboardState = {
             view : view
             }
         }
-
 }
