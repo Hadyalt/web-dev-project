@@ -11,7 +11,7 @@ namespace StarterKit.Services;
         public readonly ILoginService _loginService;
         private readonly DatabaseContext _context;
 
-        private string _connectionString = "Data Source=webdev.sqlite";
+        private string _connectionString  = "Data Source=webdevproject.db";
 
         public OfficeService(DatabaseContext context, ILoginService loginService)
         {

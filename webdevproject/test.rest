@@ -1,0 +1,179 @@
+GET http://localhost:5066/api/v1/login/ HTTP/1.1
+###
+POST http://localhost:5066/api/v1/Login/Login HTTP/1.1
+content-type: application/json
+
+{
+  "Username" : "hady",
+  "Password" : "password"
+}
+###
+POST http://localhost:5066/api/v1/Login/Login HTTP/1.1
+content-type: application/json
+
+{
+  "Username" : "admin1",
+  "Password" : "password"
+}
+###
+GET http://localhost:5066/api/v1/login/IsAdminLoggedIn HTTP/1.1
+###
+POST http://localhost:5066/api/v1/controller/Create HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Updated Event Title",
+    "description": "Updated description",
+    "Date": "2025-09-30",
+    "startTime": "12:00:00",
+    "endTime": "14:00:00",
+    "location": "New Location",
+    "adminApproval": true,
+    "ReviewFeedback": "Updated Review Feedback",
+    "event_Attendances": []
+}
+###
+
+PUT http://localhost:5066/api/v1/controller/update/1 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Updated Event Title 2",
+    "description": "Updated description 2",
+    "Date": "2025-09-30",
+    "startTime": "13:00:00",
+    "endTime": "15:00:00",
+    "location": "New Location 2",
+    "adminApproval": true,
+    "ReviewFeedback": "Updated Review Feedback 2",
+    "event_Attendances": []
+}
+
+###
+
+GET http://localhost:5066/api/v1/controller/Read HTTP/1.1
+###
+
+GET http://localhost:5066/api/v1/controller/Read/1 HTTP/1.1
+###
+
+DELETE  http://localhost:5066/api/v1/controller/delete/3 HTTP/1.1
+###
+
+POST http://localhost:5066/api/v1/Login/Register HTTP/1.1
+Content-Type: application/json
+
+{
+  "FirstName":"testthirdname",
+  "LastName":"testLastName",
+  "Email":"29@Gmail.com",
+  "Password":"password",
+  "RecuringDays":"mo,tu,we",
+  "UserName":"Tester04",
+  "UserRole":"user"
+}
+
+
+###
+POST http://localhost:5066/api/v1/attendance/attend HTTP/1.1
+content-type: application/json
+
+{
+    "eventId": 4,
+    "userId": 2,
+    "feedback": "Great Event",
+    "rating": 5
+}
+###
+GET http://localhost:5066/api/v1/attendance/attendees/4 HTTP/1.1
+###
+DELETE http://localhost:5066/api/v1/attendance/remove/4 HTTP/1.1
+
+###
+POST http://localhost:5066/api/v1/attendance/modify HTTP/1.1
+content-type: application/json
+
+{
+  "UserId" : ,
+  "EventId" : 2,
+  "Feedback" : "cool",
+  "Rating" : 4,
+  "AttendanceDate" : 2025-09-30
+}
+###
+GET http://localhost:5066/api/v1/office/read HTTP/1.1
+
+###
+GET http://localhost:5066/api/v1/office/read/1 HTTP/1.1
+
+###
+POST http://localhost:5066/api/v1/office/create HTTP/1.1
+content-type: application/json
+
+{
+  "Date" : "2025-09-30",
+  "StartTime" : "12:00:00",
+  "EndTime" : "14:00:00",
+  "IsOccupied" : false
+}
+###
+PUT http://localhost:5066/api/v1/office/update HTTP/1.1
+Content-Type: application/json
+
+{
+  "OfficeId" : 1,
+  "Date" : "2025-09-30",
+  "StartTime" : "12:00:00",
+  "EndTime" : "15:00:00",
+  "IsOccupied" : true
+}
+###
+PUT http://localhost:5066/api/v1/office/update HTTP/1.1
+Content-Type: application/json
+
+{
+  "OfficeId" : 2,
+  "Date" : "2025-09-30",
+  "StartTime" : "12:00:00",
+  "EndTime" : "15:00:00",
+  "IsOccupied" : false
+}
+###
+
+DELETE http://localhost:5066/api/v1/office/delete/3 HTTP/1.1
+###
+POST http://localhost:5066/api/v1/vote/options HTTP/1.1
+content-type: application/json
+
+{
+  "EventDetails" : "simaatje",
+  "StartTime" : "2026-09-30",
+  "EndTime" : "2026-09-30",
+  "VoteCount" : 0
+}
+###
+GET http://localhost:5066/api/v1/vote/options HTTP/1.1
+###
+POST http://localhost:5066/api/v1/vote/vote HTTP/1.1
+content-type: application/json
+
+{
+  "UserId" : 1,
+  "EventId" : 1,
+  "VoteOptionId" : 1
+}
+###
+GET http://localhost:5066/api/v1/vote/results HTTP/1.1
+###
+PUT http://localhost:5066/api/v1/vote/options/update/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "EventDetails" : "yessir",
+  "StartTime" : "2026-09-30",
+  "EndTime" : "2026-09-30",
+  "VoteCount" : 0
+}
+###
+DELETE http://localhost:5066/api/v1/vote/options/delete/1 HTTP/1.1
+###
