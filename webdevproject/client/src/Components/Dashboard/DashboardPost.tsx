@@ -1,7 +1,7 @@
 import React from "react";
 import { Event, ViewState } from "./dashboard.state";
 import { loadEvent } from "./dashboard.api.ts";
-import { DashboardPostState } from "../dashboardPost.state.tsx";
+import { DashboardPostState } from "./dashboardPost.state.tsx";
 
 export interface DashboardPostProps
 {
