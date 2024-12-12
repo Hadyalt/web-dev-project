@@ -425,6 +425,7 @@ webdev.sqlite-shm
 webdev.sqlite-wal
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,react
+webdevproject/obj/Debug/net8.0/staticwebassets.build.json
 webdevproject/obj/project.assets.json
 webdevproject/obj/project.nuget.cache
 webdevproject/obj/webdevproject.csproj.nuget.dgspec.json
