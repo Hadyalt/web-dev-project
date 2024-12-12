@@ -66,7 +66,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
             <button
                 onClick={e=>this.setState(this.state.updateViewState("dashboardPost"))}>
-                onClick={e=>this.setState(this.state.updateViewState("dashboardPost"))}>
                 Go to Form</button>
             <button>Back </button>
         </div>

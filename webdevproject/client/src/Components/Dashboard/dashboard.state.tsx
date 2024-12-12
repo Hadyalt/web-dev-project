@@ -13,15 +13,15 @@ export type Event_Attendance =
 
 export type Event = 
 {
-    EventId : number,
-    Title : string,
-    Description : string,
-    EventDate : DateOnly,
-    StartTime : TimeSpan,
-    EndTime : TimeSpan,
-    Location : string,
-    AdminApproval : boolean,
-    Event_Attendances : Event_Attendance[]
+    eventId : number,
+    title : string,
+    description : string,
+    eventDate : DateOnly,
+    startTime : TimeSpan,
+    endTime : TimeSpan,
+    location : string,
+    adminApproval : boolean,
+    event_Attendances : Event_Attendance[]
 }
 
 export interface DashboardState {

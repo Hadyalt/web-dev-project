@@ -1,4 +1,4 @@
-import { ViewState } from "./Dashboard/dashboard.state";
+import { ViewState } from "./dashboard.state";
 
 export interface DashboardPostState {
     view: ViewState
