@@ -12,7 +12,8 @@ namespace StarterKit.Models
 		public string ReviewFeedback { get; set; }
 		
 		public List<Event_Attendance> Event_Attendances { get; set; }
-	}
+        public DateOnly EventDate { get; internal set; }
+    }
 
 	public class UpdateEventRequest
 	{
