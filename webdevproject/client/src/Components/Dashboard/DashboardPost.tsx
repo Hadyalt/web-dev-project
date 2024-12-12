@@ -15,7 +15,7 @@ export class DashboardPostForm extends React.Component<DashboardPostProps, Dashb
   constructor(props: DashboardPostProps) {
     super(props);
     this.state = {
-
+      
     }
   }
 
