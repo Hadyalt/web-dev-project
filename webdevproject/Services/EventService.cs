@@ -49,7 +49,6 @@ public class EventService
         var AllEvents = GetAllEvents();
         Event singleEvent = AllEvents.FirstOrDefault(evnt => evnt.EventId == id);
         return singleEvent;
-
     }
 
     // Method to get all event attendances for a specific event
@@ -86,5 +85,28 @@ public class EventService
         }
 
         return eventAttendances;
+    }
+
+    // Method to create a new event
+    public void CreateEvent(Event newEvent)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+
+            var query = "INSERT INTO Event (Title, Description, EventDate, StartTime, EndTime, Location, AdminApproval) VALUES (@Title, @Description, @EventDate, @StartTime, @EndTime, @Location, @AdminApproval)";
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Title", newEvent.Title);
+                command.Parameters.AddWithValue("@Description", newEvent.Description);
+                command.Parameters.AddWithValue("@EventDate", newEvent.EventDate);
+                command.Parameters.AddWithValue("@StartTime", newEvent.StartTime);
+                command.Parameters.AddWithValue("@EndTime", newEvent.EndTime);
+                command.Parameters.AddWithValue("@Location", newEvent.Location);
+                command.Parameters.AddWithValue("@AdminApproval", newEvent.AdminApproval);
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

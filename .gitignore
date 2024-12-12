@@ -447,3 +447,5 @@ webdevproject/bin/Debug/net8.0/webdevproject.dll
 webdevproject/bin/Debug/net8.0/webdevproject.exe
 webdevproject/bin/Debug/net8.0/webdevproject.dll
 webdevproject/bin/Debug/net8.0/webdevproject.exe
+webdevproject/webdevproject.db-shm
+webdevproject/webdevproject.db-wal
