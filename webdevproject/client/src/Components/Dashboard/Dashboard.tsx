@@ -43,11 +43,32 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     return (
       <div>
         <h1>Events</h1>
-        <ul>
-          {events.map((event, index) => (
-            <li key={`${event.eventId}-${index}`}>{event.title} {event.description}</li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Location</th>
+              <th>Admin Approval</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event, index) => (
+              <tr key={`${event.eventId}-${index}`}>
+                <td>{event.title}</td>
+                <td>{event.description}</td>
+                <td>{event.eventDate.toString()}</td>
+                <td>{event.startTime.toString()}</td>
+                <td>{event.endTime.toString()}</td>
+                <td>{event.location}</td>
+                <td>{event.adminApproval ? "Approved" : "Pending"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }

@@ -14,10 +14,10 @@ export type Event =
     eventId : number,
     title : string,
     description : string,
-    EventDate : DateOnly,
-    StartTime : TimeSpan,
-    EndTime : TimeSpan,
-    Location : string,
-    AdminApproval : boolean,
-    Event_Attendances : Event_Attendance[]
+    eventDate : DateOnly,
+    startTime : TimeSpan,
+    endTime : TimeSpan,
+    location : string,
+    adminApproval : boolean,
+    event_Attendances : Event_Attendance[]
 }
