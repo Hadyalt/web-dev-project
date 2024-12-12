@@ -57,7 +57,8 @@ export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
             <label>Location:</label>
             <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
           </div>
-          <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
+            <button type="button" onClick={() => this.setState({ view: "dashboard" })}>Back to Dashboard</button>
         </form>
       </div>
     );
