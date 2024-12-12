@@ -1,30 +1,7 @@
 import React from "react";
-import { Event, ViewState } from "./dashboard.state";
+import { DashboardState, Event, initDashboardState } from "./dashboard.state";
 import { loadEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "./DashboardPost.tsx";
-
-interface DashboardState {
-    events: Event[];
-    loading: boolean;
-    error: string | null;
-    view: ViewState
-    updateViewState : (view:ViewState) => (state:DashboardState) => DashboardState
-}
-
-const initDashboardState : DashboardState ={
-    events : [],
-    loading: true,
-    error: "",
-    view: "dashboard",
-    updateViewState : (view:ViewState) => (state:DashboardState):DashboardState => 
-        {
-            return{
-                ...state,
-            view : view
-            }
-        }
-
-}
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -87,7 +64,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             </table>
 
             <button
-                OnClick={e=>this.setState(this.state.updateViewState("dashboardPost"))}>
+                onClick={e=>this.setState(this.state.updateViewState("dashboardPost"))}>
                 Go to Form</button>
             <button>Back </button>
         </div>

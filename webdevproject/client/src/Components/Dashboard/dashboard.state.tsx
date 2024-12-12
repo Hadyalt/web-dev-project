@@ -23,3 +23,25 @@ export type Event =
     AdminApproval : boolean,
     Event_Attendances : Event_Attendance[]
 }
+
+export interface DashboardState {
+    events: Event[];
+    loading: boolean;
+    error: string | null;
+    view: ViewState
+    updateViewState : (view:ViewState) => (state:DashboardState) => DashboardState
+}
+
+export const initDashboardState : DashboardState ={
+    events : [],
+    loading: true,
+    error: "",
+    view: "dashboard",
+    updateViewState : (view:ViewState) => (state:DashboardState):DashboardState => 
+        {
+            return{
+                ...state,
+            view : view
+            }
+        }
+}
