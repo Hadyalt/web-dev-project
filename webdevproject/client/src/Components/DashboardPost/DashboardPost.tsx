@@ -1,6 +1,6 @@
 import React from "react";
-import { Event, ViewState } from "./dashboard.state";
-import { loadEvent } from "./dashboard.api.ts";
+import { Event, ViewState } from "../Dashboard/dashboard.state.tsx";
+import { loadEvent } from "../Dashboard/dashboard.api.ts";
 import { DashboardPostState } from "./dashboardPost.state.tsx";
 
 export interface DashboardPostProps
@@ -14,7 +14,7 @@ export class DashboardPostForm extends React.Component<DashboardPostProps, Dashb
   constructor(props: DashboardPostProps) {
     super(props);
     this.state = {
-
+      view: "dashboardPost"
     }
   }
 
