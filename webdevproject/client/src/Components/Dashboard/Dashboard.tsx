@@ -1,91 +1,49 @@
-import React from "react"
-import { Event } from "./dashboard.state"
-import { loadEvent } from "./dashboard.api";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
+const Dashboard = () => {
+  const [events, setEvents] = useState([]);
 
-export interface DashboardProps
-{
-    backToHome : () => void
-}
+  useEffect(() => {
+    axios.get('/api/events')
+      .then(response => {
+        setEvents(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the events!', error);
+      });
+  }, []);
 
-interface DashboardState 
-{
-    events: Event[];
-    loading: boolean;
-    error: string | null;
-  }
+  return (
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Event Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Location</th>
+            <th>Admin Approval</th>
+          </tr>
+        </thead>
+        <tbody>
+          {events.map((event) => (
+            <tr key={event.EventId}>
+              <td>{event.Title}</td>
+              <td>{event.Description}</td>
+              <td>{new Date(event.EventDate).toLocaleDateString()}</td>
+              <td>{new Date(event.StartTime).toLocaleTimeString()}</td>
+              <td>{new Date(event.EndTime).toLocaleTimeString()}</td>
+              <td>{event.Location}</td>
+              <td>{event.AdminApproval ? "Approved" : "Pending"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
-export class DashboardForm extends React.Component<DashboardProps, DashboardState>
-{
-    constructor(props : DashboardProps)
-    {
-        super(props)
-        this.state = {
-            events: [],
-            loading: true,
-            error: null,
-        };
-    }
-
-    componentDidMount() {
-        // Load events when the component mounts
-        loadEvent()
-          .then((events) => {
-            this.setState({ events, loading: false });
-          })
-          .catch((error) => {
-            this.setState({ error: error.message, loading: false });
-          });
-      }
-
-
-
-      render() {
-        const { loading, error, events } = this.state;
-    
-        return (
-          <div>
-            <div>
-              <h1>Welcome to our Dashboard Page! test</h1>
-              <button onClick={this.props.backToHome}>Back</button>
-            </div>
-    
-            {/* Loading state */}
-            {loading && <p>Loading events...</p>}
-    
-            {/* Error handling */}
-            {error && <p>Error: {error}</p>}
-    
-            {/* Display events in a table */}
-            {!loading && !error && (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Event Title</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Location</th>
-                    <th>Admin Approval</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {events.map((event) => (
-                    <tr key={event.EventId}>
-                      <td>{event.Title}</td>
-                      <td>{event.Description}</td>
-                      <td>{event.EventDate.toString()}</td>
-                      <td>{event.StartTime.toString()}</td>
-                      <td>{event.EndTime.toString()}</td>
-                      <td>{event.Location}</td>
-                      <td>{event.AdminApproval ? "Approved" : "Pending"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        );
-      }
-    }
+export default Dashboard;
