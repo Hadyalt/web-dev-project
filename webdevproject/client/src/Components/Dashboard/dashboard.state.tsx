@@ -1,6 +1,6 @@
 import { DateOnly, TimeSpan } from "../../Models/Date"
 
-export type ViewState = "dashboard" | "dashboardPost"
+export type ViewState = "dashboard" | "dashboardPost" 
 
 export type Event_Attendance =
     {
