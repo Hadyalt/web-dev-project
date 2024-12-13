@@ -29,7 +29,7 @@ namespace StarterKit.Controllers
         }
 
         [HttpGet("Read/{EventId}")]
-        public ActionResult<Event> GetEventById([FromRoute]int EventId)
+        public ActionResult<Event> GetEventById([FromRoute] int EventId)
         {
             var singleEvent = _eventService.GetEventById(EventId);
             if (singleEvent is null)
@@ -51,56 +51,42 @@ namespace StarterKit.Controllers
             {
                 Title = request.Title,
                 Description = request.Description,
-                EventDate = request.Date,
+                EventDate = request.EventDate,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 Location = request.Location,
                 AdminApproval = true, // Assuming admin approval is required for creation
-                Event_Attendances = []
+                Event_Attendances = new List<Event_Attendance>()
             };
 
             _context.Event.Add(newEvent);
             _context.SaveChanges();
 
-            if (request.ReviewRating.HasValue && !string.IsNullOrEmpty(request.ReviewFeedback))
-            {
-                var eventReview = new Event_Attendance
-                {
-                    EventId = newEvent.EventId,
-                    Rating = request.ReviewRating.Value,
-                    Feedback = request.ReviewFeedback,
-                    UserId = 1 // Assuming the user is always the same for now
-
-                };
-
-                _context.Event_Attendance.Add(eventReview);
-                _context.SaveChanges();
-            }
-
             return Ok("Event created successfully.");
         }
-    [HttpDelete("delete/{eventId}")]
-    public IActionResult Delete(int eventId)
-    {
-        // Check if the user is an admin
-        if (!_loginService.IsAdminLoggedIn())
+
+        [HttpDelete("delete/{eventId}")]
+        public IActionResult Delete(int eventId)
         {
-            return Unauthorized("Only admins can delete events.");
+            // Check if the user is an admin
+            if (!_loginService.IsAdminLoggedIn())
+            {
+                return Unauthorized("Only admins can delete events.");
+            }
+
+            var eventToDelete = _context.Event.FirstOrDefault(e => e.EventId == eventId);
+
+            if (eventToDelete == null)
+            {
+                return NotFound("Event not found.");
+            }
+
+            // Remove the event
+            _context.Event.Remove(eventToDelete);
+            _context.SaveChanges();
+
+            return Ok("Event deleted successfully.");
         }
-
-        var eventToDelete = _context.Event.FirstOrDefault(e => e.EventId == eventId);
-
-        if (eventToDelete == null)
-        {
-            return NotFound("Event not found.");
-        }
-
-        // Remove the event
-        _context.Event.Remove(eventToDelete);
-        _context.SaveChanges();
-
-        return Ok("Event deleted successfully.");
-    }
 
         [HttpPut("Update/{id}")]
         public IActionResult Update(int id, [FromBody] UpdateEventRequest request)

@@ -10,7 +10,7 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddHttpContextAccessor();
@@ -31,22 +31,35 @@ namespace StarterKit
             builder.Services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000") // Adjust the URL to your React app's URL
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseSession();
+
+            app.UseCors("AllowReactApp");
 
             app.UseAuthorization();
 
@@ -54,7 +67,6 @@ namespace StarterKit
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.Run();
-
         }
     }
 }

@@ -54,23 +54,28 @@ public class LoginController : Controller
     [HttpPost("Login")]
     public IActionResult Login([FromBody] LoginBody loginBody)
     {
-        if (loginBody.Username == null || loginBody.Password == null)
+        if (string.IsNullOrEmpty(loginBody.Username) || string.IsNullOrEmpty(loginBody.Password))
         {
-            return BadRequest("Username or password is missing");
+            return BadRequest(new { success = false, message = "Username or password is missing" });
         }
 
-        // TODO: Impelement login method
-        if (_loginService.CheckPassword(loginBody.Username, loginBody.Password) is LoginStatus.Success)
-        {
-            return Ok("Login Successful");
-        }
+        // TODO: Implement login method
+        var loginStatus = _loginService.CheckPassword(loginBody.Username, loginBody.Password);
 
-        else if (_loginService.CheckPassword(loginBody.Username, loginBody.Password) is LoginStatus.IncorrectUsername)
+        if (loginStatus == LoginStatus.Success)
         {
-            return Unauthorized("Incorrect username: " + loginBody.Username);
+            return Ok(new { success = true, message = "Login Successful" });
         }
-        return Unauthorized("Incorrect password for username: " + loginBody.Username);
+        else if (loginStatus == LoginStatus.IncorrectUsername)
+        {
+            return Unauthorized(new { success = false, message = $"Incorrect username: {loginBody.Username}" });
+        }
+        else
+        {
+            return Unauthorized(new { success = false, message = $"Incorrect password for username: {loginBody.Username}" });
+        }
     }
+
 
     [HttpGet("IsAdminLoggedIn")]
     public IActionResult IsAdminLoggedIn()
