@@ -1,15 +1,22 @@
 import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
 
-export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
-  constructor(props: {}) {
+interface DashboardPostFormProps {
+  backToHome: () => void;
+}
+
+export class DashboardPostForm extends React.Component<DashboardPostFormProps, DashboardPostState> {
+  constructor(props: DashboardPostFormProps) {
     super(props);
     this.state = initDashboardPostState;
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value } as Pick<DashboardPostState, keyof DashboardPostState>);
+
+    if (name in this.state) {
+      this.setState({ [name]: value } as unknown as Pick<DashboardPostState, keyof DashboardPostState>);
+    }
   };
 
   handleSubmit = (e: React.FormEvent) => {
@@ -57,8 +64,8 @@ export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
             <label>Location:</label>
             <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
           </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => this.setState({ view: "dashboard" })}>Back to Dashboard</button>
+          <button type="submit">Submit</button>
+          <button onClick={() => this.props.backToHome()}> Back </button>
         </form>
       </div>
     );

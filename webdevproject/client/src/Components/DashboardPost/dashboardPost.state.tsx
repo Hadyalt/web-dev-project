@@ -1,4 +1,4 @@
-import { ViewState } from "./dashboard.state";
+import { DashboardState, ViewState } from "../Dashboard/dashboard.state";
 
 export interface DashboardPostState {
     view: ViewState;
@@ -17,5 +17,6 @@ export const initDashboardPostState: DashboardPostState = {
     eventDate: "",
     startTime: "",
     endTime: "",
-    location: ""
+    location: "",
+
 };
