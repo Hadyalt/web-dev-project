@@ -45,7 +45,7 @@ namespace StarterKit
             });
 
             var app = builder.Build();
-            app.Urls.Add("http://localhost:3000");
+            app.Urls.Add("http://localhost:3001");
 
             // Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
