@@ -1,5 +1,6 @@
 import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
+import { postEvent } from "./dashboardPost.api.ts";
 
 interface DashboardPostFormProps {
   backToHome: () => void;
@@ -21,23 +22,21 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit form data to the POST endpoint
-    fetch('/api/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(response => response.json())
-      .catch((error) => {
-        console.error('Error:', error);
+    // Call the API to post the event
+    postEvent(this.state.title, this.state.description, this.state.eventDate, this.state.startTime, 
+      this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances)
+      .then(() => {
+        // Redirect to the dashboard
+        this.props.backToHome();
+      })
+      .catch(() => {
+        // Handle the error
       });
   };
 
   render() {
     return (
-      <div>
+      <div> 
         <h1>Events form</h1>
         <form onSubmit={this.handleSubmit}>
           <div>

@@ -35,7 +35,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
       return (
         <div>
-          <h1>Events</h1>
+          <h1>Dashboard</h1>
           <table>
             <thead>
               <tr>
@@ -65,7 +65,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
           <button
             onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
-            Go to Form</button>
+            Make Event</button>
           <button>Back </button>
         </div>
 
