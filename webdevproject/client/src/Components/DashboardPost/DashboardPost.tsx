@@ -1,9 +1,12 @@
 import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
-import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
-export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
-  constructor(props: {}) {
+interface DashboardPostFormProps {
+  backToHome: () => void;
+}
+
+export class DashboardPostForm extends React.Component<DashboardPostFormProps, DashboardPostState> {
+  constructor(props: DashboardPostFormProps) {
     super(props);
     this.state = initDashboardPostState;
   }
@@ -33,42 +36,38 @@ export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
   };
 
   render() {
-    if (this.state.view === "dashboardPost") {
-      return (
-        <div>
-          <h1>Events form</h1>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label>Title:</label>
-              <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-            </div>
-            <div>
-              <label>Description:</label>
-              <textarea name="description" value={this.state.description} onChange={this.handleChange} />
-            </div>
-            <div>
-              <label>Event Date:</label>
-              <input type="date" name="eventDate" value={this.state.eventDate} onChange={this.handleChange} />
-            </div>
-            <div>
-              <label>Start Time:</label>
-              <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} />
-            </div>
-            <div>
-              <label>End Time:</label>
-              <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} />
-            </div>
-            <div>
-              <label>Location:</label>
-              <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
-            </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => this.setState({ view: "dashboard" })}>Back to Dashboard</button>
-          </form>
-        </div>
-      );
-    } else if (this.state.view === "dashboard") {
-      return (<DashboardForm />);
-    }
+    return (
+      <div>
+        <h1>Events form</h1>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <label>Title:</label>
+            <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+          </div>
+          <div>
+            <label>Description:</label>
+            <textarea name="description" value={this.state.description} onChange={this.handleChange} />
+          </div>
+          <div>
+            <label>Event Date:</label>
+            <input type="date" name="eventDate" value={this.state.eventDate} onChange={this.handleChange} />
+          </div>
+          <div>
+            <label>Start Time:</label>
+            <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} />
+          </div>
+          <div>
+            <label>End Time:</label>
+            <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} />
+          </div>
+          <div>
+            <label>Location:</label>
+            <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
+          </div>
+          <button type="submit">Submit</button>
+          <button onClick={() => this.props.backToHome()}> Back </button>
+        </form>
+      </div>
+    );
   }
 }

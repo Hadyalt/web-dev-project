@@ -72,7 +72,9 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       );
     }
     else if (this.state.view == "dashboardPost") {
-      return (<DashboardPostForm />)
+      return (<DashboardPostForm 
+        backToHome={()=>this.setState(this.state.updateViewState("dashboard"))}
+      />)
     }
 
   }
