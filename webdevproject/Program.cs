@@ -10,7 +10,8 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            // Add services to the container.
+            builder.Services.AddControllersWithViews(); // Add this line to include MVC services
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddHttpContextAccessor();
@@ -24,9 +25,6 @@ namespace StarterKit
                 options.Cookie.HttpOnly = true; 
                 options.Cookie.IsEssential = true; 
             });
-
-            builder.Services.AddScoped<ILoginService, LoginService>();
-            builder.Services.AddScoped<IOfficeService, OfficeService>();
 
             builder.Services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
@@ -44,7 +42,7 @@ namespace StarterKit
             });
 
             var app = builder.Build();
-
+            app.Urls.Add("http://localhost:3000");
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -67,7 +65,7 @@ namespace StarterKit
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run("http://localhost:3000");
+            app.Run();
         }
     }
 }

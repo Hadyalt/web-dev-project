@@ -4,6 +4,7 @@ export const login = (username: string, password: string): Promise<boolean> => {
         headers: {
             "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({ username, password })
     })
         .then(response => {
