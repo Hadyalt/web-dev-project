@@ -7,7 +7,6 @@ export const postEvent = (title: string, description: string, Date: string, star
         headers: {
             "Content-Type": "application/json"
         },
-        credentials: "include",
         body: JSON.stringify({ title, description, Date, startTime, endTime, location, adminApproval, event_Attendances, ReviewFeedback })
     })
     .then(response => {
