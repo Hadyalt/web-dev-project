@@ -1,7 +1,7 @@
 import React from "react";
 import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
 import { loadEvent } from "./dashboard.api.ts";
-import { DashboardPostForm } from "./DashboardPost.tsx";
+import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 
 
 export class DashboardForm extends React.Component<{}, DashboardState> {

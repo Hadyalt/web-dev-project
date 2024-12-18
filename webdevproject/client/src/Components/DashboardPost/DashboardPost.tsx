@@ -1,5 +1,6 @@
 import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
+import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
 export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
   constructor(props: {}) {
@@ -9,7 +10,10 @@ export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value } as Pick<DashboardPostState, keyof DashboardPostState>);
+
+    if (name in this.state) {
+      this.setState({ [name]: value } as unknown as Pick<DashboardPostState, keyof DashboardPostState>);
+    }
   };
 
   handleSubmit = (e: React.FormEvent) => {
@@ -29,38 +33,42 @@ export class DashboardPostForm extends React.Component<{}, DashboardPostState> {
   };
 
   render() {
-    return (
-      <div>
-        <h1>Events form</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>Title:</label>
-            <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-          </div>
-          <div>
-            <label>Description:</label>
-            <textarea name="description" value={this.state.description} onChange={this.handleChange} />
-          </div>
-          <div>
-            <label>Event Date:</label>
-            <input type="date" name="eventDate" value={this.state.eventDate} onChange={this.handleChange} />
-          </div>
-          <div>
-            <label>Start Time:</label>
-            <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} />
-          </div>
-          <div>
-            <label>End Time:</label>
-            <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} />
-          </div>
-          <div>
-            <label>Location:</label>
-            <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
-          </div>
+    if (this.state.view === "dashboardPost") {
+      return (
+        <div>
+          <h1>Events form</h1>
+          <form onSubmit={this.handleSubmit}>
+            <div>
+              <label>Title:</label>
+              <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>Description:</label>
+              <textarea name="description" value={this.state.description} onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>Event Date:</label>
+              <input type="date" name="eventDate" value={this.state.eventDate} onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>Start Time:</label>
+              <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>End Time:</label>
+              <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>Location:</label>
+              <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
+            </div>
             <button type="submit">Submit</button>
             <button type="button" onClick={() => this.setState({ view: "dashboard" })}>Back to Dashboard</button>
-        </form>
-      </div>
-    );
+          </form>
+        </div>
+      );
+    } else if (this.state.view === "dashboard") {
+      return (<DashboardForm />);
+    }
   }
 }
