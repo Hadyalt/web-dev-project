@@ -1,25 +1,28 @@
-import { ViewState } from "../Dashboard/dashboard.state";
+import { DashboardState, ViewState } from "../Dashboard/dashboard.state";
 
 export interface DashboardPostState {
     view: ViewState;
     title: string;
     description: string;
-    eventDate: string;
+    Date: string;
     startTime: string;
     endTime: string;
     location: string;
+    ReviewFeedback: string;
     adminApproval: boolean;
     event_Attendances: [];
 }
 
 export const initDashboardPostState: DashboardPostState = {
-    title: '',
-    description: '',
-    eventDate: '',
-    startTime: '',
-    endTime: '',
-    location: '',
+    view: "dashboardPost",
+    title: "",
+    description: "",
+    Date: "",
+    startTime: "",
+    endTime: "",
+    location: "",
+    ReviewFeedback: "",
     adminApproval: false,
-    event_Attendances: [],
-    view: "dashboard"
+    event_Attendances: []
 };
+

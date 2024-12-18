@@ -9,7 +9,7 @@ interface DashboardPostFormProps {
 export class DashboardPostForm extends React.Component<DashboardPostFormProps, DashboardPostState> {
   constructor(props: DashboardPostFormProps) {
     super(props);
-    this.state = initDashboardPostState;
+    this.state = { ...initDashboardPostState };
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -23,8 +23,8 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Call the API to post the event
-    postEvent(this.state.title, this.state.description, this.state.eventDate, this.state.startTime, 
-      this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances)
+    postEvent(this.state.title, this.state.description, this.state.Date, this.state.startTime,
+      this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
         // Redirect to the dashboard
         this.props.backToHome();
@@ -36,7 +36,7 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
 
   render() {
     return (
-      <div> 
+      <div>
         <h1>Events form</h1>
         <form onSubmit={this.handleSubmit}>
           <div>
@@ -49,22 +49,22 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
           </div>
           <div>
             <label>Event Date:</label>
-            <input type="date" name="eventDate" value={this.state.eventDate} onChange={this.handleChange} />
+            <input type="date" name="Date" value={this.state.Date} onChange={this.handleChange} />
           </div>
           <div>
             <label>Start Time:</label>
-            <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} />
+            <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} step="1" />
           </div>
           <div>
             <label>End Time:</label>
-            <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} />
+            <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} step="1" />
           </div>
           <div>
             <label>Location:</label>
             <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
           </div>
           <button type="submit">Submit</button>
-          <button onClick={() => this.props.backToHome()}> Back </button>
+          <button type="button" onClick={() => this.props.backToHome()}> Back </button>
         </form>
       </div>
     );
