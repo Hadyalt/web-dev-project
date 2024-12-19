@@ -2,7 +2,6 @@ import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
 import { postEvent } from "./dashboardPost.api.ts";
 import { DateOnly } from "../../Models/Date.tsx";
-import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
 interface DashboardPostFormProps {
   backToHome: () => void;
