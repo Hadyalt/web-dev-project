@@ -21,6 +21,11 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       });
   }
 
+  handleReload = () => {
+    console.log("Reloading...");
+    this.componentDidMount(); // Manually trigger the logic of componentDidMount
+  };
+
   render() {
     if (this.state.view == "dashboard") {
       const { events, loading, error } = this.state;
@@ -67,6 +72,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
             Go to Form</button>
           <button>Back </button>
+          <button onClick={this.handleReload}>Reload </button>
         </div>
 
       );
