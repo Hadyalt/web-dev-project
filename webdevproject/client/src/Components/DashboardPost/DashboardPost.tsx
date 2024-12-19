@@ -24,7 +24,7 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Call the API to post the event
-    const formattedDate = DateOnly.parse(this.state.date).toString();
+    const formattedDate = DateOnly.parse(this.state.Date).toString();
     postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
       this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
@@ -34,7 +34,6 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
       .catch(() => {
         // Handle the error
       });
-      this.props.backToHome();
   };
 
   render() {
@@ -52,7 +51,7 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
           </div>
           <div>
             <label>Event Date:</label>
-            <input type="date" name="date" value={this.state.date} onChange={this.handleChange} />
+            <input type="Date" name="Date" value={this.state.Date} onChange={this.handleChange} />
           </div>
           <div>
             <label>Start Time:</label>

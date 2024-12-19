@@ -4,7 +4,7 @@ export interface DashboardPostState {
     view: ViewState;
     title: string;
     description: string;
-    date: string;
+    Date: string;
     startTime: string;
     endTime: string;
     location: string;
@@ -17,7 +17,7 @@ export const initDashboardPostState: DashboardPostState = {
     view: "dashboardPost",
     title: "",
     description: "",
-    date: "",
+    Date: "",
     startTime: "",
     endTime: "",
     location: "",
