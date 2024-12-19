@@ -1,6 +1,7 @@
 import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
 import { postEvent } from "./dashboardPost.api.ts";
+import { DateOnly } from "../../Models/Date.tsx";
 
 interface DashboardPostFormProps {
   backToHome: () => void;
@@ -23,7 +24,8 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Call the API to post the event
-    postEvent(this.state.title, this.state.description, this.state.Date, this.state.startTime,
+    const formattedDate = DateOnly.parse(this.state.date).toString();
+    postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
       this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
         // Redirect to the dashboard
@@ -32,6 +34,7 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
       .catch(() => {
         // Handle the error
       });
+    this.props.backToHome();
   };
 
   render() {
@@ -49,7 +52,7 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
           </div>
           <div>
             <label>Event Date:</label>
-            <input type="date" name="Date" value={this.state.Date} onChange={this.handleChange} />
+            <input type="date" name="date" value={this.state.date} onChange={this.handleChange} />
           </div>
           <div>
             <label>Start Time:</label>
