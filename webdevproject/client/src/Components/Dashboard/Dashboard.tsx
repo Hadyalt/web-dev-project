@@ -3,6 +3,10 @@ import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
 import { loadEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 
+// interface DashboardProps
+// {
+//   reload: () => void;
+// }
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {

@@ -2,6 +2,7 @@ import React from "react";
 import { DashboardPostState, initDashboardPostState } from "./dashboardPost.state.tsx";
 import { postEvent } from "./dashboardPost.api.ts";
 import { DateOnly } from "../../Models/Date.tsx";
+import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
 interface DashboardPostFormProps {
   backToHome: () => void;
@@ -21,11 +22,11 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
     }
   };
 
-  handleSubmit = (e: React.FormEvent) => {
+  handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Call the API to post the event
     const formattedDate = DateOnly.parse(this.state.Date).toString();
-    postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
+    await postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
       this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
         // Redirect to the dashboard
