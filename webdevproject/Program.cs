@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using StarterKit.Models;
 using StarterKit.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace StarterKit
 {

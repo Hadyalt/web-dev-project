@@ -10,7 +10,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     this.state = initDashboardState;
   }
 
-  handleReload = () => {
+  handleReload: () => void = () => {
     this.setState({ loading: true, error: null });
     this.loadEvents();
   }
@@ -76,7 +76,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
             Make Event</button>
           <button>Back </button>
-          <button onClick={this.handleReload}>Reload </button>
         </div>
       );
     } else if (this.state.view == "dashboardPost") {
