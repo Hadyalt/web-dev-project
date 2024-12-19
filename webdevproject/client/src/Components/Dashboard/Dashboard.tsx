@@ -10,6 +10,11 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     this.state = initDashboardState;
   }
 
+  handleReload = () => {
+    this.setState({ loading: true, error: null });
+    this.loadEvents();
+  }
+
   componentDidMount() {
     this.loadEvents();
   }

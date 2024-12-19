@@ -450,3 +450,9 @@ webdevproject/bin/Debug/net8.0/webdevproject.exe
 webdevproject/webdevproject.db-shm
 webdevproject/webdevproject.db-wal
 webdevproject/bin/Debug/net8.0/client/package-lock.json
+webdevproject/obj/Debug/net8.0/webdevproject.GeneratedMSBuildEditorConfig.editorconfig
+webdevproject/obj/Debug/net8.0/webdevproject.assets.cache
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfoInputs.cache
+webdevproject/obj/Debug/net8.0/webdevproject.AssemblyInfo.cs
+webdevproject/obj/Debug/net8.0/webdevproject.csproj.AssemblyReference.cache
+webdevproject/obj/Debug/net8.0/webdevproject.assets.cache
