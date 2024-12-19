@@ -42,16 +42,16 @@ namespace StarterKit.Controllers
         [HttpPost("Create")]
         public IActionResult Create([FromBody] CreateEventRequest request)
         {
-            if (!_loginService.IsAdminLoggedIn())
-            {
-                return Unauthorized("Only admins can create events.");
-            }
+            // if (!_loginService.IsAdminLoggedIn())
+            // {
+            //     return Unauthorized("Only admins can create events.");
+            // }
 
             var newEvent = new Event
             {
                 Title = request.Title,
                 Description = request.Description,
-                EventDate = request.EventDate,
+                EventDate = request.Date,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 Location = request.Location,

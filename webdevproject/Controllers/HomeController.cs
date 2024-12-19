@@ -14,10 +14,9 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    [HttpGet("{**slug}")]
     public IActionResult Index()
     {
-        return View();
+        return View("Index");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

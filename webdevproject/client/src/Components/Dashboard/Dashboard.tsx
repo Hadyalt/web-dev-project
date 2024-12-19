@@ -7,10 +7,19 @@ import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
     super(props);
-    this.state = initDashboardState
+    this.state = initDashboardState;
+  }
+
+  handleReload: () => void = () => {
+    this.setState({ loading: true, error: null });
+    this.loadEvents();
   }
 
   componentDidMount() {
+    this.loadEvents();
+  }
+
+  loadEvents = () => {
     // Load events when the component mounts
     loadEvent()
       .then((events) => {
@@ -35,7 +44,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
       return (
         <div>
-          <h1>Events</h1>
+          <h1>Dashboard</h1>
           <table>
             <thead>
               <tr>
@@ -65,17 +74,19 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
           <button
             onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
-            Go to Form</button>
+            Make Event</button>
           <button>Back </button>
         </div>
-
+      );
+    } else if (this.state.view == "dashboardPost") {
+      return (
+        <DashboardPostForm 
+          backToHome={() => {
+            this.setState(this.state.updateViewState("dashboard"));
+            this.loadEvents(); // Reload events when navigating back to dashboard
+          }}
+        />
       );
     }
-    else if (this.state.view == "dashboardPost") {
-      return (<DashboardPostForm 
-        backToHome={()=>this.setState(this.state.updateViewState("dashboard"))}
-      />)
-    }
-
   }
 }

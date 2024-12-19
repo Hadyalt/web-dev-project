@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using StarterKit.Models;
 using StarterKit.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace StarterKit
 {
@@ -10,62 +10,68 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
-
+            // Add services to the container
+            builder.Services.AddControllersWithViews();
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<ILoginService, LoginService>(); 
-            builder.Services.AddScoped<IOfficeService, OfficeService>();
-            builder.Services.AddScoped<IVoteService, VotingService>();
-            
-            builder.Services.AddSession(options => 
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.HttpOnly = true; 
-                options.Cookie.IsEssential = true; 
-            });
 
+            // Register scoped services
             builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddScoped<IOfficeService, OfficeService>();
+            builder.Services.AddScoped<IVoteService, VotingService>();
 
-            builder.Services.AddDbContext<DatabaseContext>(
-                options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
+            // Configure session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20); // Session timeout
+                options.Cookie.HttpOnly = true;                // Enhance security
+                options.Cookie.IsEssential = true;             // Required for GDPR compliance
+            });
 
-            // Add CORS policy
+            // Configure database context
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
+
+            // Configure CORS policy
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactApp",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:3000") // Adjust the URL to your React app's URL
+                options.AddPolicy("AllowReactApp", corsBuilder =>
+                {
+                    corsBuilder.WithOrigins("http://localhost:3000") // React app's URL
                                .AllowAnyHeader()
-                               .AllowAnyMethod();
-                    });
+                               .AllowAnyMethod()
+                               .AllowCredentials(); // Enable cookies/session
+                });
             });
 
             var app = builder.Build();
+            app.Urls.Add("http://localhost:3001");
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseHsts(); // Add HTTP Strict Transport Security
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
-            app.UseSession();
-
+            // Configure CORS
             app.UseCors("AllowReactApp");
 
+            // Enable session middleware
+            app.UseSession();
+
+            // Add authorization
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.Run();
         }
     }
