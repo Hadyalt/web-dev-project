@@ -3,6 +3,7 @@ import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
 import { loadEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 
+
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
     super(props);
@@ -22,7 +23,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       .catch((error) => {
         this.setState({ error: error.message, loading: false });
       });
-  };
+  }
 
   render() {
     if (this.state.view == "dashboard") {
@@ -70,6 +71,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
             Make Event</button>
           <button>Back </button>
+          <button onClick={this.handleReload}>Reload </button>
         </div>
       );
     } else if (this.state.view == "dashboardPost") {
