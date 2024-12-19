@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
+import ReactDOM from 'react-dom/client';
 import App from './Components/Home/App.tsx';
 import { DashboardForm } from './Components/Dashboard/Dashboard.tsx';
 import { LoginForm } from './Components/Login/Login.tsx';
