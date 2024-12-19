@@ -28,13 +28,13 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
     postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
       this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
-        // Redirect to the dashboard
+        // Redirect to the dashboard and refresh the list
         this.props.backToHome();
       })
       .catch(() => {
         // Handle the error
       });
-    this.props.backToHome();
+      this.props.backToHome();
   };
 
   render() {
