@@ -15,7 +15,7 @@ public class LoginService : ILoginService
 
     private readonly DatabaseContext _context;
 
-    public string connectionString = "Data Source=webdev.sqlite;Version=3;";
+    public string connectionString = "Data Source=webdevproject.db";
 
     public LoginService(DatabaseContext context, IHttpContextAccessor httpContextAccessor)
     {
