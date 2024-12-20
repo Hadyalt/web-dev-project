@@ -5791,19 +5791,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jasper van der Laan\\.nuget\\packages\\": {}
+    "C:\\Users\\dauvi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\webdevproject.csproj",
+      "projectUniqueName": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
       "projectName": "webdevproject",
-      "projectPath": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\webdevproject.csproj",
-      "packagesPath": "C:\\Users\\Jasper van der Laan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jasper van der Laan\\OneDrive - De Haagse Hogeschool\\Bureaublad\\school\\Jaar 2\\Q1-2\\Web_dev_v2\\web-dev-project\\webdevproject\\obj\\",
+      "projectPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
+      "packagesPath": "C:\\Users\\dauvi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Jasper van der Laan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
