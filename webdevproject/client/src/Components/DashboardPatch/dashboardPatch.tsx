@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { updateEvent, getEventById } from './dashboardPatch.api.ts';
+import { DateOnly } from '../../Models/Date.tsx';
 
 interface DashboardPatchProps {
     backToHome: () => void;
@@ -29,13 +30,19 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome, even
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            await updateEvent(eventId, event);
+        // Call the API to post the event
+        const formattedDate = DateOnly.parse(event.eventDate).toString();
+        await updateEvent(eventId, event.title, event.description, formattedDate, event.startTime,
+          event.endTime, event.location, event.adminApproval, [], "")
+          .then(() => {
+            // Redirect to the dashboard
             backToHome();
-        } catch (error) {
-            console.error('Error updating event:', error);
-        }
-    };
+          })
+          .catch(() => {
+            // Handle the error
+          });
+        backToHome();
+      };
 
     return (
         <div>
