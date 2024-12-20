@@ -23,6 +23,7 @@ export type Event = {
 };
 
 export interface DashboardState {
+    selectedEventId: number;
     events: Event[];
     loading: boolean;
     error: string | null;
@@ -33,6 +34,7 @@ export interface DashboardState {
 }
 
 export const initDashboardState: DashboardState = {
+    selectedEventId: 1,
     events: [],
     loading: true,
     error: "",
