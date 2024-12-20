@@ -1,7 +1,7 @@
 import React from "react";
 import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
 import { loadEvent } from "./dashboard.api.ts";
-import { deleteEvent } from "./dashboard.api.ts"; // Import deleteEvent from API
+import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
 
@@ -21,7 +21,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   }
 
   loadEvents = () => {
-    // Load events when the component mounts
     loadEvent()
       .then((events) => {
         this.setState({ events, loading: false });
@@ -31,18 +30,16 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       });
   }
 
-  // Handle event deletion
   handleDelete = (eventId: number) => {
     this.setState({ showModal: true, eventToDelete: eventId });
   }
 
-  // Confirm deletion
   confirmDelete = async () => {
     if (this.state.eventToDelete) {
       try {
-        await deleteEvent(this.state.eventToDelete.toString()); // Call API delete function
+        await deleteEvent(this.state.eventToDelete.toString());
         this.setState({ showModal: false, eventToDelete: null });
-        this.loadEvents(); // Reload events after deletion
+        this.loadEvents();
       } catch (error) {
         console.error("Error deleting event:", error);
         this.setState({ showModal: false, eventToDelete: null });
@@ -50,7 +47,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     }
   }
 
-  // Cancel deletion
   cancelDelete = () => {
     this.setState({ showModal: false, eventToDelete: null });
   }
@@ -80,7 +76,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                 <th>End Time</th>
                 <th>Location</th>
                 <th>Admin Approval</th>
-                <th>Actions</th> {/* Add a column for actions */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -94,7 +90,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                   <td>{event.location}</td>
                   <td>{event.adminApproval ? "Approved" : "Pending"}</td>
                   <td>
-                    <button onClick={() => this.setState(this.state.updateViewState("dashboardPatch"))}>  
+                    <button onClick={() => this.setState({ view: "dashboardPatch", selectedEventId: event.eventId })}>
                       Edit
                     </button>
                     <button onClick={() => this.handleDelete(event.eventId)}>
@@ -106,12 +102,11 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             </tbody>
           </table>
 
-          <button
-            onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
-            Make Event</button>
-          <button>Back </button>
+          <button onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
+            Make Event
+          </button>
+          <button>Back</button>
 
-          {/* Modal for deletion confirmation */}
           {this.state.showModal && (
             <div className="modal">
               <div className="modal-content">
@@ -128,16 +123,17 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         <DashboardPostForm 
           backToHome={() => {
             this.setState(this.state.updateViewState("dashboard"));
-            this.loadEvents(); // Reload events when navigating back to dashboard
+            this.loadEvents();
           }}
         />
       );
-    }else if (this.state.view == "dashboardPatch") {
+    } else if (this.state.view == "dashboardPatch") {
       return (
         <DashboardPatch
+          eventId={this.state.selectedEventId}
           backToHome={() => {
             this.setState(this.state.updateViewState("dashboard"));
-            this.loadEvents(); // Reload events when navigating back to dashboard
+            this.loadEvents();
           }}
         />
       );
