@@ -137,15 +137,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           }}
         />
       );
-    }else if (this.state.view == "dashboardPatch") {
-      return (
-        <DashboardPatch
-          backToHome={() => {
-            this.setState(this.state.updateViewState("dashboard"));
-            this.loadEvents();
-          }}
-        />
-      );
     } else if (this.state.view == "dashboardPatch") {
       return (
         <DashboardPatch
