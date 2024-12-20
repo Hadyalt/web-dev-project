@@ -30,6 +30,8 @@ export interface DashboardState {
     view: ViewState;
     showModal: boolean; // To manage the visibility of the modal
     eventToDelete: number | null; // Stores the ID of the event to delete
+    attendance: Event_Attendance[]; // Stores the list of attendees for an event
+    loadingAttendance: boolean; // Tracks whether attendance data is being loaded
     updateViewState: (view: ViewState) => (state: DashboardState) => DashboardState;
 }
 
@@ -41,6 +43,8 @@ export const initDashboardState: DashboardState = {
     view: "dashboard",
     showModal: false, // Modal is initially hidden
     eventToDelete: null, // No event selected for deletion
+    attendance: [], // Initialize with an empty list
+    loadingAttendance: false, // Initially not loading attendance
     updateViewState: (view: ViewState) => (state: DashboardState): DashboardState => {
         return {
             ...state,

@@ -69,10 +69,10 @@ namespace StarterKit.Controllers
         public IActionResult Delete(int eventId)
         {
             // Check if the user is an admin
-            if (!_loginService.IsAdminLoggedIn())
-            {
-                return Unauthorized("Only admins can delete events.");
-            }
+            // if (!_loginService.IsAdminLoggedIn())
+            // {
+            //     return Unauthorized("Only admins can delete events.");
+            // }
 
             var eventToDelete = _context.Event.FirstOrDefault(e => e.EventId == eventId);
 

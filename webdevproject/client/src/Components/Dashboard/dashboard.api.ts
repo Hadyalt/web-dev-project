@@ -1,4 +1,4 @@
-import { Event } from "./dashboard.state";
+import { Event, Event_Attendance } from "./dashboard.state";
 
 export const loadEvent = (): Promise<Event[]> => {
     return fetch("http://localhost:3001/Api/v1/controller/Read") // Adjust the URL as needed
@@ -26,4 +26,12 @@ export const deleteEvent = (eventId: string): Promise<void> => {
       .catch((error) => {
         throw new Error(error.message || "Unknown error occurred during deletion");
       });
+  };
+
+  export const getAttendance = async (eventId: number): Promise<Event_Attendance[]> => {
+    const response = await fetch(`http://localhost:3001/api/v1/attendance/attendees/${eventId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch attendance");
+    }
+    return response.json();
   };

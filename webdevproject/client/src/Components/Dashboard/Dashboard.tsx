@@ -1,6 +1,6 @@
 import React from "react";
 import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
-import { loadEvent } from "./dashboard.api.ts";
+import { loadEvent, getAttendance } from "./dashboard.api.ts"; // Add getAttendance function import
 import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
@@ -14,7 +14,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   handleReload: () => void = () => {
     this.setState({ loading: true, error: null });
     this.loadEvents();
-  }
+  };
 
   componentDidMount() {
     this.loadEvents();
@@ -28,11 +28,11 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       .catch((error) => {
         this.setState({ error: error.message, loading: false });
       });
-  }
+  };
 
   handleDelete = (eventId: number) => {
     this.setState({ showModal: true, eventToDelete: eventId });
-  }
+  };
 
   confirmDelete = async () => {
     if (this.state.eventToDelete) {
@@ -45,15 +45,26 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         this.setState({ showModal: false, eventToDelete: null });
       }
     }
-  }
+  };
 
   cancelDelete = () => {
     this.setState({ showModal: false, eventToDelete: null });
-  }
+  };
+
+  fetchAttendance = async (eventId: number) => {
+    this.setState({ loadingAttendance: true });
+    try {
+      const data = await getAttendance(eventId);  // Call the getAttendance function
+      this.setState({ attendance: data, loadingAttendance: false });
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+      this.setState({ loadingAttendance: false });
+    }
+  };
 
   render() {
     if (this.state.view == "dashboard") {
-      const { events, loading, error } = this.state;
+      const { events, loading, error, attendance, loadingAttendance } = this.state;
 
       if (loading) {
         return <div>Loading...</div>;
@@ -93,18 +104,15 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                     <button onClick={() => this.setState({ view: "dashboardPatch", selectedEventId: event.eventId })}>
                       Edit
                     </button>
-                    <button onClick={() => this.handleDelete(event.eventId)}>
-                      Delete
-                    </button>
+                    <button onClick={() => this.handleDelete(event.eventId)}>Delete</button>
+                    <button onClick={() => this.fetchAttendance(event.eventId)}>Get Attendance</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <button onClick={e => this.setState(this.state.updateViewState("dashboardPost"))}>
-            Make Event
-          </button>
+          <button onClick={(e) => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
           <button>Back</button>
 
           {this.state.showModal && (
@@ -116,21 +124,31 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
               </div>
             </div>
           )}
+
+{loadingAttendance ? (
+  <div>Loading attendance...</div>
+) : attendance && attendance.length > 0 ? (
+  <div>
+    <h2>Attendance</h2>
+    <ul>
+      {attendance.map((attendee, index) => {
+        console.log(attendee);  // Check the object structure here
+        return (
+          <li key={index}>
+            {this.state.attendance[0].Rating ? attendee.Rating : 'No Rating'}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+          ) : (
+            attendance && <div>No attendees for this event.</div>
+          )}
         </div>
       );
     } else if (this.state.view == "dashboardPost") {
       return (
-        <DashboardPostForm 
-          backToHome={() => {
-            this.setState(this.state.updateViewState("dashboard"));
-            this.loadEvents();
-          }}
-        />
-      );
-    } else if (this.state.view == "dashboardPatch") {
-      return (
-        <DashboardPatch
-          eventId={this.state.selectedEventId}
+        <DashboardPostForm
           backToHome={() => {
             this.setState(this.state.updateViewState("dashboard"));
             this.loadEvents();
