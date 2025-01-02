@@ -1,5 +1,5 @@
 import React from "react";
-import { HomepageState, initHomepageState } from "./Homepage.state.tsx";
+import { HomepageState, initHomepageState, Event } from "./Homepage.state.tsx";
 import { loadEvent } from "./Homepage.api.ts";
 import { DateOnly } from "../../Models/Date";
 
@@ -33,10 +33,14 @@ export class Homepage extends React.Component<{}, HomepageState> {
             });
     }
 
-    render() {
-        if (this.state.view == "homepage") {
-            const { events, loading, error } = this.state;
+    handleEventClick = (eventId: number) => {
+        this.setState({ selectedEventId: eventId, view: "eventDetails" });
+    }
 
+    render() {
+        const { events, loading, error, view, selectedEventId } = this.state;
+
+        if (view === "homepage") {
             if (loading) {
                 return <div>Loading...</div>;
             }
@@ -62,7 +66,7 @@ export class Homepage extends React.Component<{}, HomepageState> {
                         </thead>
                         <tbody>
                             {events.map((event, index) => (
-                                <tr key={`${event.eventId}-${index}`}>
+                                <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>
                                     <td>{event.title}</td>
                                     <td>{event.description}</td>
                                     <td>{event.eventDate.toString()}</td>
@@ -74,6 +78,24 @@ export class Homepage extends React.Component<{}, HomepageState> {
                             ))}
                         </tbody>
                     </table>
+                </div>
+            );
+        } else if (view === "eventDetails") {
+            const selectedEvent = events.find(event => event.eventId === selectedEventId);
+            if (!selectedEvent) {
+                return <div>Event not found</div>;
+            }
+
+            return (
+                <div>
+                    <h1>{selectedEvent.title}</h1>
+                    <p>{selectedEvent.description}</p>
+                    <p>Date: {selectedEvent.eventDate.toString()}</p>
+                    <p>Start Time: {selectedEvent.startTime.toString()}</p>
+                    <p>End Time: {selectedEvent.endTime.toString()}</p>
+                    <p>Location: {selectedEvent.location}</p>
+                    <p>Admin Approval: {selectedEvent.adminApproval ? "Approved" : "Pending"}</p>
+                    <button onClick={() => this.setState({ view: "homepage" })}>Back to Homepage</button>
                 </div>
             );
         }

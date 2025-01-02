@@ -1,6 +1,6 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
 
-export type ViewState = "homepage"
+export type ViewState = "homepage" | "eventDetails";
 
 export type Event_Attendance = {
     Event_AttendanceId: number;
