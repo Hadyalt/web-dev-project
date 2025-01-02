@@ -1,7 +1,7 @@
 import React from "react";
 import { LoginState, initLoginState } from "./Login.state";
 import { login } from "./Login.api";
-import { Homepage } from "../Home/Homepage";
+import { Homepage } from "../Home/homepage";
 
 export class LoginForm extends React.Component<{}, LoginState> {
   constructor(props: {}) {
