@@ -60,11 +60,11 @@ namespace StarterKit.Controllers
         public IActionResult GetAttendees(int eventId)
         {
             // Retrieve the logged-in user
-            // var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
-            // if (string.IsNullOrEmpty(loggedInUserId))
-            // {
-            //     return Unauthorized("User is not logged in.");
-            // }
+            var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(loggedInUserId))
+            {
+                return Unauthorized("User is not logged in.");
+            }
 
             // Retrieve the event attendees
             var attendees = _context.Event_Attendance

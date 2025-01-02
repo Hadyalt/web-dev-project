@@ -6,6 +6,7 @@ export const loadEvent = (): Promise<Event[]> => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
+            
             return response.json();
         })
         .then(data => data as Event[]);
@@ -17,6 +18,7 @@ export const deleteEvent = (eventId: string): Promise<void> => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
       .then((response) => {
         if (!response.ok) {
@@ -29,9 +31,15 @@ export const deleteEvent = (eventId: string): Promise<void> => {
   };
 
   export const getAttendance = async (eventId: number): Promise<Event_Attendance[]> => {
-    const response = await fetch(`http://localhost:3001/api/v1/attendance/attendees/${eventId}`);
+    const response = await fetch(`http://localhost:3001/api/v1/attendance/attendees/${eventId}`, {
+        method: "GET",
+        credentials: "include", // Include cookies for session authentication
+    });
+
     if (!response.ok) {
-      throw new Error("Failed to fetch attendance");
+        throw new Error("Failed to fetch attendance");
     }
-    return response.json();
-  };
+
+    const data = await response.json();
+    return data as Event_Attendance[];
+};

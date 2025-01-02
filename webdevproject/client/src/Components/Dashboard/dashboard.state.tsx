@@ -36,7 +36,7 @@ export interface DashboardState {
 }
 
 export const initDashboardState: DashboardState = {
-    selectedEventId: 1,
+    selectedEventId: 0,
     events: [],
     loading: true,
     error: "",

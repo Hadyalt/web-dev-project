@@ -132,10 +132,10 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     <h2>Attendance</h2>
     <ul>
       {attendance.map((attendee, index) => {
-        console.log(attendee);  // Check the object structure here
+        console.log(attendee);  // Log each attendee object to inspect its structure
         return (
           <li key={index}>
-            {this.state.attendance[0].Rating ? attendee.Rating : 'No Rating'}
+            {attendee.Rating ? attendee.Rating : 'No Rating'}  {/* Adjust this if 'Rating' is different */}
           </li>
         );
       })}

@@ -15,10 +15,13 @@ public class LoginController : Controller
     private readonly ILoginService _loginService;
     private readonly DatabaseContext _context;
 
-    public LoginController(ILoginService loginService, DatabaseContext databaseContext)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public LoginController(ILoginService loginService, DatabaseContext databaseContext,  IHttpContextAccessor httpContextAccessor)
     {
         _loginService = loginService;
         _context = databaseContext;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     [HttpPost("Register")]
@@ -64,7 +67,8 @@ public class LoginController : Controller
 
         if (loginStatus == LoginStatus.Success)
         {
-            return Ok(new { success = true, message = "Login Successful" });
+            var userRole = _httpContextAccessor.HttpContext?.Session.GetString("UserRole");
+            return Ok(new { success = true, message = "Login Successful", loginBody.Username, userRole });
         }
         else if (loginStatus == LoginStatus.IncorrectUsername)
         {
