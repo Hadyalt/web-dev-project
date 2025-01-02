@@ -42,10 +42,10 @@ namespace StarterKit.Controllers
         [HttpPost("Create")]
         public IActionResult Create([FromBody] CreateEventRequest request)
         {
-            // if (!_loginService.IsAdminLoggedIn())
-            // {
-            //     return Unauthorized("Only admins can create events.");
-            // }
+            if (!_loginService.IsAdminLoggedIn())
+            {
+                return Unauthorized("Only admins can create events.");
+            }
 
             var newEvent = new Event
             {
@@ -91,10 +91,10 @@ namespace StarterKit.Controllers
         [HttpPut("Update/{id}")]
         public IActionResult Update(int id, [FromBody] UpdateEventRequest request)
         {
-            // if (!_loginService.IsAdminLoggedIn())
-            // {
-            //     return Unauthorized("Only admins can update events.");
-            // }
+            if (!_loginService.IsAdminLoggedIn())
+            {
+                return Unauthorized("Only admins can update events.");
+            }
 
             var existingEvent = _context.Event.FirstOrDefault(e => e.EventId == id);
             if (existingEvent == null)

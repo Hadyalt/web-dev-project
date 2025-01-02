@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D5Na3+R4KLI=",
+  "dgSpecHash": "7yqmUpAbCTg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
+  "projectFilePath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dauvi\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\dauvi\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
