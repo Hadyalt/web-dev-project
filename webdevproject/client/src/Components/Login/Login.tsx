@@ -35,7 +35,7 @@ export class LoginForm extends React.Component<{}, LoginState> {
   };
 
   render() {
-    if(this.state.view == "login") {
+    if(this.state.view === "login") {
         return (
         <div>
             <h1>Login and Events Form</h1>
