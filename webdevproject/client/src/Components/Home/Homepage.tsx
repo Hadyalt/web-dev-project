@@ -1,6 +1,7 @@
 import React from "react";
 import { HomepageState, initHomepageState } from "./Homepage.state.tsx";
 import { loadEvent } from "./Homepage.api.ts";
+import { DateOnly } from "../../Models/Date";
 
 export class Homepage extends React.Component<{}, HomepageState> {
     constructor(props: {}) {
@@ -20,7 +21,12 @@ export class Homepage extends React.Component<{}, HomepageState> {
     loadEvents = () => {
         loadEvent()
             .then((events) => {
-                this.setState({ events, loading: false });
+                const today = DateOnly.fromDate(new Date());
+                const futureEvents = events.filter(event => {
+                    const eventDate = DateOnly.parse(event.eventDate.toString());
+                    return eventDate.isAfter(today);
+                });
+                this.setState({ events: futureEvents, loading: false });
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
@@ -52,7 +58,6 @@ export class Homepage extends React.Component<{}, HomepageState> {
                                 <th>End Time</th>
                                 <th>Location</th>
                                 <th>Admin Approval</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,6 +76,6 @@ export class Homepage extends React.Component<{}, HomepageState> {
                     </table>
                 </div>
             );
-        } 
+        }
     }
 }
