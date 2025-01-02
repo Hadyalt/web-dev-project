@@ -1,7 +1,7 @@
 import React from "react";
 import { LoginState, initLoginState } from "./Login.state";
 import { login } from "./Login.api";
-import { DashboardForm } from "../Dashboard/Dashboard";
+import { Homepage } from "../Home/homepage";
 
 export class LoginForm extends React.Component<{}, LoginState> {
   constructor(props: {}) {
@@ -35,7 +35,7 @@ export class LoginForm extends React.Component<{}, LoginState> {
   };
 
   render() {
-    if(this.state.view == "login") {
+    if(this.state.view === "login") {
         return (
         <div>
             <h1>Login and Events Form</h1>
@@ -73,7 +73,7 @@ export class LoginForm extends React.Component<{}, LoginState> {
         );
     }
     else {
-        return (<DashboardForm /> );
+        return (<Homepage /> );
     }
   }
 }
