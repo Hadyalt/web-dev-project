@@ -1,4 +1,4 @@
-import { Event, Event_Attendance } from "./dashboard.state";
+import { Attendance, Event, Event_Attendance } from "./dashboard.state";
 
 export const loadEvent = (): Promise<Event[]> => {
     return fetch("http://localhost:3001/Api/v1/controller/Read") // Adjust the URL as needed
@@ -30,7 +30,7 @@ export const deleteEvent = (eventId: string): Promise<void> => {
       });
   };
 
-  export const getAttendance = async (eventId: number): Promise<Event_Attendance[]> => {
+  export const getAttendance = async (eventId: number): Promise<Attendance[]> => {
     const response = await fetch(`http://localhost:3001/api/v1/attendance/attendees/${eventId}`, {
         method: "GET",
         credentials: "include", // Include cookies for session authentication
@@ -41,5 +41,5 @@ export const deleteEvent = (eventId: string): Promise<void> => {
     }
 
     const data = await response.json();
-    return data as Event_Attendance[];
+    return data as Attendance[];
 };

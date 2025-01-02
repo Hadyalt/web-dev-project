@@ -34,6 +34,10 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     this.setState({ showModal: true, eventToDelete: eventId });
   };
 
+  handleAttendee = () => {
+    this.setState({ showAttendee: true})
+  }
+
   confirmDelete = async () => {
     if (this.state.eventToDelete) {
       try {
@@ -60,6 +64,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       console.error("Error fetching attendance:", error);
       this.setState({ loadingAttendance: false });
     }
+    this.handleAttendee();
   };
 
   render() {
@@ -125,28 +130,33 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             </div>
           )}
 
-{loadingAttendance ? (
-  <div>Loading attendance...</div>
-) : attendance && attendance.length > 0 ? (
-  <div>
-    <h2>Attendance</h2>
-    <ul>
-      {attendance.map((attendee, index) => {
-        console.log(attendee);  // Log each attendee object to inspect its structure
-        return (
-          <li key={index}>
-            {attendee.Rating ? attendee.Rating : 'No Rating'}  {/* Adjust this if 'Rating' is different */}
-          </li>
-        );
-      })}
-    </ul>
-  </div>
-          ) : (
-            attendance && <div>No attendees for this event.</div>
+          {this.state.showAttendee && (
+            <div className="attendee">
+              <div className="modal-content">
+              <h2>Attendance</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rating</th>
+                      <th>Feedback</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {attendance.map((attendee, index) => (
+                    <tr key={index}>
+                      <td>{attendee.rating || "No rating"}</td>
+                      <td>{attendee.feedback || "No feedback"}</td>
+                    </tr>))}
+                    {attendance.length === 0 && (
+                      <div>No attendance available</div>
+                    )}
+                  </tbody>
+                </table> 
+              </div>
+            </div>
           )}
-        </div>
-      );
-    } else if (this.state.view == "dashboardPost") {
+          </div>
+      )} else if (this.state.view == "dashboardPost") {
       return (
         <DashboardPostForm
           backToHome={() => {
