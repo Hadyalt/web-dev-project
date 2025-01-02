@@ -1,7 +1,7 @@
 import React from "react";
 import { LoginState, initLoginState } from "./Login.state";
 import { login } from "./Login.api";
-import { Homepage } from "../Home/homepage";
+import { Homepage } from "../Home/Homepage";
 
 export class LoginForm extends React.Component<{}, LoginState> {
   constructor(props: {}) {
@@ -73,7 +73,10 @@ export class LoginForm extends React.Component<{}, LoginState> {
         );
     }
     else {
-        return (<Homepage /> );
+        return (<Homepage
+                  backToHome={() => {
+                    this.setState(this.state.updateViewState("homepage"));
+                  }} /> );
     }
   }
 }

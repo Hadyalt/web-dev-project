@@ -1,4 +1,4 @@
-export type ViewState = "login" | "dashboard"
+import { ViewState } from "../Dashboard/dashboard.state"
 
 export interface LoginState {
     username: string

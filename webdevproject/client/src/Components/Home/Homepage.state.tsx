@@ -1,6 +1,5 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
-
-export type ViewState = "homepage" | "eventDetails";
+import { ViewState } from "../Dashboard/dashboard.state";
 
 export type Event_Attendance = {
     Event_AttendanceId: number;
@@ -24,6 +23,7 @@ export type Event = {
 
 export interface HomepageState {
     selectedEventId: number;
+    isAdmin: boolean;
     events: Event[];
     loading: boolean;
     error: string | null;
@@ -35,6 +35,7 @@ export interface HomepageState {
 export const initHomepageState: HomepageState = {
     selectedEventId: 1,
     events: [],
+    isAdmin: true,
     loading: true,
     error: "",
     view: "homepage",

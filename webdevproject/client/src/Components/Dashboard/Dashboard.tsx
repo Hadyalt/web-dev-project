@@ -4,6 +4,7 @@ import { loadEvent, getAttendance } from "./dashboard.api.ts"; // Add getAttenda
 import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
+import { Homepage } from "../Home/Homepage.tsx";
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -117,8 +118,8 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             </tbody>
           </table>
 
-          <button onClick={(e) => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
-          <button>Back</button>
+          <button onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
+          <button onClick={() => this.setState(this.state.updateViewState("homepage"))}>Back</button>
 
           {this.state.showModal && (
             <div className="modal">
@@ -172,6 +173,14 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           backToHome={() => {
             this.setState(this.state.updateViewState("dashboard"));
             this.loadEvents();
+          }}
+        />
+      );
+    } else if (this.state.view == "homepage") {
+      return (
+        <Homepage
+          backToHome={() => {
+            this.setState(this.state.updateViewState("homepage"));
           }}
         />
       );

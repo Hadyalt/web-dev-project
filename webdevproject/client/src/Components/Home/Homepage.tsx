@@ -2,9 +2,14 @@ import React from "react";
 import { HomepageState, initHomepageState, Event } from "./Homepage.state.tsx";
 import { loadEvent } from "./Homepage.api.ts";
 import { DateOnly } from "../../Models/Date";
+import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
-export class Homepage extends React.Component<{}, HomepageState> {
-    constructor(props: {}) {
+interface HomepageFormProps {
+    backToHome: () => void;
+  }
+
+export class Homepage extends React.Component<HomepageFormProps, HomepageState> {
+    constructor(props: HomepageFormProps) {
         super(props);
         this.state = initHomepageState;
     }
@@ -78,6 +83,11 @@ export class Homepage extends React.Component<{}, HomepageState> {
                             ))}
                         </tbody>
                     </table>
+                    {this.state.isAdmin && (
+                        <button onClick={() => this.setState({ view: "dashboard" })}>
+                            Go to Dashboard
+                        </button>
+                    )}
                 </div>
             );
         } else if (view === "eventDetails") {
@@ -98,6 +108,8 @@ export class Homepage extends React.Component<{}, HomepageState> {
                     <button onClick={() => this.setState({ view: "homepage" })}>Back to Homepage</button>
                 </div>
             );
+        } else if (view === "dashboard") {
+            return <DashboardForm />
         }
     }
 }
