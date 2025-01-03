@@ -6,7 +6,7 @@ import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
 interface HomepageProps {
     backToHome: () => void;
-  }
+}
 
 export class Homepage extends React.Component<HomepageProps, HomepageState> {
     constructor(props: HomepageProps) {
@@ -20,7 +20,16 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
     }
 
     componentDidMount() {
-        this.loadEvents();
+        const username = sessionStorage.getItem("username");
+        const userRole = sessionStorage.getItem("userRole");
+
+        if (!username || !userRole) {
+            // Redirect to login page
+            alert("You are not logged in. Redirecting to login page...");
+            window.location.href = "/login";
+        } else {
+            this.loadEvents();
+        }
     }
 
     loadEvents = () => {
