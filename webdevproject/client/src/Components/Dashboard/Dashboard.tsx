@@ -18,7 +18,16 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   };
 
   componentDidMount() {
-    this.loadEvents();
+    const username = sessionStorage.getItem("username");
+    const userRole = sessionStorage.getItem("userRole");
+
+    if (!username || !userRole) {
+      // Redirect to login page
+      alert("You are not logged in. Redirecting to login page...");
+      window.location.href = "/login";
+    } else {
+      this.loadEvents();
+    }
   }
 
   loadEvents = () => {
@@ -36,7 +45,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   };
 
   handleAttendee = () => {
-    this.setState({ showAttendee: true})
+    this.setState({ showAttendee: true })
   }
 
   confirmDelete = async () => {
@@ -134,7 +143,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           {this.state.showAttendee && (
             <div className="attendee">
               <div className="modal-content">
-              <h2>Attendance</h2>
+                <h2>Attendance</h2>
                 <table>
                   <thead>
                     <tr>
@@ -144,20 +153,21 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                   </thead>
                   <tbody>
                     {attendance.map((attendee, index) => (
-                    <tr key={index}>
-                      <td>{attendee.rating || "No rating"}</td>
-                      <td>{attendee.feedback || "No feedback"}</td>
-                    </tr>))}
+                      <tr key={index}>
+                        <td>{attendee.rating || "No rating"}</td>
+                        <td>{attendee.feedback || "No feedback"}</td>
+                      </tr>))}
                     {attendance.length === 0 && (
                       <div>No attendance available</div>
                     )}
                   </tbody>
-                </table> 
+                </table>
               </div>
             </div>
           )}
-          </div>
-      )} else if (this.state.view == "dashboardPost") {
+        </div>
+      )
+    } else if (this.state.view == "dashboardPost") {
       return (
         <DashboardPostForm
           backToHome={() => {
