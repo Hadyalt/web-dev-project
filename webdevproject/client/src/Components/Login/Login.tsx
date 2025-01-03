@@ -2,10 +2,15 @@ import React from "react";
 import { LoginState, initLoginState } from "./Login.state";
 import { login } from "./Login.api";
 import { Homepage } from "../Home/Homepage";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
+interface LoginFormProps 
+{
+  navigate: NavigateFunction;
+}
 
-export class LoginForm extends React.Component<{}, LoginState> {
-  constructor(props: {}) {
+export class LoginForm extends React.Component<LoginFormProps, LoginState> {
+  constructor(props: LoginFormProps) {
     super(props);
     this.state = { ...initLoginState, errorMessage: "" }; // Add errorMessage to state
   }
@@ -25,7 +30,8 @@ export class LoginForm extends React.Component<{}, LoginState> {
       if (success) {
         this.setState({  errorMessage: "" });
         alert("Login successful! Redirecting to dashboard...");
-        this.setState({ view: "dashboard" });
+        this.setState({ view: "homepage" });
+        this.props.navigate("/homepage");
       } 
       else {
         throw new Error("Invalid username or password");
@@ -81,3 +87,12 @@ export class LoginForm extends React.Component<{}, LoginState> {
     }
   }
 }
+
+export function withRouter(Component: typeof LoginForm) {
+  return function WrappedComponent(props: any) {
+    const navigate = useNavigate();
+    return <Component {...props} navigate={navigate} />;
+  };
+}
+
+export default withRouter(LoginForm);
