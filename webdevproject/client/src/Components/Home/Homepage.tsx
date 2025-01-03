@@ -4,12 +4,12 @@ import { loadEvent } from "./Homepage.api.ts";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard.tsx";
 
-interface HomepageFormProps {
+interface HomepageProps {
     backToHome: () => void;
   }
 
-export class Homepage extends React.Component<HomepageFormProps, HomepageState> {
-    constructor(props: HomepageFormProps) {
+export class Homepage extends React.Component<HomepageProps, HomepageState> {
+    constructor(props: HomepageProps) {
         super(props);
         this.state = initHomepageState;
     }
