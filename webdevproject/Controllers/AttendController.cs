@@ -79,7 +79,29 @@ namespace StarterKit.Controllers
 
             return Ok(attendees);
         }
+        // GET endpoint to view the list of events attended by a specific user
+        [HttpGet("events/user")]
+        public IActionResult GetEvents(int userId)
+        {
+            // Retrieve the logged-in user
+            var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(loggedInUserId))
+            {
+                return Unauthorized("User is not logged in.");
+            }
 
+            // Retrieve the events attended by the user
+            var events = _context.Event_Attendance
+                .Where(ea => ea.UserId == userId)
+                .Select(ea => new
+                {
+                    ea.EventId,
+                    ea.Feedback,
+                    ea.Rating
+                }).ToList();
+
+            return Ok(events);
+        }
         // DELETE endpoint to remove a user's attendance for a specific event
         [HttpDelete("remove/{eventId}")]
         public IActionResult RemoveAttendance(int eventId)
