@@ -1,12 +1,10 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
 import { ViewState } from "../Dashboard/dashboard.state";
 
-export type Event_Attendance = {
-    Event_AttendanceId: number;
-    Rating: number;
-    Feedback: string;
-    UserId: number;
-    EventId: number;
+export type Review = {
+    userId: number;
+    rating: number;
+    feedback: string;
 };
 
 export type Event = {
@@ -18,7 +16,7 @@ export type Event = {
     endTime: TimeSpan;
     location: string;
     adminApproval: boolean;
-    event_Attendances: Event_Attendance[];
+    reviews: Review[];
 };
 
 export interface HomepageState {
@@ -28,7 +26,8 @@ export interface HomepageState {
     loading: boolean;
     error: string | null;
     view: ViewState;
-    showModal: boolean; // To manage the visibility of the modal
+    showModal: boolean;
+    review: Review;
     updateViewState: (view: ViewState) => (state: HomepageState) => HomepageState;
 }
 
@@ -39,7 +38,12 @@ export const initHomepageState: HomepageState = {
     loading: true,
     error: "",
     view: "homepage",
-    showModal: false, // Modal is initially hidden
+    showModal: false,
+    review: {
+        userId: 0,
+        rating: 0, 
+        feedback: ""
+    },
     updateViewState: (view: ViewState) => (state: HomepageState): HomepageState => {
         return {
             ...state,

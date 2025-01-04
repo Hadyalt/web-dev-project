@@ -17,13 +17,13 @@ public class LoginController : Controller
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public LoginController(ILoginService loginService, DatabaseContext databaseContext,  IHttpContextAccessor httpContextAccessor)
+    public LoginController(ILoginService loginService, DatabaseContext databaseContext, IHttpContextAccessor httpContextAccessor)
     {
         _loginService = loginService;
         _context = databaseContext;
         _httpContextAccessor = httpContextAccessor;
     }
-    
+
     [HttpPost("Register")]
     public IActionResult Register([FromBody] RegisterBody registerBody)
     {
@@ -46,7 +46,7 @@ public class LoginController : Controller
             Attendances = new List<Attendance>(),
             Event_Attendances = new List<Event_Attendance>()
         };
-        
+
         //add it to the db and save it
         _context.User.Add(NewUser);
         _context.SaveChanges();
@@ -69,6 +69,7 @@ public class LoginController : Controller
         {
             var userRole = _httpContextAccessor.HttpContext?.Session.GetString("UserRole");
             var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+
             return Ok(new { success = true, message = "Login Successful", loginBody.Username, userRole, userId });
         }
         else if (loginStatus == LoginStatus.IncorrectUsername)

@@ -1,8 +1,8 @@
 import React from "react";
-import { HomepageState, initHomepageState, Event } from "./Homepage.state.tsx";
-import { loadEvent } from "./Homepage.api.ts";
+import { HomepageState, initHomepageState, Event, Review } from "./Homepage.state";
+import { loadEvent, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
-import { DashboardForm } from "../Dashboard/Dashboard.tsx";
+import { DashboardForm } from "../Dashboard/Dashboard";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -22,9 +22,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
     componentDidMount() {
         const username = sessionStorage.getItem("username");
         const userRole = sessionStorage.getItem("userRole");
+        const isAdmin = userRole === "admin";
 
         if (!username || !userRole) {
-            // Redirect to login page
             alert("You are not logged in. Redirecting to login page...");
             window.location.href = "/login";
         } else {
@@ -51,8 +51,32 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         this.setState({ selectedEventId: eventId, view: "eventDetails" });
     }
 
+    handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        this.setState(prevState => ({
+            review: { ...prevState.review, [name]: value }
+        }));
+    }
+
+    handleReviewSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const { selectedEventId, review } = this.state;
+        const userId = sessionStorage.getItem("userId");
+        if (!userId) {
+            alert("User ID not found. Please log in again.");
+            return;
+        }
+        try {
+            await submitReview(selectedEventId, { userId: Number(userId), rating: review.rating, feedback: review.feedback });
+            alert("Review submitted successfully!");
+            this.setState({ review: { userId: 0, rating: 0, feedback: "" } });
+        } catch (error) {
+            alert("Failed to submit review");
+        }
+    }
+
     render() {
-        const { events, loading, error, view, selectedEventId } = this.state;
+        const { events, loading, error, view, selectedEventId, review } = this.state;
 
         if (view === "homepage") {
             if (loading) {
@@ -114,6 +138,30 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <p>End Time: {selectedEvent.endTime.toString()}</p>
                     <p>Location: {selectedEvent.location}</p>
                     <p>Admin Approval: {selectedEvent.adminApproval ? "Approved" : "Pending"}</p>
+                    <h2>Reviews</h2>
+                    <ul>
+                        {selectedEvent.reviews && selectedEvent.reviews.length > 0 ? (
+                            selectedEvent.reviews.map((review, index) => (
+                                <li key={index}>
+                                    <p>Rating: {review.rating}</p>
+                                    <p>Feedback: {review.feedback}</p>
+                                </li>
+                            ))
+                        ) : (
+                            <p></p>
+                        )}
+                    </ul>
+                    <form onSubmit={this.handleReviewSubmit}>
+                        <div>
+                            <label>Rating:</label>
+                            <input type="number" name="rating" value={review.rating} onChange={this.handleReviewChange} min="1" max="10" />
+                        </div>
+                        <div>
+                            <label>Feedback:</label>
+                            <textarea name="feedback" value={review.feedback} onChange={this.handleReviewChange} />
+                        </div>
+                        <button type="submit">Submit Review</button>
+                    </form>
                     <button onClick={() => this.setState({ view: "homepage" })}>Back to Homepage</button>
                 </div>
             );
