@@ -3,6 +3,7 @@ import { HomepageState, initHomepageState, Event, Review } from "./Homepage.stat
 import { loadEvent, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
+import { HomepageReview } from "./HomepageReview";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -124,46 +125,15 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 </div>
             );
         } else if (view === "eventDetails") {
+            window.location.href = `/homepage/${this.state.selectedEventId}`;
             const selectedEvent = events.find(event => event.eventId === selectedEventId);
             if (!selectedEvent) {
                 return <div>Event not found</div>;
             }
-
             return (
-                <div>
-                    <h1>{selectedEvent.title}</h1>
-                    <p>{selectedEvent.description}</p>
-                    <p>Date: {selectedEvent.eventDate.toString()}</p>
-                    <p>Start Time: {selectedEvent.startTime.toString()}</p>
-                    <p>End Time: {selectedEvent.endTime.toString()}</p>
-                    <p>Location: {selectedEvent.location}</p>
-                    <p>Admin Approval: {selectedEvent.adminApproval ? "Approved" : "Pending"}</p>
-                    <h2>Reviews</h2>
-                    <ul>
-                        {selectedEvent.reviews && selectedEvent.reviews.length > 0 ? (
-                            selectedEvent.reviews.map((review, index) => (
-                                <li key={index}>
-                                    <p>Rating: {review.rating}</p>
-                                    <p>Feedback: {review.feedback}</p>
-                                </li>
-                            ))
-                        ) : (
-                            <p></p>
-                        )}
-                    </ul>
-                    <form onSubmit={this.handleReviewSubmit}>
-                        <div>
-                            <label>Rating:</label>
-                            <input type="number" name="rating" value={review.rating} onChange={this.handleReviewChange} min="1" max="10" />
-                        </div>
-                        <div>
-                            <label>Feedback:</label>
-                            <textarea name="feedback" value={review.feedback} onChange={this.handleReviewChange} />
-                        </div>
-                        <button type="submit">Submit Review</button>
-                    </form>
-                    <button onClick={() => this.setState({ view: "homepage" })}>Back to Homepage</button>
-                </div>
+                <HomepageReview
+                    backToHome={() => this.setState({ view: "homepage" })}
+                />
             );
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";

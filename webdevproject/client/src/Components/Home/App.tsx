@@ -5,12 +5,14 @@ import { Homepage } from './Homepage';
 import { DashboardForm } from '../Dashboard/Dashboard';
 import { DashboardPatch } from '../DashboardPatch/dashboardPatch';
 import { DashboardPostForm } from '../DashboardPost/DashboardPost';
+import { HomepageReview } from './HomepageReview';
 
 const App = () => {
   return (
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
+        <Route path="/homepage/:eventId" element={<HomepageReview backToHome={() => console.log("Back to login")} />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard" element={<DashboardForm/>} />
         <Route path="/dashboard/edit/:eventId" element={<DashboardPatch backToHome={function (): void {
