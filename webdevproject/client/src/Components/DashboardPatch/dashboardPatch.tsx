@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { updateEvent, getEventById } from './dashboardPatch.api.ts';
 import { DateOnly } from '../../Models/Date.tsx';
 
 interface DashboardPatchProps {
     backToHome: () => void;
-    eventId: number;
 }
 
-export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome, eventId }) => {
+export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) => {
+    const { eventId } = useParams<{ eventId: string }>(); // Use useParams to get the eventId
     const [event, setEvent] = useState({
         title: '',
         description: '',
@@ -19,8 +20,10 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome, even
     });
 
     useEffect(() => {
-        // Fetch event details by ID
-        getEventById(eventId).then(setEvent);
+        if (eventId) {
+            // Fetch event details by ID
+            getEventById(parseInt(eventId)).then(setEvent);
+        }
     }, [eventId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,19 +33,29 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome, even
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Call the API to post the event
+        if (!eventId) return;
+
         const formattedDate = DateOnly.parse(event.eventDate).toString();
-        await updateEvent(eventId, event.title, event.description, formattedDate, event.startTime,
-          event.endTime, event.location, event.adminApproval, [], "")
-          .then(() => {
-            // Redirect to the dashboard
-            backToHome();
-          })
-          .catch(() => {
-            // Handle the error
-          });
-        backToHome();
-      };
+        try {
+            await updateEvent(
+                parseInt(eventId),
+                event.title,
+                event.description,
+                formattedDate,
+                event.startTime,
+                event.endTime,
+                event.location,
+                event.adminApproval,
+                [],
+                ""
+            );
+            window.location.href = "/dashboard"; 
+            backToHome(); // Redirect to the dashboard (or use navigate('/desired-path') if you want to use react-router navigation)
+        } catch (error) {
+            console.error("Error updating event:", error);
+        }
+        window.location.href = "/dashboard"; 
+    };
 
     return (
         <div>
@@ -87,11 +100,19 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome, even
                 <div>
                     <label>
                         Admin Approval:
-                        <input type="checkbox" name="adminApproval" checked={event.adminApproval} onChange={e => setEvent(prevEvent => ({ ...prevEvent, adminApproval: e.target.checked }))} />
+                        <input
+                            type="checkbox"
+                            name="adminApproval"
+                            checked={event.adminApproval}
+                            onChange={e => setEvent(prevEvent => ({ ...prevEvent, adminApproval: e.target.checked }))}
+                        />
                     </label>
                 </div>
                 <button type="submit">Save</button>
-                <button type="button" onClick={backToHome}>Back</button>
+                <button type="button" onClick={() => {
+            window.location.href = "/dashboard";  
+            //this.props.backToHome()
+            }}> Back </button>
             </form>
         </div>
     );

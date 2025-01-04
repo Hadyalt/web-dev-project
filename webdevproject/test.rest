@@ -79,8 +79,8 @@ POST http://localhost:3001/api/v1/attendance/attend HTTP/1.1
 content-type: application/json
 
 {
-    "eventId": 4,
-    "userId": 2,
+    "eventId": 21,
+    "userId": 1,
     "feedback": "Great Event",
     "rating": 5
 }

@@ -168,6 +168,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         </div>
       )
     } else if (this.state.view == "dashboardPost") {
+      window.location.href = "/dashboard/post";
       return (
         <DashboardPostForm
           backToHome={() => {
@@ -177,9 +178,9 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         />
       );
     } else if (this.state.view == "dashboardPatch") {
+      window.location.href = `/dashboard/edit/${this.state.selectedEventId}`;
       return (
         <DashboardPatch
-          eventId={this.state.selectedEventId}
           backToHome={() => {
             this.setState(this.state.updateViewState("dashboard"));
             this.loadEvents();
@@ -187,6 +188,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         />
       );
     } else if (this.state.view == "homepage") {
+      window.location.href = "/homepage";
       return (
         <Homepage
           backToHome={() => {

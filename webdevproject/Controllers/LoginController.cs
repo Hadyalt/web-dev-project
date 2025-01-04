@@ -68,7 +68,8 @@ public class LoginController : Controller
         if (loginStatus == LoginStatus.Success)
         {
             var userRole = _httpContextAccessor.HttpContext?.Session.GetString("UserRole");
-            return Ok(new { success = true, message = "Login Successful", loginBody.Username, userRole });
+            var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            return Ok(new { success = true, message = "Login Successful", loginBody.Username, userRole, userId });
         }
         else if (loginStatus == LoginStatus.IncorrectUsername)
         {

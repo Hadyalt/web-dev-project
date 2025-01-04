@@ -118,6 +118,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 </div>
             );
         } else if (view === "dashboard") {
+            window.location.href = "/dashboard";
             return <DashboardForm />
         }
     }

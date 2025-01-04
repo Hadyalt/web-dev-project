@@ -1,16 +1,24 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import LoginForm from '../Login/Login';
+import { LoginForm } from '../Login/Login';
 import { Homepage } from './Homepage';
 import { DashboardForm } from '../Dashboard/Dashboard';
+import { DashboardPatch } from '../DashboardPatch/dashboardPatch';
+import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 
 const App = () => {
   return (
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
-        <Route path="/login" element={<LoginForm navigate={undefined} />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard" element={<DashboardForm/>} />
+        <Route path="/dashboard/edit/:eventId" element={<DashboardPatch backToHome={function (): void {
+        throw new Error('Function not implemented.');
+      } }/>} />
+        <Route path="/dashboard/post" element={<DashboardPostForm backToHome={function (): void {
+        throw new Error('Function not implemented.');
+      } } />} />
         <Route path="*" element={<h1>Page Not Found</h1>} />
       </Routes>
   );
