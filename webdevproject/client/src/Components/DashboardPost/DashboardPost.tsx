@@ -29,12 +29,15 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
       this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
       .then(() => {
         // Redirect to the dashboard
-        this.props.backToHome();
+        window.location.href = "/dashboard";
+        //this.props.backToHome();
       })
       .catch(() => {
         // Handle the error
       });
-    this.props.backToHome();
+      window.location.href = "/dashboard";
+    //this.props.backToHome();
+    
   };
 
   render() {
@@ -67,7 +70,10 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
             <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
           </div>
           <button type="submit">Submit</button>
-          <button type="button" onClick={() => this.props.backToHome()}> Back </button>
+          <button type="button" onClick={() => {
+            window.location.href = "/dashboard";  
+            //this.props.backToHome()
+            }}> Back </button>
         </form>
       </div>
     );

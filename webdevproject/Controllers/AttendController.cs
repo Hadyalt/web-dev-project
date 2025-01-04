@@ -44,6 +44,7 @@ namespace StarterKit.Controllers
             // Record the attendance
             var attendance = new Event_Attendance
             {
+
                 EventId = request.EventId,
                 UserId = request.UserId,
                 Feedback = request.Feedback,
@@ -114,7 +115,6 @@ namespace StarterKit.Controllers
         public int EventId { get; set; }
         public string Feedback { get; set; }
         public int Rating { get; set; }
-        public DateTime AttendanceDate { get; set; }
 
     }
 }
