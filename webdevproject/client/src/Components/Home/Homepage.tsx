@@ -162,6 +162,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                 <th>End Time</th>
                                 <th>Location</th>
                                 <th>Admin Approval</th>
+                                <th>Average Rating</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,6 +175,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                     <td>{event.endTime.toString()}</td>
                                     <td>{event.location}</td>
                                     <td>{event.adminApproval ? "Approved" : "Pending"}</td>
+                                    <td>{event.averageRating.toFixed(1)}</td>
                                 </tr>
                             ))}
                         </tbody>

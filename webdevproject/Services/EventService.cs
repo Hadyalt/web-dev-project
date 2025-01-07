@@ -22,9 +22,10 @@ public class EventService
                 {
                     while (reader.Read())
                     {
+                        var eventId = reader.GetInt32(0);
                         var eventItem = new Event
                         {
-                            EventId = reader.GetInt32(0),
+                            EventId = eventId,
                             Title = reader.GetString(1),
                             Description = reader.GetString(2),
                             EventDate = DateOnly.FromDateTime(reader.GetDateTime(3)),
@@ -32,8 +33,11 @@ public class EventService
                             EndTime = reader.GetTimeSpan(5),
                             Location = reader.GetString(6),
                             AdminApproval = reader.GetBoolean(7),
-                            Event_Attendances = GetEventAttendances(reader.GetInt32(0)) // Fetch event attendances
+                            Event_Attendances = GetEventAttendances(eventId) // Fetch event attendances
                         };
+
+                        eventItem.AverageRating = eventItem.Event_Attendances.Any() ? 
+                            eventItem.Event_Attendances.Average(ea => ea.Rating) : 0;
 
                         events.Add(eventItem);
                     }
@@ -44,10 +48,10 @@ public class EventService
         return events;
     }
 
-    public Event GetEventById (int id)
+    public Event GetEventById(int id)
     {
-        var AllEvents = GetAllEvents();
-        Event singleEvent = AllEvents.FirstOrDefault(evnt => evnt.EventId == id);
+        var allEvents = GetAllEvents();
+        Event singleEvent = allEvents.FirstOrDefault(evnt => evnt.EventId == id);
         return singleEvent;
     }
 
