@@ -51,6 +51,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     }
                     try {
                         const eventDate = DateOnly.parse(userEvent.eventDate.toString());
+
                         return eventDate.isBefore(today);
                     } catch (err) {
                         console.error('Error parsing eventDate:', err, userEvent);
@@ -58,9 +59,12 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     }
                 });
                 this.setState({ userEvents: yourEvents, loading: false });
+                
+
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
+
             });
     };
     
