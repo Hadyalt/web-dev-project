@@ -4,6 +4,7 @@ import { loadEvent, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
+import { OfficeAttendance } from "../Office/OfficeAttendance";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -119,6 +120,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                             ))}
                         </tbody>
                     </table>
+                    <button onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Submit Attendance
+                    </button>
                     {this.state.isAdmin && (
                         <button onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
@@ -140,6 +144,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />
+        } else if (view === "officeAttendance") {
+            window.location.href = "/officeAttendance";
+            return <OfficeAttendance backToHome={() => this.setState({ view: "homepage" })} />
         }
     }
 }
