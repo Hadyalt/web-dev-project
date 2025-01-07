@@ -177,3 +177,6 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3001/api/v1/vote/options/delete/1 HTTP/1.1
 ###
+
+GET http://localhost:3001/api/v1/attendance/events/user HTTP/1.1
+###

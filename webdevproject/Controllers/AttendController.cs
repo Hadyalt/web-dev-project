@@ -81,10 +81,11 @@ namespace StarterKit.Controllers
         }
         // GET endpoint to view the list of events attended by a specific user
         [HttpGet("events/user")]
-        public IActionResult GetEvents(int userId)
+        public IActionResult GetEvents()
         {
             // Retrieve the logged-in user
             var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            int userId = int.Parse(loggedInUserId);
             if (string.IsNullOrEmpty(loggedInUserId))
             {
                 return Unauthorized("User is not logged in.");
@@ -99,7 +100,6 @@ namespace StarterKit.Controllers
                     ea.Feedback,
                     ea.Rating
                 }).ToList();
-
             return Ok(events);
         }
         // DELETE endpoint to remove a user's attendance for a specific event

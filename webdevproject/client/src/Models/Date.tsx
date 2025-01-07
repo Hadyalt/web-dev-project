@@ -27,6 +27,10 @@ export class DateOnly {
     return this.toDate() > other.toDate();
   }
 
+  isBefore(other: DateOnly): boolean {
+    return this.toDate() < other.toDate();
+  }
+
   static fromDate(date: Date): DateOnly {
     return new DateOnly(date.getFullYear(), date.getMonth() + 1, date.getDate());
   }

@@ -4,7 +4,7 @@ export const loadEvent = (): Promise<Event[]> => {
     return fetch("http://localhost:3001/Api/v1/controller/Read")
         .then(response => {
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Network response was not ok 1");
             }
             return response.json();
         })
@@ -12,10 +12,14 @@ export const loadEvent = (): Promise<Event[]> => {
 }
 
 export const loadUserEvents = (): Promise<Event[]> => {
-    return fetch("http://localhost:3001/Api/v1/attendance/events/user")
+    return fetch("http://localhost:3001/Api/v1/attendance/events/user", {
+        method: "GET",
+        credentials: "include"
+    }
+    )
         .then(response => {
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Network response was not ok 2");
             }
             return response.json();
         })

@@ -1,6 +1,6 @@
 import React from "react";
 import { HomepageState, initHomepageState, Event, Review } from "./Homepage.state";
-import { loadEvent, submitReview } from "./Homepage.api";
+import { loadEvent, loadUserEvents, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
@@ -18,6 +18,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
     handleReload: () => void = () => {
         this.setState({ loading: true, error: null });
         this.loadEvents();
+        this.loadUserEvents();
     }
 
     componentDidMount() {
@@ -30,8 +31,39 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             window.location.href = "/login";
         } else {
             this.loadEvents();
+            this.loadUserEvents();
         }
     }
+    
+    loadUserEvents = () => {
+        loadUserEvents()
+            .then((userEvents) => {
+                if (!userEvents) {
+                    this.setState({ userEvents: [], loading: false });
+                    return;
+                }
+                const today = DateOnly.fromDate(new Date());
+                const yourEvents = userEvents.filter(userEvent => {
+                    // Check if eventDate exists and is valid
+                    if (!userEvent.eventDate) {
+                        console.warn('Missing eventDate for:', userEvent);
+                        return false;
+                    }
+                    try {
+                        const eventDate = DateOnly.parse(userEvent.eventDate.toString());
+                        return eventDate.isBefore(today);
+                    } catch (err) {
+                        console.error('Error parsing eventDate:', err, userEvent);
+                        return false;
+                    }
+                });
+                this.setState({ userEvents: yourEvents, loading: false });
+            })
+            .catch((error) => {
+                this.setState({ error: error.message, loading: false });
+            });
+    };
+    
 
     loadEvents = () => {
         loadEvent()
@@ -47,7 +79,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 this.setState({ error: error.message, loading: false });
             });
     }
-
+    
     handleEventClick = (eventId: number) => {
         this.setState({ selectedEventId: eventId, view: "eventDetails" });
     }
@@ -77,7 +109,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
     }
 
     render() {
-        const { events, loading, error, view, selectedEventId, review } = this.state;
+        const { events, loading, error, view, selectedEventId, review, userEvents } = this.state;
 
         if (view === "homepage") {
             if (loading) {
@@ -91,6 +123,35 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             return (
                 <div>
                     <h1>Homepage</h1>
+                    <h2>Your Events Calander</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Location</th>
+                                <th>Admin Approval</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {userEvents.map((userEvent, index) => (
+                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>
+                                    <td>{userEvent.title}</td>
+                                    <td>{userEvent.description}</td>
+                                    <td>{userEvent.eventDate.toString()}</td>
+                                    <td>{userEvent.startTime.toString()}</td>
+                                    <td>{userEvent.endTime.toString()}</td>
+                                    <td>{userEvent.location}</td>
+                                    <td>{userEvent.adminApproval ? "Approved" : "Pending"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <h2>Open Events</h2>
                     <table>
                         <thead>
                             <tr>
