@@ -17,6 +17,7 @@ export type Event = {
     location: string;
     adminApproval: boolean;
     reviews: Review[];
+    averageRating: number;
 };
 
 export interface HomepageState {
