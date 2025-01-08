@@ -79,7 +79,65 @@ namespace StarterKit.Controllers
 
             return Ok(attendees);
         }
+        // GET endpoint to view the list of events attended by a specific user do that by first lookin gin the event_attendance table and using the found event id look in the event table
+    [HttpGet("events/user")]
+    public IActionResult GetEvents()
+    {
+        // Retrieve the logged-in user
+        var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+        if (string.IsNullOrEmpty(loggedInUserId))
+        {
+            return Unauthorized("User is not logged in.");
+        }
 
+        // Retrieve the events attended by the user
+        var eventsId = _context.Event_Attendance
+            .Where(ea => ea.UserId == int.Parse(loggedInUserId))
+            .Select(ea => ea.EventId)
+            .ToList();
+
+        var events = _context.Event
+            .Where(e => eventsId.Contains(e.EventId))
+            .Select(e => new
+            {
+                e.EventId,
+                e.Title, // Only select properties you need
+                e.Location,
+                e.EventDate,
+                e.Description,
+                e.StartTime,
+                e.EndTime,
+                e.AdminApproval
+            })
+            .ToList();
+
+        return Ok(events);
+    }
+
+        // [HttpGet("events/user")]
+        // public IActionResult GetEvents()
+        // {
+        //     // Retrieve the logged-in user
+        //     var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+        //     int userId = int.Parse(loggedInUserId);
+        //     if (string.IsNullOrEmpty(loggedInUserId))
+        //     {
+        //         return Unauthorized("User is not logged in.");
+        //     }
+
+        //     // Retrieve the events attended by the user
+        //     var eventsId = _context.Event_Attendance
+        //         .Where(ea => ea.UserId == userId)
+        //         .Select(ea => new
+        //         {
+        //             ea.EventId,
+        //         }).ToList();
+        //     List<Event> events;
+
+        //     for
+
+        //     return Ok(events);
+        // }
         // DELETE endpoint to remove a user's attendance for a specific event
         [HttpDelete("remove/{eventId}")]
         public IActionResult RemoveAttendance(int eventId)

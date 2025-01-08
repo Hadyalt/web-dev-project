@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace StarterKit.Models
 {
     public class User
