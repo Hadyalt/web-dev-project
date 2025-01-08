@@ -278,6 +278,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         ))}
                     </tbody>
                     </table>
+                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Office attendance
+                    </button>
                     {this.state.isAdmin && (
                         <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
@@ -291,6 +294,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />;
+        } else if (view === "officeAttendance") {
+            window.location.href = "/officeAttendance";
+            return <OfficeAttendance  backToHome={() => this.setState({ view: "homepage"})}/>;
         }
     }
 }

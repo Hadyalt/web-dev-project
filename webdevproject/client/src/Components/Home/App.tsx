@@ -10,23 +10,23 @@ import { OfficeAttendance } from '../Office/OfficeAttendance';
 
 const App = () => {
   return (
-      <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
-        <Route path="/homepage/:eventId" element={<HomepageReview backToHome={() => console.log("Back to login")} />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/dashboard" element={<DashboardForm/>} />
-        <Route path="/officeAttendance" element={<OfficeAttendance backToHome={function (): void {
+    <Routes>
+      <Route path="/" element={<LoginForm />} />
+      <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
+      <Route path="/homepage/:eventId" element={<HomepageReview backToHome={() => console.log("Back to login")} />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/dashboard" element={<DashboardForm />} />
+      <Route path="/officeAttendance" element={<OfficeAttendance backToHome={function (): void {
         throw new Error('Function not implemented.');
-      } }/>} />
-        <Route path="/dashboard/edit/:eventId" element={<DashboardPatch backToHome={function (): void {
+      }} />} />
+      <Route path="/dashboard/edit/:eventId" element={<DashboardPatch backToHome={function (): void {
         throw new Error('Function not implemented.');
-      } }/>} />
-        <Route path="/dashboard/post" element={<DashboardPostForm backToHome={function (): void {
+      }} />} />
+      <Route path="/dashboard/post" element={<DashboardPostForm backToHome={function (): void {
         throw new Error('Function not implemented.');
-      } } />} />
-        <Route path="*" element={<h1>Page Not Found</h1>} />
-      </Routes>
+      }} />} />
+      <Route path="*" element={<h1>Page Not Found</h1>} />
+    </Routes>
   );
 };
 
