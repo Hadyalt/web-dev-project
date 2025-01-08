@@ -1,6 +1,6 @@
 import React from "react";
 import { HomepageState, initHomepageState } from "./Homepage.state";
-import { attendEvent, loadEvent, loadUserEvents, submitReview } from "./Homepage.api";
+import { attendEvent, loadEvent, loadUserEvents, removeAttendance, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
@@ -133,6 +133,21 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 alert("Failed to register for the event: " + error.message);
             });
     };
+    handleRemoveAttendance = (eventId: number) => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId) {
+            alert("User ID not found. Please log in again.");
+            return;
+        }
+        removeAttendance(eventId)
+            .then(() => {
+                alert("Successfully removed attendance for the event!");
+                this.handleReload(); // Reload events and user events
+            })
+            .catch((error) => {
+                alert("Failed to remove attendance: " + error.message);
+            });
+    };
 
     render() {
         const { events, loading, error, view, selectedEventId, userEvents } = this.state;
@@ -198,11 +213,12 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                 <th style={styles.th}>End Time</th>
                                 <th style={styles.th}>Location</th>
                                 <th style={styles.th}>Admin Approval</th>
+                                <th style={styles.th}>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
-                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>
+                                <tr key={`${userEvent.eventId}-${index}`}>
                                     <td style={styles.td}>{userEvent.title}</td>
                                     <td style={styles.td}>{userEvent.description}</td>
                                     <td style={styles.td}>{userEvent.eventDate.toString()}</td>
@@ -210,6 +226,14 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                     <td style={styles.td}>{userEvent.endTime.toString()}</td>
                                     <td style={styles.td}>{userEvent.location}</td>
                                     <td style={styles.td}>{userEvent.adminApproval ? "Approved" : "Pending"}</td>
+                                    <td style={styles.td}>
+                                        <button
+                                            style={styles.button}
+                                            onClick={() => this.handleRemoveAttendance(userEvent.eventId)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
