@@ -4,6 +4,7 @@ import { attendEvent, loadEvent, loadUserEvents, removeAttendance, submitReview 
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
+import { OfficeAttendance } from "../Office/OfficeAttendance";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -148,6 +149,15 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 alert("Failed to remove attendance: " + error.message);
             });
     };
+
+    handleLogout = () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            sessionStorage.clear();
+            alert("You have been logged out.");
+            window.location.href = "/login";
+        }
+      };
 
     handleLogout = () => {
         const confirmLogout = window.confirm("Are you sure you want to log out?");
@@ -313,6 +323,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                             Go to Dashboard
                         </button>
                     )}
+                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Office attendance
+                    </button>
                 </div>
             );
         } else if (view === "eventDetails") {
@@ -321,6 +334,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />;
+        } else if (view === "officeAttendance") {
+            window.location.href = "/officeAttendance";
+            return <OfficeAttendance  backToHome={() => this.setState({ view: "homepage"})}/>;
         }
     }
 }

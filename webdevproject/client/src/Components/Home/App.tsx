@@ -6,6 +6,9 @@ import { DashboardForm } from '../Dashboard/Dashboard';
 import { DashboardPatch } from '../DashboardPatch/dashboardPatch';
 import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 import { HomepageReview } from './HomepageReview';
+import { OfficeAttendance } from '../Office/OfficeAttendance';
+
+
 
 const RequireAdmin: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const userRole = sessionStorage.getItem("userRole");
@@ -24,6 +27,9 @@ const App = () => {
       <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
       <Route path="/homepage/:eventId" element={<HomepageReview backToHome={() => console.log("Back to login")} />} />
       <Route path="/login" element={<LoginForm />} />
+      <Route path="/officeAttendance" element={<OfficeAttendance backToHome={function (): void {
+        throw new Error('Function not implemented.');
+      }} />} />
       
       {/* Protecting dashboard-related routes */}
       <Route
