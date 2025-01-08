@@ -22,14 +22,14 @@ POST http://localhost:3001/api/v1/controller/Create HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Updated Event Title",
-    "description": "Updated description",
-    "Date": "2025-09-30",
+    "title": "yesss",
+    "description": "Updated ",
+    "Date": "2025-10-30",
     "startTime": "12:00:00",
     "endTime": "14:00:00",
-    "location": "New Location",
+    "location": "New ",
     "adminApproval": true,
-    "ReviewFeedback": "Updated Review Feedback",
+    "ReviewFeedback": " Review Feedback",
     "event_Attendances": []
 }
 ###
@@ -176,4 +176,7 @@ Content-Type: application/json
 }
 ###
 DELETE http://localhost:3001/api/v1/vote/options/delete/1 HTTP/1.1
+###
+
+GET http://localhost:3001/api/v1/attendance/events/user HTTP/1.1
 ###

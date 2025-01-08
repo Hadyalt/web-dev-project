@@ -49,56 +49,134 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
                 [],
                 ""
             );
-            window.location.href = "/dashboard"; 
-            backToHome(); // Redirect to the dashboard (or use navigate('/desired-path') if you want to use react-router navigation)
+            backToHome();
         } catch (error) {
             console.error("Error updating event:", error);
         }
-        window.location.href = "/dashboard"; 
+    };
+
+    const styles = {
+        container: {
+            fontFamily: "Arial, sans-serif",
+            padding: "20px",
+            maxWidth: "600px",
+            margin: "auto",
+            backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        },
+        formGroup: {
+            marginBottom: "15px",
+        },
+        label: {
+            display: "block",
+            marginBottom: "5px",
+            fontWeight: "bold",
+        },
+        input: {
+            width: "100%",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+        },
+        textarea: {
+            width: "100%",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+        },
+        button: {
+            padding: "10px 20px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            marginRight: "10px",
+        },
+        heading: {
+            textAlign: "center" as const,
+            marginBottom: "20px",
+        },
     };
 
     return (
-        <div>
-            <h1>Edit Event</h1>
+        <div style={styles.container}>
+            <h1 style={styles.heading}>Edit Event</h1>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Title:
-                        <input type="text" name="title" value={event.title} onChange={handleChange} />
+                        <input
+                            type="text"
+                            name="title"
+                            value={event.title}
+                            onChange={handleChange}
+                            style={styles.input}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Description:
-                        <textarea name="description" value={event.description} onChange={handleChange} />
+                        <textarea
+                            name="description"
+                            value={event.description}
+                            onChange={handleChange}
+                            style={styles.textarea}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Date:
-                        <input type="date" name="eventDate" value={event.eventDate} onChange={handleChange} />
+                        <input
+                            type="date"
+                            name="eventDate"
+                            value={event.eventDate}
+                            onChange={handleChange}
+                            style={styles.input}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Start Time:
-                        <input type="time" name="startTime" value={event.startTime} onChange={handleChange} />
+                        <input
+                            type="time"
+                            name="startTime"
+                            value={event.startTime}
+                            onChange={handleChange}
+                            style={styles.input}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         End Time:
-                        <input type="time" name="endTime" value={event.endTime} onChange={handleChange} />
+                        <input
+                            type="time"
+                            name="endTime"
+                            value={event.endTime}
+                            onChange={handleChange}
+                            style={styles.input}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Location:
-                        <input type="text" name="location" value={event.location} onChange={handleChange} />
+                        <input
+                            type="text"
+                            name="location"
+                            value={event.location}
+                            onChange={handleChange}
+                            style={styles.input}
+                        />
                     </label>
                 </div>
-                <div>
-                    <label>
+                <div style={styles.formGroup}>
+                    <label style={styles.label}>
                         Admin Approval:
                         <input
                             type="checkbox"
@@ -108,11 +186,18 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
                         />
                     </label>
                 </div>
-                <button type="submit">Save</button>
-                <button type="button" onClick={() => {
-            window.location.href = "/dashboard";  
-            //this.props.backToHome()
-            }}> Back </button>
+                <button type="submit" style={styles.button}>
+                    Save
+                </button>
+                <button
+                    type="button"
+                    style={styles.button}
+                    onClick={() => {
+                        backToHome();
+                    }}
+                >
+                    Back
+                </button>
             </form>
         </div>
     );

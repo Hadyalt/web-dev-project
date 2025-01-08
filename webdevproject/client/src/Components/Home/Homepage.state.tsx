@@ -23,6 +23,7 @@ export type Event = {
 export interface HomepageState {
     selectedEventId: number;
     isAdmin: boolean;
+    userEvents: Event[];
     events: Event[];
     loading: boolean;
     error: string | null;
@@ -34,6 +35,7 @@ export interface HomepageState {
 
 export const initHomepageState: HomepageState = {
     selectedEventId: 1,
+    userEvents: [],
     events: [],
     isAdmin: true,
     loading: true,
