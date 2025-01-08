@@ -56,14 +56,33 @@ namespace StarterKit.Controllers
                 EndTime = request.EndTime,
                 Location = request.Location,
                 AdminApproval = true, // Assuming admin approval is required for creation
-                Event_Attendances = new List<Event_Attendance>()
+                Event_Attendances = new List<Event_Attendance>() // Initialize as empty list
             };
 
+            // Add the new event to the database
             _context.Event.Add(newEvent);
             _context.SaveChanges();
 
-            return Ok("Event created successfully.");
+            // Retrieve and return the event details (excluding AverageRating)
+            var createdEvent = new
+            {
+                newEvent.EventId,
+                newEvent.Title,
+                newEvent.Description,
+                newEvent.EventDate,
+                newEvent.StartTime,
+                newEvent.EndTime,
+                newEvent.Location,
+                newEvent.AdminApproval
+            };
+
+            return Ok(new
+            {
+                Message = "Event created successfully.",
+                EventDetails = createdEvent
+            });
         }
+
 
         [HttpDelete("delete/{eventId}")]
         public IActionResult Delete(int eventId)

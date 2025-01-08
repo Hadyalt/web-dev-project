@@ -41,3 +41,35 @@ export const submitReview = (eventId: number, review: Review): Promise<void> => 
         }
     });
 };
+
+export const attendEvent = (eventId: number, userId: number, FeedBack: string, Rating:number ): Promise<void> => {
+    return fetch(`http://localhost:3001/api/v1/attendance/attend`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ eventId, userId, FeedBack, Rating })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to attend event");
+        }
+    });
+}
+
+export const cancelEvent = (eventId: number, userId: number): Promise<void> => {
+    return fetch(`http://localhost:3001/api/v1/attendance/remove/{eventid}`, {
+        method: "delete",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ eventId, userId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to cancel event");
+        }
+    });
+}

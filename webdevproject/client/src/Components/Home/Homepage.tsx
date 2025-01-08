@@ -1,6 +1,6 @@
 import React from "react";
-import { HomepageState, initHomepageState, Event, Review } from "./Homepage.state";
-import { loadEvent, loadUserEvents, submitReview } from "./Homepage.api";
+import { HomepageState, initHomepageState } from "./Homepage.state";
+import { attendEvent, loadEvent, loadUserEvents, submitReview } from "./Homepage.api";
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
@@ -19,12 +19,12 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         this.setState({ loading: true, error: null });
         this.loadEvents();
         this.loadUserEvents();
-    }
+        
+    };
 
     componentDidMount() {
         const username = sessionStorage.getItem("username");
         const userRole = sessionStorage.getItem("userRole");
-        const isAdmin = userRole === "admin";
 
         if (!username || !userRole) {
             alert("You are not logged in. Redirecting to login page...");
@@ -34,7 +34,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             this.loadUserEvents();
         }
     }
-    
+
     loadUserEvents = () => {
         loadUserEvents()
             .then((userEvents) => {
@@ -43,57 +43,58 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     return;
                 }
                 const today = DateOnly.fromDate(new Date());
-                const yourEvents = userEvents.filter(userEvent => {
-                    // Check if eventDate exists and is valid
+                const yourEvents = userEvents.filter((userEvent) => {
                     if (!userEvent.eventDate) {
-                        console.warn('Missing eventDate for:', userEvent);
+                        console.warn("Missing eventDate for:", userEvent);
                         return false;
                     }
                     try {
                         const eventDate = DateOnly.parse(userEvent.eventDate.toString());
-
-                        return eventDate.isBefore(today);
+                        return eventDate.isAfter(today);
                     } catch (err) {
-                        console.error('Error parsing eventDate:', err, userEvent);
+                        console.error("Error parsing eventDate:", err, userEvent);
                         return false;
                     }
                 });
                 this.setState({ userEvents: yourEvents, loading: false });
-                
-
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
-
             });
     };
-    
 
     loadEvents = () => {
-        loadEvent()
-            .then((events) => {
+        // First load user events and then filter events accordingly
+        Promise.all([loadEvent(), loadUserEvents()])
+            .then(([events, userEvents]) => {
                 const today = DateOnly.fromDate(new Date());
-                const futureEvents = events.filter(event => {
+                
+                // Extract event IDs from userEvents to filter
+                const userEventIds = new Set(userEvents.map((userEvent) => userEvent.eventId));
+    
+                // Filter events not in userEvents
+                const futureEvents = events.filter((event) => {
                     const eventDate = DateOnly.parse(event.eventDate.toString());
-                    return eventDate.isAfter(today);
+                    return eventDate.isAfter(today) && !userEventIds.has(event.eventId);
                 });
+    
                 this.setState({ events: futureEvents, loading: false });
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
             });
-    }
-    
+    };
+
     handleEventClick = (eventId: number) => {
         this.setState({ selectedEventId: eventId, view: "eventDetails" });
-    }
+    };
 
     handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        this.setState(prevState => ({
-            review: { ...prevState.review, [name]: value }
+        this.setState((prevState) => ({
+            review: { ...prevState.review, [name]: value },
         }));
-    }
+    };
 
     handleReviewSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -104,88 +105,156 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             return;
         }
         try {
-            await submitReview(selectedEventId, { userId: Number(userId), rating: review.rating, feedback: review.feedback });
+            await submitReview(selectedEventId, {
+                userId: Number(userId),
+                rating: review.rating,
+                feedback: review.feedback,
+            });
             alert("Review submitted successfully!");
             this.setState({ review: { userId: 0, rating: 0, feedback: "" } });
         } catch (error) {
             alert("Failed to submit review");
         }
-    }
+    };
+    handleAttendEvent = (eventId: number) => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        const FeedBack = "";
+        const Rating = 0;
+        if (!userId) {
+            alert("User ID not found. Please log in again.");
+            return;
+        }
+        attendEvent(eventId, userId, FeedBack, Rating)
+            .then(() => {
+                alert("Successfully registered for the event!");
+                this.handleReload(); // Reload events and userEvents
+            })
+            .catch((error) => {
+                alert("Failed to register for the event: " + error.message);
+            });
+    };
 
     render() {
-        const { events, loading, error, view, selectedEventId, review, userEvents } = this.state;
+        const { events, loading, error, view, selectedEventId, userEvents } = this.state;
+
+        const styles: { [key: string]: React.CSSProperties } = {
+            container: {
+                fontFamily: "Arial, sans-serif",
+                padding: "20px",
+                backgroundColor: "#f9f9f9",
+                borderRadius: "8px",
+            },
+            table: {
+                width: "100%",
+                borderCollapse: "collapse",
+                marginBottom: "20px",
+            },
+            th: {
+                backgroundColor: "#007bff",
+                color: "white",
+                padding: "10px",
+                textAlign: "left" as const,
+                borderBottom: "2px solid #ddd",
+            },
+            td: {
+                padding: "10px",
+                textAlign: "left" as const,
+                borderBottom: "1px solid #ddd",
+            },
+            button: {
+                padding: "10px 20px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+            },
+            heading: {
+                color: "#333",
+                marginBottom: "10px",
+            },
+        };
 
         if (view === "homepage") {
             if (loading) {
-                return <div>Loading...</div>;
+                return <div style={styles.container}>Loading...</div>;
             }
 
             if (error) {
-                return <div>Error: {error}</div>;
+                return <div style={styles.container}>Error: {error}</div>;
             }
 
             return (
-                <div>
-                    <h1>Homepage</h1>
-                    <h2>Your Events Calander</h2>
-                    <table>
+                <div style={styles.container}>
+                    <h1 style={styles.heading}>Homepage</h1>
+                    <h2>Your Events Calendar</h2>
+                    <table style={styles.table}>
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Location</th>
-                                <th>Admin Approval</th>
+                                <th style={styles.th}>Title</th>
+                                <th style={styles.th}>Description</th>
+                                <th style={styles.th}>Date</th>
+                                <th style={styles.th}>Start Time</th>
+                                <th style={styles.th}>End Time</th>
+                                <th style={styles.th}>Location</th>
+                                <th style={styles.th}>Admin Approval</th>
                             </tr>
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
                                 <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>
-                                    <td>{userEvent.title}</td>
-                                    <td>{userEvent.description}</td>
-                                    <td>{userEvent.eventDate.toString()}</td>
-                                    <td>{userEvent.startTime.toString()}</td>
-                                    <td>{userEvent.endTime.toString()}</td>
-                                    <td>{userEvent.location}</td>
-                                    <td>{userEvent.adminApproval ? "Approved" : "Pending"}</td>
+                                    <td style={styles.td}>{userEvent.title}</td>
+                                    <td style={styles.td}>{userEvent.description}</td>
+                                    <td style={styles.td}>{userEvent.eventDate.toString()}</td>
+                                    <td style={styles.td}>{userEvent.startTime.toString()}</td>
+                                    <td style={styles.td}>{userEvent.endTime.toString()}</td>
+                                    <td style={styles.td}>{userEvent.location}</td>
+                                    <td style={styles.td}>{userEvent.adminApproval ? "Approved" : "Pending"}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
                     <h2>Open Events</h2>
-                    <table>
-                        <thead>
+                    <table style={styles.table}>
+                    <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Location</th>
-                                <th>Admin Approval</th>
-                                <th>Average Rating</th>
+                                <th style={styles.th}>Title</th>
+                                <th style={styles.th}>Description</th>
+                                <th style={styles.th}>Date</th>
+                                <th style={styles.th}>Start Time</th>
+                                <th style={styles.th}>End Time</th>
+                                <th style={styles.th}>Location</th>
+                                <th style={styles.th}>Admin Approval</th>
+                                <th style={styles.th}>Average Rating</th>
+                                <th style={styles.th}>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {events.map((event, index) => (
-                                <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>
-                                    <td>{event.title}</td>
-                                    <td>{event.description}</td>
-                                    <td>{event.eventDate.toString()}</td>
-                                    <td>{event.startTime.toString()}</td>
-                                    <td>{event.endTime.toString()}</td>
-                                    <td>{event.location}</td>
-                                    <td>{event.adminApproval ? "Approved" : "Pending"}</td>
-                                    <td>{event.averageRating.toFixed(1)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
+                        {events.map((event, index) => (
+                            <tr key={`${event.eventId}-${index}`}>
+                                <td style={styles.td}>{event.title}</td>
+                                <td style={styles.td}>{event.description}</td>
+                                <td style={styles.td}>{event.eventDate.toString()}</td>
+                                <td style={styles.td}>{event.startTime.toString()}</td>
+                                <td style={styles.td}>{event.endTime.toString()}</td>
+                                <td style={styles.td}>{event.location}</td>
+                                <td style={styles.td}>{event.adminApproval ? "Approved" : "Pending"}</td>
+                                <td style={styles.td}>{event.averageRating.toFixed(1)}</td>
+                                <td style={styles.td}>
+                                    <button
+                                        style={styles.button}
+                                        onClick={() => this.handleAttendEvent(event.eventId)}
+                                    >
+                                        Attend
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
                     </table>
                     {this.state.isAdmin && (
-                        <button onClick={() => this.setState({ view: "dashboard" })}>
+                        <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
                         </button>
                     )}
@@ -193,18 +262,10 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             );
         } else if (view === "eventDetails") {
             window.location.href = `/homepage/${this.state.selectedEventId}`;
-            const selectedEvent = events.find(event => event.eventId === selectedEventId);
-            if (!selectedEvent) {
-                return <div>Event not found</div>;
-            }
-            return (
-                <HomepageReview
-                    backToHome={() => this.setState({ view: "homepage" })}
-                />
-            );
+            return <HomepageReview backToHome={() => this.setState({ view: "homepage" })} />;
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";
-            return <DashboardForm />
+            return <DashboardForm />;
         }
     }
 }

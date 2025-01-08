@@ -23,57 +23,147 @@ export class DashboardPostForm extends React.Component<DashboardPostFormProps, D
 
   handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Call the API to post the event
     const formattedDate = DateOnly.parse(this.state.Date).toString();
-    await postEvent(this.state.title, this.state.description, formattedDate, this.state.startTime,
-      this.state.endTime, this.state.location, this.state.adminApproval, this.state.event_Attendances, this.state.ReviewFeedback)
+    await postEvent(
+      this.state.title,
+      this.state.description,
+      formattedDate,
+      this.state.startTime,
+      this.state.endTime,
+      this.state.location,
+      this.state.adminApproval,
+      this.state.event_Attendances,
+      this.state.ReviewFeedback
+    )
       .then(() => {
-        // Redirect to the dashboard
         window.location.href = "/dashboard";
-        //this.props.backToHome();
       })
-      .catch(() => {
-        // Handle the error
+      .catch((error) => {
+        console.error("Error posting event:", error);
       });
-      window.location.href = "/dashboard";
-    //this.props.backToHome();
-    
   };
 
   render() {
+    const styles = {
+      container: {
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+        maxWidth: "600px",
+        margin: "auto",
+        backgroundColor: "#f9f9f9",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+      },
+      formGroup: {
+        marginBottom: "15px",
+      },
+      label: {
+        display: "block",
+        marginBottom: "5px",
+        fontWeight: "bold",
+      },
+      input: {
+        width: "100%",
+        padding: "10px",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+      },
+      textarea: {
+        width: "100%",
+        padding: "10px",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+      },
+      button: {
+        padding: "10px 20px",
+        backgroundColor: "#007bff",
+        color: "white",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        marginRight: "10px",
+      },
+      heading: {
+        textAlign: "center" as const,
+        marginBottom: "20px",
+      },
+    };
+
     return (
-      <div>
-        <h1>Events form</h1>
+      <div style={styles.container}>
+        <h1 style={styles.heading}>Events Form</h1>
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>Title:</label>
-            <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Title:</label>
+            <input
+              type="text"
+              name="title"
+              value={this.state.title}
+              onChange={this.handleChange}
+              style={styles.input}
+            />
           </div>
-          <div>
-            <label>Description:</label>
-            <textarea name="description" value={this.state.description} onChange={this.handleChange} />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Description:</label>
+            <textarea
+              name="description"
+              value={this.state.description}
+              onChange={this.handleChange}
+              style={styles.textarea}
+            />
           </div>
-          <div>
-            <label>Event Date:</label>
-            <input type="date" name="Date" value={this.state.Date} onChange={this.handleChange} />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Event Date:</label>
+            <input
+              type="date"
+              name="Date"
+              value={this.state.Date}
+              onChange={this.handleChange}
+              style={styles.input}
+            />
           </div>
-          <div>
-            <label>Start Time:</label>
-            <input type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} step="1" />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Start Time:</label>
+            <input
+              type="time"
+              name="startTime"
+              value={this.state.startTime}
+              onChange={this.handleChange}
+              style={styles.input}
+            />
           </div>
-          <div>
-            <label>End Time:</label>
-            <input type="time" name="endTime" value={this.state.endTime} onChange={this.handleChange} step="1" />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>End Time:</label>
+            <input
+              type="time"
+              name="endTime"
+              value={this.state.endTime}
+              onChange={this.handleChange}
+              style={styles.input}
+            />
           </div>
-          <div>
-            <label>Location:</label>
-            <input type="text" name="location" value={this.state.location} onChange={this.handleChange} />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Location:</label>
+            <input
+              type="text"
+              name="location"
+              value={this.state.location}
+              onChange={this.handleChange}
+              style={styles.input}
+            />
           </div>
-          <button type="submit">Submit</button>
-          <button type="button" onClick={() => {
-            window.location.href = "/dashboard";  
-            //this.props.backToHome()
-            }}> Back </button>
+          <button type="submit" style={styles.button}>
+            Submit
+          </button>
+          <button
+            type="button"
+            style={styles.button}
+            onClick={() => {
+              window.location.href = "/dashboard";
+            }}
+          >
+            Back
+          </button>
         </form>
       </div>
     );
