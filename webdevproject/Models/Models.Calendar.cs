@@ -79,4 +79,9 @@ namespace StarterKit.Models
 
         public int UserId { get; set; }
     }
+
+    public class Office_attendance{
+        public required int UserId { get; set; }
+        public required int OfficeId { get; set; }
+    }
 }
