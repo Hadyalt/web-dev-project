@@ -149,6 +149,15 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             });
     };
 
+    handleLogout = () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            sessionStorage.clear();
+            alert("You have been logged out.");
+            window.location.href = "/login";
+        }
+      };
+
     render() {
         const { events, loading, error, view, selectedEventId, userEvents } = this.state;
 
@@ -200,8 +209,30 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             }
 
             return (
-                <div style={styles.container}>
-                    <h1 style={styles.heading}>Homepage</h1>
+                <div
+        
+                    style={{
+                    position: "relative", // Ensure the parent container has positioning
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                    }}
+                >
+                    <h1 style={{ ...styles.heading, margin: 0 }}>Homepage</h1>
+                    <button
+                    style={{
+                        ...styles.button,
+                        position: "absolute", // Absolute positioning
+                        top: 2,              // Aligns the button to the top
+                        right: 2,            // Aligns the button to the right
+                        backgroundColor: "red",
+                        padding: "10px 15px",
+                        fontSize: "14px",
+                    }}
+                    onClick={this.handleLogout}
+                    >
+                    Logout
+                    </button>
                     <h2>Your Events Calendar</h2>
                     <table style={styles.table}>
                         <thead>
@@ -277,7 +308,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         ))}
                     </tbody>
                     </table>
-                    {this.state.isAdmin && (
+                    {sessionStorage.getItem('userRole') === "admin" && (
                         <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
                         </button>
