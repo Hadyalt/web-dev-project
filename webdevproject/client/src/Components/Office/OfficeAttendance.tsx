@@ -49,7 +49,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
             return;
         }
 
-        const updatedOffice = { ...selectedOffice, isOccupied: true };
+        const updatedOffice = { ...selectedOffice, isOccupied: true, userId: Number(sessionStorage.getItem('userId'))};
         try {
             await updateOfficeAttendance(updatedOffice);
             this.setState((prevState) => ({

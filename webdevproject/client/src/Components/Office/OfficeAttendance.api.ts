@@ -19,6 +19,7 @@ export const updateOfficeAttendance = async (updatedOffice: Office): Promise<voi
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(updatedOffice),
     });
 
