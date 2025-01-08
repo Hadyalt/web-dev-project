@@ -58,18 +58,14 @@ export const attendEvent = (eventId: number, userId: number, FeedBack: string, R
     });
 }
 
-export const cancelEvent = (eventId: number, userId: number): Promise<void> => {
-    return fetch(`http://localhost:3001/api/v1/attendance/remove/{eventid}`, {
-        method: "delete",
-        headers: {
-            "Content-Type": "application/json"
-        },
+export const removeAttendance = (eventId: number): Promise<void> => {
+    return fetch(`http://localhost:3001/api/v1/attendance/remove/${eventId}`, {
+        method: "DELETE",
         credentials: "include",
-        body: JSON.stringify({ eventId, userId })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Failed to cancel event");
-        }
-    });
-}
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to remove attendance");
+            }
+        });
+};
