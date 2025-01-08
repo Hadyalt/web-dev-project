@@ -121,7 +121,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </tbody>
                     </table>
                     <button onClick={() => this.setState({ view: "officeAttendance" })}>
-                        Submit Attendance
+                        Office Attendance
                     </button>
                     {this.state.isAdmin && (
                         <button onClick={() => this.setState({ view: "dashboard" })}>
