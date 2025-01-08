@@ -43,13 +43,18 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
     };
 
     attendOffice = async () => {
-        const { selectedOffice } = this.state;
+        const { selectedOffice, isAttending } = this.state;
         if (!selectedOffice) {
             this.setState({ error: "No office selected" });
             return;
         }
-
-        const updatedOffice = { ...selectedOffice, isOccupied: true};
+    
+        if (isAttending || selectedOffice.isOccupied === true)   {
+            this.setState({ error: "You are already attending this office" });
+            return;
+        }
+    
+        const updatedOffice = { ...selectedOffice, isOccupied: true, userId: Number(sessionStorage.getItem('userId')) };
         try {
             await updateOfficeAttendance(updatedOffice);
             this.setState((prevState) => ({
@@ -69,7 +74,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
 
         return (
             <div>
-                <h2>Available Offices</h2>
+                <h2>Offices</h2>
                 <ul>
                     {offices.map((office) => (
                         <li key={office.officeId} onClick={() => this.handleOfficeClick(office.officeId)}>
