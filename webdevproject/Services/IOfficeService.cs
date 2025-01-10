@@ -8,4 +8,5 @@ public interface IOfficeService
     void CreateOffice(Office newOffice);
     Office UpdateOffice(Office OfficeToUpdated);
     bool DeleteOffice(int id);
+    void SaveAttendance(Office_attendance attendance);
 }

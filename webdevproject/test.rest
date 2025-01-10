@@ -139,6 +139,16 @@ Content-Type: application/json
   "IsOccupied" : false
 }
 ###
+POST http://localhost:3001/api/v1/office/attend HTTP/1.1
+content-type: application/json
+
+{
+  "id": "1",
+  "officeId": "1",
+  "userId": "1",
+  "AttendanceDate": "2025-09-30"
+}
+###
 
 DELETE http://localhost:3001/api/v1/office/delete/3 HTTP/1.1
 ###

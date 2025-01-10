@@ -21,6 +21,7 @@ namespace StarterKit.Models
         
         public DbSet<VotingOption> VotingOption { get; set; }
         public DbSet<Vote> Vote { get; set; }
+        public DbSet<Office_attendance> Office_Attendance { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

@@ -61,8 +61,8 @@ namespace StarterKit.Models
         public bool AdminApproval { get; set; }
 
         public required List<Event_Attendance> Event_Attendances { get; set; }
-        
-        public double AverageRating { get; set; } 
+
+        public double AverageRating { get; set; }
     }
 
     public class Office
@@ -80,8 +80,11 @@ namespace StarterKit.Models
         public int UserId { get; set; }
     }
 
-    public class Office_attendance{
-        public required int UserId { get; set; }
-        public required int OfficeId { get; set; }
+    public class Office_attendance
+    {
+        public int Id { get; set; }
+        public int OfficeId { get; set; }
+        public int UserId { get; set; }
+        public DateOnly AttendanceDate { get; set; }
     }
 }
