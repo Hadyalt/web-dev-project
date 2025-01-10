@@ -4,6 +4,7 @@ import { attendEvent, loadEvent, loadUserEvents, removeAttendance, submitReview 
 import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
+import { OfficeAttendance } from "../Office/OfficeAttendance";
 import { castVote, loadVoteEvents } from "../Voting/Voting.api";
 
 interface HomepageProps {
@@ -365,6 +366,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     </tbody>
                     </table>
 
+                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Office attendance
+                    </button>
                     {this.state.isAdmin && (
                         <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
@@ -378,6 +382,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />;
+        } else if (view === "officeAttendance") {
+            window.location.href = "/officeAttendance";
+            return <OfficeAttendance  backToHome={() => this.setState({ view: "homepage"})}/>;
         }
     }
 }

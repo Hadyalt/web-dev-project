@@ -15,6 +15,7 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
