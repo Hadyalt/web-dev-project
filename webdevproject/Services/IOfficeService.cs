@@ -9,4 +9,5 @@ public interface IOfficeService
     Office UpdateOffice(Office OfficeToUpdated);
     bool DeleteOffice(int id);
     void SaveAttendance(Office_attendance attendance);
+    List<Office_attendance> IsUserAttending(int officeId, int userId);
 }

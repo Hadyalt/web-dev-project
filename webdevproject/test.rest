@@ -98,7 +98,7 @@ content-type: application/json
   "EventId" : 2,
   "Feedback" : "cool",
   "Rating" : 4,
-  "AttendanceDate" : 2025-09-30
+  "AttendanceDate" : "2025-09-30"
 }
 ###
 GET http://localhost:3001/api/v1/office/read HTTP/1.1
@@ -148,6 +148,9 @@ content-type: application/json
   "userId": "1",
   "AttendanceDate": "2025-09-30"
 }
+###
+GET http://localhost:3001/api/v1/office/IsUserAttending/1 HTTP/1.1
+
 ###
 
 DELETE http://localhost:3001/api/v1/office/delete/3 HTTP/1.1

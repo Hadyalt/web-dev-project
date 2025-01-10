@@ -13,22 +13,7 @@ export async function fetchOffices(): Promise<Office[]> {
     }
 }
 
-export const updateOfficeAttendance = async (updatedOffice: Office): Promise<void> => {
-    const response = await fetch(`http://localhost:3001/api/v1/office/update`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(updatedOffice),
-    });
-
-    if (!response.ok) {
-        throw new Error("Failed to update office attendance");
-    }
-}
-
-export const attendOffice = async (attendance: { officeId: number, userId: number, attendanceDate: string }): Promise<void> => {
+export const attendOffice = async (attendance: { officeId: number, userId: number}): Promise<void> => {
     const response = await fetch(`http://localhost:3001/api/v1/office/attend`, {
         method: "POST",
         headers: {
@@ -41,4 +26,18 @@ export const attendOffice = async (attendance: { officeId: number, userId: numbe
     if (!response.ok) {
         throw new Error("Failed to save office attendance");
     }
+}
+
+export const IsUserAttending = async (officeId: number): Promise<any[]> => {
+    const response = await fetch(`http://localhost:3001/api/v1/office/IsUserAttending/${officeId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch user attendance");
+    }
+    return await response.json();
 }

@@ -40,7 +40,6 @@ public class OfficeService : IOfficeService
                             Date = DateOnly.FromDateTime(reader.GetDateTime(1)),
                             StartTime = reader.GetTimeSpan(2),
                             EndTime = reader.GetTimeSpan(3),
-                            IsOccupied = reader.GetBoolean(4)
                         };
                         offices.Add(officeItem);
                     }
@@ -65,8 +64,6 @@ public class OfficeService : IOfficeService
             Date = newOffice.Date,
             StartTime = newOffice.StartTime,
             EndTime = newOffice.EndTime,
-            IsOccupied = newOffice.IsOccupied,
-            UserId = default
         };
 
         _context.Office.Add(Office);
@@ -77,23 +74,19 @@ public class OfficeService : IOfficeService
     {
         var grabbedOffice = _context.Office.FirstOrDefault(_ => _.OfficeId == OfficeToUpdate.OfficeId);
         var userId = _loginService.GetLoggedInUserId();
-        if (grabbedOffice is not null && grabbedOffice.IsOccupied == false)
+        if (grabbedOffice is not null)
         {
             grabbedOffice.Date = OfficeToUpdate.Date;
             grabbedOffice.StartTime = OfficeToUpdate.StartTime;
             grabbedOffice.EndTime = OfficeToUpdate.EndTime;
-            grabbedOffice.IsOccupied = OfficeToUpdate.IsOccupied;
-            grabbedOffice.UserId = userId;
 
             _context.SaveChanges();
         }
-        else if (grabbedOffice is not null && grabbedOffice.UserId == userId)
+        else if (grabbedOffice is not null)
         {
             grabbedOffice.Date = default;
             grabbedOffice.StartTime = default;
             grabbedOffice.EndTime = default;
-            grabbedOffice.IsOccupied = false;
-            grabbedOffice.UserId = default;
 
             _context.SaveChanges();
         }
@@ -119,10 +112,41 @@ public class OfficeService : IOfficeService
             Id = attendance.Id,
             OfficeId = attendance.OfficeId,
             UserId = attendance.UserId,
-            AttendanceDate = attendance.AttendanceDate
         };
 
         _context.Office_Attendance.Add(attendanceRecord);
         _context.SaveChanges();
+    }
+
+    public List<Office_attendance> IsUserAttending(int officeId, int userId)
+    {
+        var attendance = new List<Office_attendance>();
+
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var query = "SELECT * FROM Office_attendance WHERE OfficeId = @OfficeId AND UserId = @UserId";
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@OfficeId", officeId);
+                command.Parameters.AddWithValue("@UserId", userId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var attendanceRecord = new Office_attendance
+                        {
+                            Id = reader.GetInt32(0),
+                            OfficeId = reader.GetInt32(1),
+                            UserId = reader.GetInt32(2),
+                        };
+                        attendance.Add(attendanceRecord);
+                    }
+                }
+            }
+        }
+
+        return attendance;
     }
 }

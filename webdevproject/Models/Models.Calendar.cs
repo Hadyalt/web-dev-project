@@ -74,10 +74,6 @@ namespace StarterKit.Models
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
-
-        public required bool IsOccupied { get; set; }
-
-        public int UserId { get; set; }
     }
 
     public class Office_attendance
@@ -85,6 +81,5 @@ namespace StarterKit.Models
         public int Id { get; set; }
         public int OfficeId { get; set; }
         public int UserId { get; set; }
-        public DateOnly AttendanceDate { get; set; }
     }
 }

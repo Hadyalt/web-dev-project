@@ -71,18 +71,7 @@ namespace StarterKit.Controllers
                 {
                     return BadRequest("Office does not exist.");
                 }
-                else if (updatedOffice.UserId == LoggedId)
-                {
-                    return Ok("You have now reserved the office space");
-                }
-                else if (updatedOffice.UserId == default)
-                {
-                    return Ok("You have now unreserved the office space");
-                }
-                else if (updatedOffice.UserId != LoggedId)
-                {
-                    return BadRequest("The office space is already occupied");
-                }
+                return Ok(updatedOffice);
             }
             return BadRequest("You are not logged in.");
         }
@@ -107,6 +96,18 @@ namespace StarterKit.Controllers
         {
             _officeService.SaveAttendance(newOfficeattend);
             return Ok("Office attend created successfully.");
+        }
+
+        [HttpGet("IsUserAttending/{officeId}")]
+        public ActionResult<Office_attendance> IsUserAttending([FromRoute] int officeId)
+        {
+            if (!_loginService.IsUserLoggedIn())
+            {
+                return Unauthorized("Only users can read offices.");
+            }
+            var userId = _loginService.GetLoggedInUserId();
+            var isUserAttending = _officeService.IsUserAttending(officeId, userId);
+            return Ok(isUserAttending);
         }
     }
 }

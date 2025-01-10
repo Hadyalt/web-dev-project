@@ -41,7 +41,7 @@ namespace StarterKit.Models
             modelBuilder.Entity<Office>()
                 .HasIndex(p => p.OfficeId).IsUnique();
             modelBuilder.Entity<Office>()
-                .HasData(new Office { OfficeId = 1, Date = new DateOnly(2022, 1, 1), StartTime =new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0), IsOccupied = false, UserId = 0});
+                .HasData(new Office { OfficeId = 1, Date = new DateOnly(2022, 1, 1), StartTime =new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0)});
             
             modelBuilder.Entity<Event>()
                 .HasIndex(p => p.EventId).IsUnique();
