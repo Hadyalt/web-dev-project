@@ -40,13 +40,13 @@ namespace StarterKit.Controllers
             {
                 return Unauthorized("Only users can read offices.");
             }
-            
+
             Office office = _officeService.GetOffice(id);
             if (office is null)
             {
                 return BadRequest("There is no office with that id.");
             }
-            return Ok(office); 
+            return Ok(office);
         }
 
         [HttpPost("create")]
@@ -59,11 +59,11 @@ namespace StarterKit.Controllers
             _officeService.CreateOffice(newOffice);
             return Ok("office created successfully.");
         }
-        
+
         [HttpPut("update")]
         public ActionResult<Office> UpdateOffice([FromBody] Office OfficeToUpdate)
         {
-            if(_loginService.IsUserLoggedIn())
+            if (_loginService.IsUserLoggedIn())
             {
                 var LoggedId = _loginService.GetLoggedInUserId();
                 Office updatedOffice = _officeService.UpdateOffice(OfficeToUpdate);
@@ -71,34 +71,43 @@ namespace StarterKit.Controllers
                 {
                     return BadRequest("Office does not exist.");
                 }
-                else if (updatedOffice.UserId == LoggedId)
-                {
-                    return Ok("You have now reserved the office space");
-                }
-                else if (updatedOffice.UserId == default)
-                {
-                    return Ok("You have now unreserved the office space");
-                }
-                else if (updatedOffice.UserId != LoggedId)
-                {
-                    return BadRequest("The office space is already occupied");
-                }
+                return Ok(updatedOffice);
             }
             return BadRequest("You are not logged in.");
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<Office> DeleteOffice([FromRoute]int id)
+        public ActionResult<Office> DeleteOffice([FromRoute] int id)
         {
             if (!_loginService.IsAdminLoggedIn())
             {
                 return Unauthorized("Only admins can delete offices.");
             }
-            if(_officeService.DeleteOffice(id))
+            if (_officeService.DeleteOffice(id))
             {
                 return Ok("office deleted successfully.");
             }
             return BadRequest("Office does not exist");
+        }
+
+
+        [HttpPost("attend")]
+        public ActionResult<Office_attendance> AttendOffice([FromBody] Office_attendance newOfficeattend)
+        {
+            _officeService.SaveAttendance(newOfficeattend);
+            return Ok("Office attend created successfully.");
+        }
+
+        [HttpGet("IsUserAttending/{officeId}")]
+        public ActionResult<Office_attendance> IsUserAttending([FromRoute] int officeId)
+        {
+            if (!_loginService.IsUserLoggedIn())
+            {
+                return Unauthorized("Only users can read offices.");
+            }
+            var userId = _loginService.GetLoggedInUserId();
+            var isUserAttending = _officeService.IsUserAttending(officeId, userId);
+            return Ok(isUserAttending);
         }
     }
 }

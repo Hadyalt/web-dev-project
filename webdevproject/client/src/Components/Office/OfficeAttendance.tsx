@@ -1,6 +1,6 @@
 import React from "react";
 import { Office, OfficeAttendanceState, initOfficeAttendanceState } from "./OfficeAttendance.state";
-import { fetchOffices, updateOfficeAttendance } from "./OfficeAttendance.api";
+import { attendOffice, fetchOffices, IsUserAttending } from "./OfficeAttendance.api";
 
 interface OfficeAttendanceProps {
     backToHome: () => void;
@@ -8,6 +8,9 @@ interface OfficeAttendanceProps {
 
 interface OfficeAttendanceStateExtended extends OfficeAttendanceState {
     offices: Office[];
+    selectedOffice: Office | null;
+    isAttending: boolean;
+    error: string | null;
 }
 
 export class OfficeAttendance extends React.Component<OfficeAttendanceProps, OfficeAttendanceStateExtended> {
@@ -16,6 +19,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
         this.state = {
             ...initOfficeAttendanceState,
             offices: [],
+            isAttending: false,
         };
     }
 
@@ -43,20 +47,28 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
     };
 
     attendOffice = async () => {
-        const { selectedOffice, isAttending } = this.state;
+        const { selectedOffice } = this.state;
         if (!selectedOffice) {
             this.setState({ error: "No office selected" });
             return;
         }
-    
-        if (isAttending || selectedOffice.isOccupied === true)   {
-            this.setState({ error: "You are already attending this office" });
-            return;
-        }
-    
-        const updatedOffice = { ...selectedOffice, isOccupied: true, userId: Number(sessionStorage.getItem('userId')) };
+
         try {
-            await updateOfficeAttendance(updatedOffice);
+            const userId = Number(sessionStorage.getItem('userId'));
+            const isUserAttending = await IsUserAttending(selectedOffice.officeId);
+            console.log("IsUserAttending:", isUserAttending);
+
+            if (!(isUserAttending.length === 0)) {
+                this.setState({ error: "You are already attending the office" });
+                return;
+            }
+
+            const updatedOffice = { ...selectedOffice, userId };
+            await attendOffice({
+                officeId: updatedOffice.officeId,
+                userId: updatedOffice.userId,
+            });
+
             this.setState((prevState) => ({
                 offices: prevState.offices.map((office) =>
                     office.officeId === updatedOffice.officeId ? updatedOffice : office
@@ -70,7 +82,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
     };
 
     render() {
-        const { attendanceDate, isAttending, loading, error, offices, selectedOffice } = this.state;
+        const { isAttending, error, offices, selectedOffice } = this.state;
 
         return (
             <div>
@@ -78,7 +90,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
                 <ul>
                     {offices.map((office) => (
                         <li key={office.officeId} onClick={() => this.handleOfficeClick(office.officeId)}>
-                            Office {office.officeId} - {office.date} {office.startTime} to {office.endTime} this office is {office.isOccupied ? "Occupied" : "Available"}
+                            Office {office.officeId} - {office.date} from {office.startTime} to {office.endTime}
                         </li>
                     ))}
                 </ul>
@@ -86,7 +98,7 @@ export class OfficeAttendance extends React.Component<OfficeAttendanceProps, Off
                     <button onClick={this.attendOffice}>Attend Office</button>
                 )}
                 {isAttending && <p>You are attending office {selectedOffice?.officeId}</p>}
-                <button onClick={() => window.location.href='/homepage'}>Back</button>
+                <button onClick={() => window.location.href = '/homepage'}>Back</button>
                 {error && <p>{error}</p>}
             </div>
         );

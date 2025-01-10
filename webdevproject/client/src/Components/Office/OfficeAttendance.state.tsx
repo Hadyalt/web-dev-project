@@ -21,6 +21,9 @@ export interface Office {
     date: string;
     startTime: string;
     endTime: string;
-    isOccupied: boolean;
+}
+
+export interface OfficeAttendance {
+    officeId: number;
     userId: number;
 }
