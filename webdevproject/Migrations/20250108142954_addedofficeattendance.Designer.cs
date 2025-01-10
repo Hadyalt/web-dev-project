@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StarterKit.Models;
 
@@ -10,9 +11,11 @@ using StarterKit.Models;
 namespace webdevproject.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250108142954_addedofficeattendance")]
+    partial class addedofficeattendance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -239,8 +242,14 @@ namespace webdevproject.Migrations
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsOccupied")
+                        .HasColumnType("INTEGER");
+
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("OfficeId");
 
@@ -255,25 +264,10 @@ namespace webdevproject.Migrations
                             OfficeId = 1,
                             Date = new DateOnly(2022, 1, 1),
                             EndTime = new TimeSpan(0, 11, 0, 0, 0),
-                            StartTime = new TimeSpan(0, 10, 0, 0, 0)
+                            IsOccupied = false,
+                            StartTime = new TimeSpan(0, 10, 0, 0, 0),
+                            UserId = 0
                         });
-                });
-
-            modelBuilder.Entity("StarterKit.Models.Office_attendance", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OfficeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Office_Attendance");
                 });
 
             modelBuilder.Entity("StarterKit.Models.User", b =>
