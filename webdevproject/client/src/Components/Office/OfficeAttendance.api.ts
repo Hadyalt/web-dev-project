@@ -27,3 +27,18 @@ export const updateOfficeAttendance = async (updatedOffice: Office): Promise<voi
         throw new Error("Failed to update office attendance");
     }
 }
+
+export const attendOffice = async (attendance: { officeId: number, userId: number, attendanceDate: string }): Promise<void> => {
+    const response = await fetch(`http://localhost:3001/api/v1/office/attend`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(attendance),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to save office attendance");
+    }
+}
