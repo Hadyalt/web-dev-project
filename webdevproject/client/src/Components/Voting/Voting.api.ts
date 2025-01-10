@@ -92,6 +92,6 @@ export const deleteVote = (voteId: string): Promise<void> => {
 };
 
 export const getVoteById = async (voteId: number) => {
-    const response = await axios.get(`http://localhost:3001/Api/v1/controller/Read/${voteId}`);
+    const response = await axios.get(`http://localhost:3001/api/v1/vote/options/${voteId}`);
     return response.data;
 };

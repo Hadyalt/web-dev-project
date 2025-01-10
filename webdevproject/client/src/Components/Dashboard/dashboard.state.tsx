@@ -31,6 +31,7 @@ export type Event = {
 
 export interface DashboardState {
     selectedEventId: number;
+    selectedVoteId: number;
     events: Event[];
     voteEvents: Vote[];
     loading: boolean;
@@ -48,6 +49,7 @@ export interface DashboardState {
 
 export const initDashboardState: DashboardState = {
     selectedEventId: 0,
+    selectedVoteId: 0,
     events: [],
     voteEvents: [],
     loading: true,

@@ -8,6 +8,7 @@ import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 import { HomepageReview } from './HomepageReview';
 import { OfficeAttendance } from '../Office/OfficeAttendance';
 import { VotingPost } from '../Voting/VotingPost';
+import { VotingPatch } from '../Voting/VotingPatch';
 
 
 
@@ -64,6 +65,13 @@ const App = () => {
           </RequireAdmin>
         }
       />
+      <Route
+        path="/voting/edit/:eventId"
+        element={
+          <RequireAdmin>
+            <VotingPatch backToHome={() => console.log("Back to dashboard")} />
+          </RequireAdmin>
+      } />
       
       <Route path="*" element={<h1>Page Not Found</h1>} />
     </Routes>

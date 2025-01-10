@@ -7,7 +7,7 @@ interface VotePatch {
     backToHome: () => void;
 }
 
-export const DashboardPatch: React.FC<VotePatch> = ({ backToHome }) => {
+export const VotingPatch: React.FC<VotePatch> = ({ backToHome }) => {
     const { voteId } = useParams<{ voteId: string }>(); // Use useParams to get the voteId
     const [vote, setVote] = useState({
         EventDetails: '',
@@ -39,8 +39,6 @@ export const DashboardPatch: React.FC<VotePatch> = ({ backToHome }) => {
         const combinedEndDateTime = `${EndDate}T${EndTime}`;
         const formattedStartDate = combinedStartDateTime;
         const formattedEndDate = combinedEndDateTime;
-
-        const formattedDate = DateOnly.parse(vote.StartTime).toString();
         try {
             await updateVote(
                 parseInt(voteId),

@@ -7,6 +7,7 @@ import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
 import { Homepage } from "../Home/Homepage.tsx";
 import { VotingPost } from "../Voting/VotingPost.tsx";
 import { deleteVote, loadVoteEvents } from "../Voting/Voting.api.ts";
+import { VotingPatch } from "../Voting/VotingPatch.tsx";
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -275,7 +276,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                                 <td style={styles.td}>{vote.endTime.toString().split('T')[1]}</td>
                                 <td style={styles.td}>{vote.voteCount}</td>
                                 <td style={styles.td}>
-                                <button style={styles.button} onClick={() => this.setState({ view: "votePatch", selectedEventId: vote.id })}>
+                                <button style={styles.button} onClick={() => this.setState({ view: "votePatch", selectedVoteId: vote.id })}>
                                   Edit
                                 </button>
                                 <button style={styles.button} onClick={() => this.handleDeleteVote(vote.id)}>
@@ -362,7 +363,17 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           }}
         />
       );
-    } else if (this.state.view == "homepage") {
+    } else if (this.state.view == "votePatch") {
+      window.location.href = `/voting/edit/${this.state.selectedVoteId}`;
+      return (
+        <VotingPatch
+          backToHome={() => {
+            this.setState(this.state.updateViewState("dashboard"));
+            this.loadEvents();
+          }}
+        />
+      );
+    }else if (this.state.view == "homepage") {
       window.location.href = "/homepage";
       return (
         <Homepage
