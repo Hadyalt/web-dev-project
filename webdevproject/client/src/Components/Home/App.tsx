@@ -7,6 +7,7 @@ import { DashboardPatch } from '../DashboardPatch/dashboardPatch';
 import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 import { HomepageReview } from './HomepageReview';
 import { OfficeAttendance } from '../Office/OfficeAttendance';
+import { VotingPost } from '../Voting/VotingPost';
 
 
 
@@ -46,13 +47,20 @@ const App = () => {
           <RequireAdmin>
             <DashboardPatch backToHome={() => console.log("Back to dashboard")} />
           </RequireAdmin>
-        }
-      />
+      } />
       <Route
         path="/dashboard/post"
         element={
           <RequireAdmin>
             <DashboardPostForm backToHome={() => console.log("Back to dashboard")} />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/voting"
+        element={
+          <RequireAdmin>
+            <VotingPost backToHome={() => console.log("Back to dashboard")} />
           </RequireAdmin>
         }
       />

@@ -1,19 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {}
+    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {
+    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
+        "projectUniqueName": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
         "projectName": "webdevproject",
-        "projectPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
+        "projectPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
         "packagesPath": "C:\\Users\\dauvi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\NewWebDevProject\\web-dev-project\\webdevproject\\obj\\",
+        "outputPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
+          "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
           "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [

@@ -5,6 +5,7 @@ import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
 import { Homepage } from "../Home/Homepage.tsx";
+import { VotingPost } from "../Voting/VotingPost.tsx";
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -218,6 +219,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Back</button>
+          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("voting"))}>Make Vote</button>
 
           {this.state.showModal && (
             <div style={styles.overlay}>
@@ -283,6 +285,16 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         <Homepage
           backToHome={() => {
             this.setState(this.state.updateViewState("homepage"));
+          }}
+        />
+      );
+    } else if (this.state.view == "voting") {
+      window.location.href = "/voting";
+      return (
+        <VotingPost
+          backToHome={() => {
+            this.setState(this.state.updateViewState("voting"));
+            this.loadEvents();
           }}
         />
       );
