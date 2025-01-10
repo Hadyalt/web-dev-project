@@ -154,6 +154,10 @@ content-type: application/json
 ###
 GET http://localhost:3001/api/v1/vote/options HTTP/1.1
 ###
+
+###
+GET http://localhost:3001/api/v1/vote/options/2 HTTP/1.1
+###
 POST http://localhost:3001/api/v1/vote/vote HTTP/1.1
 content-type: application/json
 

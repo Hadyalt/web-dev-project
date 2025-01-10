@@ -28,6 +28,11 @@ public class VotingService : IVoteService
         return _context.VotingOption.Where(v => v.EndTime > DateTime.Now).ToList();
     }
 
+    public List<VotingOption> GetAllVotes()
+    {
+        return _context.VotingOption.ToList();
+    }
+
     // Vote for an event (Public)
     public bool VoteForEvent(int optionId, int userId)
     {

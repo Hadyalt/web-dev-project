@@ -21,8 +21,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         this.setState({ loading: true, error: null });
         this.loadEvents();
         this.loadUserEvents();
-        this.loadVoteEvents();
-        
+        this.loadVoteEvents();   
     };
 
     componentDidMount() {
