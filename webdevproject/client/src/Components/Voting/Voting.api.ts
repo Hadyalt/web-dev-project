@@ -74,7 +74,7 @@ export const deleteVote = (voteId: string): Promise<void> => {
     EndTime: string, 
     VoteCount: number 
 ): Promise<Vote> => {
-    return fetch(`http://localhost:3001/api/v1/vote/options/delete/${id}`, {
+    return fetch(`http://localhost:3001/api/v1/vote/options/update/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

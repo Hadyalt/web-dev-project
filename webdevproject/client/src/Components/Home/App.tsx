@@ -68,7 +68,7 @@ const App = () => {
         }
       />
       <Route
-        path="/voting/edit/:eventId"
+        path="/voting/edit/:voteId"
         element={
           <RequireAdmin>
             <VotingPatch backToHome={() => console.log("Back to dashboard")} />
