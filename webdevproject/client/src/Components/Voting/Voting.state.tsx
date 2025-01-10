@@ -28,7 +28,7 @@ export const initVotingPostState: VotingPostState = {
 
 export type Vote = {
     id: number;
-    eventDetails: number;
+    eventDetails: string;
     startTime: Date;
     endTime: Date;
     voteCount: number;

@@ -46,7 +46,7 @@ namespace StarterKit.Controllers
         public IActionResult GetVoteById([FromRoute] int voteId)
         {
             var options = _votingService.GetAllVotes();
-            var option = options.Where(v => v.Id == voteId);
+            var option = options.FirstOrDefault(v => v.Id == voteId);
             return Ok(option);
         }
 

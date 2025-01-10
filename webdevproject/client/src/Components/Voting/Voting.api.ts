@@ -92,6 +92,12 @@ export const deleteVote = (voteId: string): Promise<void> => {
 };
 
 export const getVoteById = async (voteId: number) => {
-    const response = await axios.get(`http://localhost:3001/api/v1/vote/options/${voteId}`);
-    return response.data;
-};
+    try {
+      const response = await fetch(`http://localhost:3001/api/v1/vote/options/${voteId}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching vote:", error);
+      throw error;
+    }
+  };
