@@ -36,8 +36,8 @@ namespace StarterKit.Controllers
                 return NotFound("Event not found.");
             }
             // Check if the event is still available (based on date and start time)
-            if (evnt.EventDate < DateOnly.FromDateTime(DateTime.Now) || 
-                (evnt.EventDate == DateOnly.FromDateTime(DateTime.Now) && evnt.StartTime < TimeSpan.FromTicks(DateTime.Now.TimeOfDay.Ticks)))
+            if (evnt.EventDate > DateOnly.FromDateTime(DateTime.Now) || 
+                (evnt.EventDate == DateOnly.FromDateTime(DateTime.Now) && evnt.StartTime > TimeSpan.FromTicks(DateTime.Now.TimeOfDay.Ticks)))
             {
                 return BadRequest("Event has already started or passed.");
             }
