@@ -8,6 +8,8 @@ import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 import { HomepageReview } from './HomepageReview';
 import { OfficeAttendance } from '../Office/OfficeAttendance';
 import { VotingPost } from '../Voting/VotingPost';
+import { VotingPatch } from '../Voting/VotingPatch';
+import { HomepageEventDetails } from './HomepageEventDetails';
 
 
 
@@ -27,6 +29,7 @@ const App = () => {
       <Route path="/" element={<LoginForm />} />
       <Route path="/homepage" element={<Homepage backToHome={() => console.log("Back to login")} />} />
       <Route path="/homepage/:eventId" element={<HomepageReview backToHome={() => console.log("Back to login")} />} />
+      <Route path="/homepage/open/:eventId" element={<HomepageEventDetails backToHome={() => console.log("Back to login")} />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/officeAttendance" element={<OfficeAttendance backToHome={function (): void {
         throw new Error('Function not implemented.');
@@ -64,6 +67,13 @@ const App = () => {
           </RequireAdmin>
         }
       />
+      <Route
+        path="/voting/edit/:voteId"
+        element={
+          <RequireAdmin>
+            <VotingPatch backToHome={() => console.log("Back to dashboard")} />
+          </RequireAdmin>
+      } />
       
       <Route path="*" element={<h1>Page Not Found</h1>} />
     </Routes>

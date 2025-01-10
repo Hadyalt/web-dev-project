@@ -25,6 +25,7 @@ export interface HomepageState {
     selectedEventId: number;
     isAdmin: boolean;
     userEvents: Event[];
+    userPastEvents: Event[];
     events: Event[];
     voteEvents: Vote[];
     loading: boolean;
@@ -38,6 +39,7 @@ export interface HomepageState {
 export const initHomepageState: HomepageState = {
     selectedEventId: 1,
     userEvents: [],
+    userPastEvents: [],
     events: [],
     voteEvents: [],
     isAdmin: true,

@@ -7,6 +7,8 @@ public interface IVoteService{
         // Read all voting options (Public)
         List<VotingOption> GetVotingOptions();
 
+        List<VotingOption> GetAllVotes(); 
+
         // Vote for an event (Public)
         bool VoteForEvent(int optionId, int userId);
 

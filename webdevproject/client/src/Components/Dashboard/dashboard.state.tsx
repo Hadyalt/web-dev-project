@@ -1,6 +1,7 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
+import { Vote } from "../Voting/Voting.state";
 
-export type ViewState = "dashboard" | "dashboardPost" | "dashboardPatch" | "homepage" | "eventDetails" | "login" | "officeAttendance" | "voting"
+export type ViewState = "dashboard" | "dashboardPost" | "dashboardPatch" | "homepage" | "eventDetails" | "login" | "officeAttendance" | "voting" | "votePatch" | "homepageReview" | "eventDetailsOpen";
 
 export type Event_Attendance = {
     Event_AttendanceId: number;
@@ -30,12 +31,16 @@ export type Event = {
 
 export interface DashboardState {
     selectedEventId: number;
+    selectedVoteId: number;
     events: Event[];
+    voteEvents: Vote[];
     loading: boolean;
     error: string | null;
     view: ViewState;
     showModal: boolean; // To manage the visibility of the modal
+    showModal2: boolean,
     showAttendee: boolean;
+    voteToDelete: number | null;
     eventToDelete: number | null; // Stores the ID of the event to delete
     attendance: Attendance[]; // Stores the list of attendees for an event
     loadingAttendance: boolean; // Tracks whether attendance data is being loaded
@@ -44,12 +49,16 @@ export interface DashboardState {
 
 export const initDashboardState: DashboardState = {
     selectedEventId: 0,
+    selectedVoteId: 0,
     events: [],
+    voteEvents: [],
     loading: true,
     error: "",
     view: "dashboard",
     showModal: false, // Modal is initially hidden
+    showModal2: false,
     showAttendee: false,
+    voteToDelete: null,
     eventToDelete: null, // No event selected for deletion
     attendance: [], // Initialize with an empty list
     loadingAttendance: false, // Initially not loading attendance

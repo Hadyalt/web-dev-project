@@ -27,7 +27,7 @@ export const loadUserEvents = (): Promise<Event[]> => {
 }
 
 export const submitReview = (eventId: number, review: Review): Promise<void> => {
-    return fetch(`http://localhost:3001/api/v1/attendance/attend`, {
+    return fetch(`http://localhost:3001/api/v1/attendance/review`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

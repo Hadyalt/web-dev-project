@@ -42,6 +42,14 @@ namespace StarterKit.Controllers
             return Ok(options);
         }
 
+        [HttpGet("options/{voteId}")]
+        public IActionResult GetVoteById([FromRoute] int voteId)
+        {
+            var options = _votingService.GetAllVotes();
+            var option = options.FirstOrDefault(v => v.Id == voteId);
+            return Ok(option);
+        }
+
         // 1.3 Vote for an Event (Public)
         [HttpPost("vote")]
         public IActionResult VoteForEvent([FromBody] VoteRequest voteRequest)

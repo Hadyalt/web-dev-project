@@ -6,6 +6,7 @@ import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
 import { OfficeAttendance } from "../Office/OfficeAttendance";
 import { castVote, loadVoteEvents } from "../Voting/Voting.api";
+import { HomepageEventDetails } from "./HomepageEventDetails";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -21,8 +22,8 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         this.setState({ loading: true, error: null });
         this.loadEvents();
         this.loadUserEvents();
-        this.loadVoteEvents();
-        
+        this.loadVoteEvents();  
+        this.loadPastUserEvents(); 
     };
 
     componentDidMount() {
@@ -36,6 +37,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             this.loadEvents();
             this.loadUserEvents();
             this.loadVoteEvents();
+            this.loadPastUserEvents();
         }
     }
 
@@ -61,6 +63,34 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     }
                 });
                 this.setState({ userEvents: yourEvents, loading: false });
+            })
+            .catch((error) => {
+                this.setState({ error: error.message, loading: false });
+            });
+    };
+
+    loadPastUserEvents = () => {
+        loadUserEvents()
+            .then((userEvents) => {
+                if (!userEvents) {
+                    this.setState({ userPastEvents: [], loading: false });
+                    return;
+                }
+                const today = DateOnly.fromDate(new Date());
+                const yourEvents = userEvents.filter((userEvent) => {
+                    if (!userEvent.eventDate) {
+                        console.warn("Missing eventDate for:", userEvent);
+                        return false;
+                    }
+                    try {
+                        const eventDate = DateOnly.parse(userEvent.eventDate.toString());
+                        return eventDate.isBefore(today);
+                    } catch (err) {
+                        console.error("Error parsing eventDate:", err, userEvent);
+                        return false;
+                    }
+                });
+                this.setState({ userPastEvents: yourEvents, loading: false });
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
@@ -122,6 +152,10 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
 
     handleEventClick = (eventId: number) => {
         this.setState({ selectedEventId: eventId, view: "eventDetails" });
+    };
+
+    handleEventClickOpen = (eventId: number) => {
+        this.setState({ selectedEventId: eventId, view: "eventDetailsOpen" });
     };
 
     handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -212,7 +246,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
       };
 
     render() {
-        const { events, loading, error, view, selectedEventId, userEvents, voteEvents } = this.state;
+        const { events, loading, error, view, selectedEventId, userEvents, voteEvents, userPastEvents} = this.state;
 
         const styles: { [key: string]: React.CSSProperties } = {
             container: {
@@ -302,6 +336,44 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
+                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClickOpen(userEvent.eventId)}>                                    <td style={styles.td}>{userEvent.title}</td>
+                                    <td style={styles.td}>{userEvent.description}</td>
+                                    <td style={styles.td}>{userEvent.eventDate.toString()}</td>
+                                    <td style={styles.td}>{userEvent.startTime.toString()}</td>
+                                    <td style={styles.td}>{userEvent.endTime.toString()}</td>
+                                    <td style={styles.td}>{userEvent.location}</td>
+                                    <td style={styles.td}>{userEvent.adminApproval ? "Approved" : "Pending"}</td>
+                                    <td style={styles.td}>
+                                        <button
+                                            style={styles.button}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.handleRemoveAttendance(userEvent.eventId)}}
+                                        >
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <h2>Your Past Events Calendar</h2>
+                    <table style={styles.table}>
+                        <thead>
+                            <tr>
+                                <th style={styles.th}>Title</th>
+                                <th style={styles.th}>Description</th>
+                                <th style={styles.th}>Date</th>
+                                <th style={styles.th}>Start Time</th>
+                                <th style={styles.th}>End Time</th>
+                                <th style={styles.th}>Location</th>
+                                <th style={styles.th}>Admin Approval</th>
+                                <th style={styles.th}>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {userPastEvents.map((userEvent, index) => (
                                 <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>                                    <td style={styles.td}>{userEvent.title}</td>
                                     <td style={styles.td}>{userEvent.description}</td>
                                     <td style={styles.td}>{userEvent.eventDate.toString()}</td>
@@ -312,7 +384,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                     <td style={styles.td}>
                                         <button
                                             style={styles.button}
-                                            onClick={() => this.handleRemoveAttendance(userEvent.eventId)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.handleRemoveAttendance(userEvent.eventId)}}
                                         >
                                             Remove
                                         </button>
@@ -341,7 +415,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                         {events.map((event, index) => (
-                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>                                
+                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClickOpen(event.eventId)}>                                
                                 <td style={styles.td}>{event.title}</td>
                                 <td style={styles.td}>{event.description}</td>
                                 <td style={styles.td}>{event.eventDate.toString()}</td>
@@ -353,7 +427,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                 <td style={styles.td}>
                                     <button
                                         style={styles.button}
-                                        onClick={() => this.handleAttendEvent(event.eventId)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            this.handleAttendEvent(event.eventId)}}
                                     >
                                         Attend
                                     </button>
@@ -411,7 +487,10 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "eventDetails") {
             window.location.href = `/homepage/${this.state.selectedEventId}`;
             return <HomepageReview backToHome={() => this.setState({ view: "homepage" })} />;
-        } else if (view === "dashboard") {
+        } else if (view === "eventDetailsOpen") {
+            window.location.href = `/homepage/open/${this.state.selectedEventId}`;
+            return <HomepageEventDetails backToHome={() => this.setState({ view: "homepage" })} />;
+        }else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />;
         } else if (view === "officeAttendance") {

@@ -6,6 +6,8 @@ import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
 import { Homepage } from "../Home/Homepage.tsx";
 import { VotingPost } from "../Voting/VotingPost.tsx";
+import { deleteVote, loadVoteEvents } from "../Voting/Voting.api.ts";
+import { VotingPatch } from "../Voting/VotingPatch.tsx";
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -16,6 +18,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   handleReload: () => void = () => {
     this.setState({ loading: true, error: null });
     this.loadEvents();
+    this.loadVoteEvents();
   };
 
   componentDidMount() {
@@ -28,6 +31,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       window.location.href = "/login";
     } else {
       this.loadEvents();
+      this.loadVoteEvents();
     }
   }
 
@@ -41,8 +45,23 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       });
   };
 
+   loadVoteEvents = () => {
+          loadVoteEvents()
+              .then((voteEvents) => {
+                  if (!voteEvents) {
+                      this.setState({ voteEvents: [], loading: false });
+                      return;
+                  }
+                  this.setState({ voteEvents: voteEvents, loading: false });
+              })
+      };
+
   handleDelete = (eventId: number) => {
     this.setState({ showModal: true, eventToDelete: eventId });
+  };
+
+  handleDeleteVote = (voteId: number) => {
+    this.setState({ showModal2: true, voteToDelete: voteId });
   };
 
   handleAttendee = () => {
@@ -64,6 +83,23 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
 
   cancelDelete = () => {
     this.setState({ showModal: false, eventToDelete: null });
+  };
+
+  confirmDeleteVote = async () => {
+    if (this.state.voteToDelete) {
+      try {
+        await deleteVote(this.state.voteToDelete.toString());
+        this.setState({ showModal2: false, voteToDelete: null });
+        this.loadVoteEvents();
+      } catch (error) {
+        console.error("Error deleting event:", error);
+        this.setState({ showModal2: false, voteToDelete: null });
+      }
+    }
+  };
+
+  cancelDeleteVote = () => {
+    this.setState({ showModal2: false, voteToDelete: null });
   };
 
   fetchAttendance = async (eventId: number) => {
@@ -146,7 +182,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     };
 
     if (this.state.view == "dashboard") {
-      const { events, loading, error, attendance, loadingAttendance } = this.state;
+      const { events, loading, error, attendance, voteEvents } = this.state;
 
       if (loading) {
         return <div style={styles.container}>Loading...</div>;
@@ -217,6 +253,41 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
             </tbody>
           </table>
 
+          <h1 style={styles.heading}>Vote Dashboard</h1>
+          <table style={styles.table}>
+                    <thead>
+                            <tr>
+                                <th style={styles.th}>Even Details</th>
+                                <th style={styles.th}>Start date</th>
+                                <th style={styles.th}>Start time</th>
+                                <th style={styles.th}>End date</th>
+                                <th style={styles.th}>End time</th>
+                                <th style={styles.th}>Vote count</th>
+                                <th style={styles.th}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {voteEvents.map((vote, index) => (
+                            <tr key={`${vote.id}-${index}`}>
+                                <td style={styles.td}>{vote.eventDetails}</td>
+                                <td style={styles.td}>{vote.startTime.toString().split('T')[0]}</td>
+                                <td style={styles.td}>{vote.startTime.toString().split('T')[1]}</td>
+                                <td style={styles.td}>{vote.endTime.toString().split('T')[0]}</td>
+                                <td style={styles.td}>{vote.endTime.toString().split('T')[1]}</td>
+                                <td style={styles.td}>{vote.voteCount}</td>
+                                <td style={styles.td}>
+                                <button style={styles.button} onClick={() => this.setState({ view: "votePatch", selectedVoteId: vote.id })}>
+                                  Edit
+                                </button>
+                                <button style={styles.button} onClick={() => this.handleDeleteVote(vote.id)}>
+                                  Delete
+                                </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                    </table>
+
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Home</button>
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("voting"))}>Make Vote</button>
@@ -227,6 +298,15 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                 <h2>Are you sure you want to delete this event?</h2>
                 <button style={styles.button} onClick={this.confirmDelete}>Yes</button>
                 <button style={styles.button} onClick={this.cancelDelete}>No</button>
+              </div>
+            </div>
+          )}
+          {this.state.showModal2 && (
+            <div style={styles.overlay}>
+              <div style={styles.modal}>
+                <h2>Are you sure you want to delete this event?</h2>
+                <button style={styles.button} onClick={this.confirmDeleteVote}>Yes</button>
+                <button style={styles.button} onClick={this.cancelDeleteVote}>No</button>
               </div>
             </div>
           )}
@@ -255,6 +335,10 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                   </tbody>
                 </table>
                 <button style={styles.button} onClick={() => this.setState({ showAttendee: false })}>Close</button>
+
+                
+
+                
               </div>
             </div>
           )}
@@ -280,7 +364,17 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           }}
         />
       );
-    } else if (this.state.view == "homepage") {
+    } else if (this.state.view == "votePatch") {
+      window.location.href = `/voting/edit/${this.state.selectedVoteId}`;
+      return (
+        <VotingPatch
+          backToHome={() => {
+            this.setState(this.state.updateViewState("dashboard"));
+            this.loadEvents();
+          }}
+        />
+      );
+    }else if (this.state.view == "homepage") {
       window.location.href = "/homepage";
       return (
         <Homepage
