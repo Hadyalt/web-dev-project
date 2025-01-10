@@ -83,7 +83,7 @@ export class LoginForm extends React.Component<{}, LoginState> {
     if (this.state.view === "login") {
       return (
         <div style={styles.container}>
-          <h1 style={styles.heading}>Login and Events Form</h1>
+          <h1 style={styles.heading}>Login</h1>
           {/* Login Form */}
           <form onSubmit={this.handleSubmit}>
             <div style={styles.formGroup}>
