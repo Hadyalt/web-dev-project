@@ -302,8 +302,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
-                                <tr key={`${userEvent.eventId}-${index}`}>
-                                    <td style={styles.td}>{userEvent.title}</td>
+                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>                                    <td style={styles.td}>{userEvent.title}</td>
                                     <td style={styles.td}>{userEvent.description}</td>
                                     <td style={styles.td}>{userEvent.eventDate.toString()}</td>
                                     <td style={styles.td}>{userEvent.startTime.toString()}</td>
@@ -326,7 +325,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <h2>Open Events</h2>
                     <table style={styles.table}>
                     <thead>
+                        
                             <tr>
+                                
                                 <th style={styles.th}>Title</th>
                                 <th style={styles.th}>Description</th>
                                 <th style={styles.th}>Date</th>
@@ -340,7 +341,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                         {events.map((event, index) => (
-                            <tr key={`${event.eventId}-${index}`}>
+                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>                                
                                 <td style={styles.td}>{event.title}</td>
                                 <td style={styles.td}>{event.description}</td>
                                 <td style={styles.td}>{event.eventDate.toString()}</td>
