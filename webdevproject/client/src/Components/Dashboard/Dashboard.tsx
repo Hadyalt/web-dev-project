@@ -218,7 +218,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           </table>
 
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
-          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Back</button>
+          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Home</button>
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("voting"))}>Make Vote</button>
 
           {this.state.showModal && (
