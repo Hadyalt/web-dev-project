@@ -193,7 +193,7 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
                     type="button"
                     style={styles.button}
                     onClick={() => {
-                        backToHome();
+                        window.location.href = '/dashboard'
                     }}
                 >
                     Back

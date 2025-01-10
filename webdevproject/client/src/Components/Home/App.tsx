@@ -6,6 +6,7 @@ import { DashboardForm } from '../Dashboard/Dashboard';
 import { DashboardPatch } from '../DashboardPatch/dashboardPatch';
 import { DashboardPostForm } from '../DashboardPost/DashboardPost';
 import { HomepageReview } from './HomepageReview';
+import { VotingPost } from '../Voting/VotingPost';
 
 const App = () => {
   return (
@@ -16,6 +17,9 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard" element={<DashboardForm/>} />
         <Route path="/dashboard/edit/:eventId" element={<DashboardPatch backToHome={function (): void {
+        throw new Error('Function not implemented.');
+      } }/>} />
+        <Route path="/voting" element={<VotingPost backToHome={function (): void {
         throw new Error('Function not implemented.');
       } }/>} />
         <Route path="/dashboard/post" element={<DashboardPostForm backToHome={function (): void {
