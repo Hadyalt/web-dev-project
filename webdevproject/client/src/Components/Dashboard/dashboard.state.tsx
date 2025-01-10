@@ -1,7 +1,7 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
 import { Vote } from "../Voting/Voting.state";
 
-export type ViewState = "dashboard" | "dashboardPost" | "dashboardPatch" | "homepage" | "eventDetails" | "login" | "officeAttendance" | "voting" | "votePatch" | "homepageReview";
+export type ViewState = "dashboard" | "dashboardPost" | "dashboardPatch" | "homepage" | "eventDetails" | "login" | "officeAttendance" | "voting" | "votePatch" | "homepageReview" | "eventDetailsOpen";
 
 export type Event_Attendance = {
     Event_AttendanceId: number;

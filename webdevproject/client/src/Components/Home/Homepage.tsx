@@ -6,6 +6,7 @@ import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
 import { OfficeAttendance } from "../Office/OfficeAttendance";
 import { castVote, loadVoteEvents } from "../Voting/Voting.api";
+import { HomepageEventDetails } from "./HomepageEventDetails";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -121,6 +122,10 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
 
     handleEventClick = (eventId: number) => {
         this.setState({ selectedEventId: eventId, view: "eventDetails" });
+    };
+
+    handleEventClickOpen = (eventId: number) => {
+        this.setState({ selectedEventId: eventId, view: "eventDetailsOpen" });
     };
 
     handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -311,7 +316,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                     <td style={styles.td}>
                                         <button
                                             style={styles.button}
-                                            onClick={() => this.handleRemoveAttendance(userEvent.eventId)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                this.handleRemoveAttendance(userEvent.eventId)}}
                                         >
                                             Remove
                                         </button>
@@ -320,6 +327,8 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                             ))}
                         </tbody>
                     </table>
+
+                    
 
                     <h2>Open Events</h2>
                     <table style={styles.table}>
@@ -340,7 +349,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                         {events.map((event, index) => (
-                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>                                
+                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClickOpen(event.eventId)}>                                
                                 <td style={styles.td}>{event.title}</td>
                                 <td style={styles.td}>{event.description}</td>
                                 <td style={styles.td}>{event.eventDate.toString()}</td>
@@ -352,7 +361,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                                 <td style={styles.td}>
                                     <button
                                         style={styles.button}
-                                        onClick={() => this.handleAttendEvent(event.eventId)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            this.handleAttendEvent(event.eventId)}}
                                     >
                                         Attend
                                     </button>
@@ -410,7 +421,10 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else if (view === "eventDetails") {
             window.location.href = `/homepage/${this.state.selectedEventId}`;
             return <HomepageReview backToHome={() => this.setState({ view: "homepage" })} />;
-        } else if (view === "dashboard") {
+        } else if (view === "eventDetailsOpen") {
+            window.location.href = `/homepage/open/${this.state.selectedEventId}`;
+            return <HomepageEventDetails backToHome={() => this.setState({ view: "homepage" })} />;
+        }else if (view === "dashboard") {
             window.location.href = "/dashboard";
             return <DashboardForm />;
         } else if (view === "officeAttendance") {
