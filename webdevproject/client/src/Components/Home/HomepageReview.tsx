@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Event, Review } from "./Homepage.state";
 import { loadEvent, submitReview } from "./Homepage.api";
 import { getEventById } from "../DashboardPatch/dashboardPatch.api";
+import { getAttendance } from "../Dashboard/dashboard.api";
 
 export const HomepageReview: React.FC<{ backToHome: () => void }> = ({ backToHome }) => {
     const { eventId } = useParams<{ eventId: string }>();
@@ -15,11 +16,20 @@ export const HomepageReview: React.FC<{ backToHome: () => void }> = ({ backToHom
                 .then(event => setSelectedEvent(event))
                 .catch(() => alert("Failed to load event details"));
         }
+        loadReviews();
     }, [eventId]);
 
     const handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setReview(prevReview => ({ ...prevReview, [name]: value }));
+    };
+
+    const loadReviews = async () => {
+        if (!eventId) {
+            return;
+        }
+        getAttendance(parseInt(eventId))
+            .then(reviews => setSelectedEvent(prevEvent => prevEvent && { ...prevEvent, reviews }))
     };
 
     const handleReviewSubmit = async (e: React.FormEvent) => {
