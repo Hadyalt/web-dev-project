@@ -334,6 +334,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                     )}
                   </tbody>
                 </table>
+                <button style={styles.button} onClick={() => this.setState({ showAttendee: false })}>Close</button>
 
                 
 
