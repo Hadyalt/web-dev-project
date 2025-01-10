@@ -5,6 +5,7 @@ import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
 import { Homepage } from "../Home/Homepage.tsx";
+import { VotingPost } from "../Voting/VotingPost.tsx";
 
 export class DashboardForm extends React.Component<{}, DashboardState> {
   constructor(props: {}) {
@@ -75,6 +76,14 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       this.setState({ loadingAttendance: false });
     }
     this.handleAttendee();
+  };
+  handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        sessionStorage.clear();
+        alert("You have been logged out.");
+        window.location.href = "/login";
+    }
   };
 
   render() {
@@ -148,8 +157,31 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       }
 
       return (
-        <div style={styles.container}>
-          <h1 style={styles.heading}>Dashboard</h1>
+        
+        <div
+        
+        style={{
+          position: "relative", // Ensure the parent container has positioning
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h1 style={{ ...styles.heading, margin: 0 }}>Dashboard</h1>
+        <button
+          style={{
+            ...styles.button,
+            position: "absolute", // Absolute positioning
+            top: 2,              // Aligns the button to the top
+            right: 2,            // Aligns the button to the right
+            backgroundColor: "red",
+            padding: "10px 15px",
+            fontSize: "14px",
+          }}
+          onClick={this.handleLogout}
+        >
+          Logout
+        </button>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -186,7 +218,8 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
           </table>
 
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
-          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Back</button>
+          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Home</button>
+          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("voting"))}>Make Vote</button>
 
           {this.state.showModal && (
             <div style={styles.overlay}>
@@ -252,6 +285,16 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         <Homepage
           backToHome={() => {
             this.setState(this.state.updateViewState("homepage"));
+          }}
+        />
+      );
+    } else if (this.state.view == "voting") {
+      window.location.href = "/voting";
+      return (
+        <VotingPost
+          backToHome={() => {
+            this.setState(this.state.updateViewState("voting"));
+            this.loadEvents();
           }}
         />
       );

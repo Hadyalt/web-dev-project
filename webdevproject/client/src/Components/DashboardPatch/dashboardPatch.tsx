@@ -49,6 +49,7 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
                 [],
                 ""
             );
+            window.location.href = `/dashboard`
             backToHome();
         } catch (error) {
             console.error("Error updating event:", error);
@@ -186,14 +187,14 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
                         />
                     </label>
                 </div>
-                <button type="submit" style={styles.button}>
+                <button type="submit" style={styles.button} onClick={() => {window.location.href = '/dashboard'}}>
                     Save
                 </button>
                 <button
                     type="button"
                     style={styles.button}
                     onClick={() => {
-                        backToHome();
+                        window.location.href = '/dashboard'
                     }}
                 >
                     Back

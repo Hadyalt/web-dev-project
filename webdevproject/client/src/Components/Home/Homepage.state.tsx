@@ -1,5 +1,6 @@
 import { DateOnly, TimeSpan } from "../../Models/Date";
 import { ViewState } from "../Dashboard/dashboard.state";
+import { Vote } from "../Voting/Voting.state";
 
 export type Review = {
     userId: number;
@@ -25,6 +26,7 @@ export interface HomepageState {
     isAdmin: boolean;
     userEvents: Event[];
     events: Event[];
+    voteEvents: Vote[];
     loading: boolean;
     error: string | null;
     view: ViewState;
@@ -37,6 +39,7 @@ export const initHomepageState: HomepageState = {
     selectedEventId: 1,
     userEvents: [],
     events: [],
+    voteEvents: [],
     isAdmin: true,
     loading: true,
     error: "",

@@ -5,6 +5,7 @@ import { DateOnly } from "../../Models/Date";
 import { DashboardForm } from "../Dashboard/Dashboard";
 import { HomepageReview } from "./HomepageReview";
 import { OfficeAttendance } from "../Office/OfficeAttendance";
+import { castVote, loadVoteEvents } from "../Voting/Voting.api";
 
 interface HomepageProps {
     backToHome: () => void;
@@ -20,6 +21,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         this.setState({ loading: true, error: null });
         this.loadEvents();
         this.loadUserEvents();
+        this.loadVoteEvents();
         
     };
 
@@ -33,6 +35,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         } else {
             this.loadEvents();
             this.loadUserEvents();
+            this.loadVoteEvents();
         }
     }
 
@@ -58,6 +61,37 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     }
                 });
                 this.setState({ userEvents: yourEvents, loading: false });
+            })
+            .catch((error) => {
+                this.setState({ error: error.message, loading: false });
+            });
+    };
+
+    loadVoteEvents = () => {
+        loadVoteEvents()
+            .then((voteEvents) => {
+                if (!voteEvents) {
+                    this.setState({ voteEvents: [], loading: false });
+                    return;
+                }
+                const today = DateOnly.fromDate(new Date());
+                const voteEvent = voteEvents.filter((voteEvent) => {
+                    if (!voteEvent.startTime) {
+                        console.warn("Missing eventDate for:", voteEvent);
+                        return false;
+                    }
+                    try {
+                        // Extract only the date portion
+                        const dateOnlyString = voteEvent.startTime.toString().split('T')[0];
+                        const eventDate = DateOnly.parse(dateOnlyString);
+                        return eventDate.isAfter(today);
+                    } catch (err) {
+                        console.error("Error parsing eventDate:", err, voteEvent);
+                        return false;
+                    }
+                });
+                console.log(voteEvent);
+                this.setState({ voteEvents: voteEvent, loading: false });
             })
             .catch((error) => {
                 this.setState({ error: error.message, loading: false });
@@ -134,6 +168,24 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 alert("Failed to register for the event: " + error.message);
             });
     };
+
+    handleVoteEvent = (VotingOptionId: number) => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId) {
+            alert("User ID not found. Please log in again.");
+            return;
+        }
+        console.log(VotingOptionId)
+        castVote(VotingOptionId, userId)
+            .then(() => {
+                alert("Successfully casted a vote");
+                this.handleReload(); // Reload events and userEvents
+            })
+            .catch((error) => {
+                alert("Failed to cast a vote for the event: " + error.message);
+            });
+    };
+
     handleRemoveAttendance = (eventId: number) => {
         const userId = Number(sessionStorage.getItem("userId"));
         if (!userId) {
@@ -150,8 +202,17 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             });
     };
 
+    handleLogout = () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            sessionStorage.clear();
+            alert("You have been logged out.");
+            window.location.href = "/login";
+        }
+      };
+
     render() {
-        const { events, loading, error, view, selectedEventId, userEvents } = this.state;
+        const { events, loading, error, view, selectedEventId, userEvents, voteEvents } = this.state;
 
         const styles: { [key: string]: React.CSSProperties } = {
             container: {
@@ -201,8 +262,30 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             }
 
             return (
-                <div style={styles.container}>
-                    <h1 style={styles.heading}>Homepage</h1>
+                <div
+        
+                    style={{
+                    position: "relative", // Ensure the parent container has positioning
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                    }}
+                >
+                    <h1 style={{ ...styles.heading, margin: 0 }}>Homepage</h1>
+                    <button
+                    style={{
+                        ...styles.button,
+                        position: "absolute", // Absolute positioning
+                        top: 2,              // Aligns the button to the top
+                        right: 2,            // Aligns the button to the right
+                        backgroundColor: "red",
+                        padding: "10px 15px",
+                        fontSize: "14px",
+                    }}
+                    onClick={this.handleLogout}
+                    >
+                    Logout
+                    </button>
                     <h2>Your Events Calendar</h2>
                     <table style={styles.table}>
                         <thead>
@@ -219,8 +302,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
-                                <tr key={`${userEvent.eventId}-${index}`}>
-                                    <td style={styles.td}>{userEvent.title}</td>
+                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>                                    <td style={styles.td}>{userEvent.title}</td>
                                     <td style={styles.td}>{userEvent.description}</td>
                                     <td style={styles.td}>{userEvent.eventDate.toString()}</td>
                                     <td style={styles.td}>{userEvent.startTime.toString()}</td>
@@ -243,7 +325,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <h2>Open Events</h2>
                     <table style={styles.table}>
                     <thead>
+                        
                             <tr>
+                                
                                 <th style={styles.th}>Title</th>
                                 <th style={styles.th}>Description</th>
                                 <th style={styles.th}>Date</th>
@@ -257,7 +341,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                         {events.map((event, index) => (
-                            <tr key={`${event.eventId}-${index}`}>
+                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>                                
                                 <td style={styles.td}>{event.title}</td>
                                 <td style={styles.td}>{event.description}</td>
                                 <td style={styles.td}>{event.eventDate.toString()}</td>
@@ -278,14 +362,50 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         ))}
                     </tbody>
                     </table>
-                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
-                        Office attendance
-                    </button>
-                    {this.state.isAdmin && (
+
+                    <h2>Events for Vote</h2>
+                    <table style={styles.table}>
+                    <thead>
+                            <tr>
+                                <th style={styles.th}>Even Details</th>
+                                <th style={styles.th}>Start date</th>
+                                <th style={styles.th}>Start time</th>
+                                <th style={styles.th}>End date</th>
+                                <th style={styles.th}>End time</th>
+                                <th style={styles.th}>Vote count</th>
+                                <th style={styles.th}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {voteEvents.map((vote, index) => (
+                            <tr key={`${vote.id}-${index}`}>
+                                <td style={styles.td}>{vote.eventDetails}</td>
+                                <td style={styles.td}>{vote.startTime.toString().split('T')[0]}</td>
+                                <td style={styles.td}>{vote.startTime.toString().split('T')[1]}</td>
+                                <td style={styles.td}>{vote.endTime.toString().split('T')[0]}</td>
+                                <td style={styles.td}>{vote.endTime.toString().split('T')[1]}</td>
+                                <td style={styles.td}>{vote.voteCount}</td>
+                                <td style={styles.td}>
+                                    <button
+                                        style={styles.button}
+                                        onClick={() => this.handleVoteEvent(vote.id)}
+                                    >
+                                        Vote
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                    </table>
+
+                    {sessionStorage.getItem('userRole') === "admin" && (
                         <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
                         </button>
                     )}
+                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Office attendance
+                    </button>
                 </div>
             );
         } else if (view === "eventDetails") {

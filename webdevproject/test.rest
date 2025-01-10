@@ -171,9 +171,9 @@ POST http://localhost:3001/api/v1/vote/vote HTTP/1.1
 content-type: application/json
 
 {
-  "UserId" : 1,
-  "EventId" : 1,
-  "VoteOptionId" : 1
+  "VotingOptionId" : 2,
+  "UserId" : 1
+  
 }
 ###
 GET http://localhost:3001/api/v1/vote/results HTTP/1.1
