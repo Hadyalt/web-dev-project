@@ -201,6 +201,15 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             });
     };
 
+    handleLogout = () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            sessionStorage.clear();
+            alert("You have been logged out.");
+            window.location.href = "/login";
+        }
+      };
+
     render() {
         const { events, loading, error, view, selectedEventId, userEvents, voteEvents } = this.state;
 
@@ -252,8 +261,30 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
             }
 
             return (
-                <div style={styles.container}>
-                    <h1 style={styles.heading}>Homepage</h1>
+                <div
+        
+                    style={{
+                    position: "relative", // Ensure the parent container has positioning
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                    }}
+                >
+                    <h1 style={{ ...styles.heading, margin: 0 }}>Homepage</h1>
+                    <button
+                    style={{
+                        ...styles.button,
+                        position: "absolute", // Absolute positioning
+                        top: 2,              // Aligns the button to the top
+                        right: 2,            // Aligns the button to the right
+                        backgroundColor: "red",
+                        padding: "10px 15px",
+                        fontSize: "14px",
+                    }}
+                    onClick={this.handleLogout}
+                    >
+                    Logout
+                    </button>
                     <h2>Your Events Calendar</h2>
                     <table style={styles.table}>
                         <thead>
@@ -270,8 +301,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                             {userEvents.map((userEvent, index) => (
-                                <tr key={`${userEvent.eventId}-${index}`}>
-                                    <td style={styles.td}>{userEvent.title}</td>
+                                <tr key={`${userEvent.eventId}-${index}`} onClick={() => this.handleEventClick(userEvent.eventId)}>                                    <td style={styles.td}>{userEvent.title}</td>
                                     <td style={styles.td}>{userEvent.description}</td>
                                     <td style={styles.td}>{userEvent.eventDate.toString()}</td>
                                     <td style={styles.td}>{userEvent.startTime.toString()}</td>
@@ -294,7 +324,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <h2>Open Events</h2>
                     <table style={styles.table}>
                     <thead>
+                        
                             <tr>
+                                
                                 <th style={styles.th}>Title</th>
                                 <th style={styles.th}>Description</th>
                                 <th style={styles.th}>Date</th>
@@ -308,7 +340,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         </thead>
                         <tbody>
                         {events.map((event, index) => (
-                            <tr key={`${event.eventId}-${index}`}>
+                            <tr key={`${event.eventId}-${index}`} onClick={() => this.handleEventClick(event.eventId)}>                                
                                 <td style={styles.td}>{event.title}</td>
                                 <td style={styles.td}>{event.description}</td>
                                 <td style={styles.td}>{event.eventDate.toString()}</td>
@@ -365,14 +397,14 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     </tbody>
                     </table>
 
-                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
-                        Office attendance
-                    </button>
-                    {this.state.isAdmin && (
+                    {sessionStorage.getItem('userRole') === "admin" && (
                         <button style={styles.button} onClick={() => this.setState({ view: "dashboard" })}>
                             Go to Dashboard
                         </button>
                     )}
+                    <button style={styles.button} onClick={() => this.setState({ view: "officeAttendance" })}>
+                        Office attendance
+                    </button>
                 </div>
             );
         } else if (view === "eventDetails") {

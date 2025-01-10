@@ -112,6 +112,14 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     }
     this.handleAttendee();
   };
+  handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        sessionStorage.clear();
+        alert("You have been logged out.");
+        window.location.href = "/login";
+    }
+  };
 
   render() {
     const styles = {
@@ -184,8 +192,31 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
       }
 
       return (
-        <div style={styles.container}>
-          <h1 style={styles.heading}>Dashboard</h1>
+        
+        <div
+        
+        style={{
+          position: "relative", // Ensure the parent container has positioning
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h1 style={{ ...styles.heading, margin: 0 }}>Dashboard</h1>
+        <button
+          style={{
+            ...styles.button,
+            position: "absolute", // Absolute positioning
+            top: 2,              // Aligns the button to the top
+            right: 2,            // Aligns the button to the right
+            backgroundColor: "red",
+            padding: "10px 15px",
+            fontSize: "14px",
+          }}
+          onClick={this.handleLogout}
+        >
+          Logout
+        </button>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -257,7 +288,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
                     </table>
 
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("dashboardPost"))}>Make Event</button>
-          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Back</button>
+          <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("homepage"))}>Home</button>
           <button style={styles.button} onClick={() => this.setState(this.state.updateViewState("voting"))}>Make Vote</button>
 
           {this.state.showModal && (

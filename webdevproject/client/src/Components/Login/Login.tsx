@@ -24,8 +24,12 @@ export class LoginForm extends React.Component<{}, LoginState> {
       if (success) {
         this.setState({ errorMessage: "" });
         alert("Login successful! Redirecting to homepage...");
+        if((sessionStorage.getItem("userRole") === "admin")) {
+          this.setState({ view: "dashboard" });
+        } else {
         this.setState({ view: "homepage" });
-      } 
+        } 
+      }
       else {
         throw new Error("Invalid username or password");
       }
@@ -83,7 +87,7 @@ export class LoginForm extends React.Component<{}, LoginState> {
     if (this.state.view === "login") {
       return (
         <div style={styles.container}>
-          <h1 style={styles.heading}>Login and Events Form</h1>
+          <h1 style={styles.heading}>Login</h1>
           {/* Login Form */}
           <form onSubmit={this.handleSubmit}>
             <div style={styles.formGroup}>
@@ -117,12 +121,23 @@ export class LoginForm extends React.Component<{}, LoginState> {
           )}
         </div>
       );
-    } else {
+    } 
+    else if (this.state.view === "homepage") {
       window.location.href = "/homepage";
       return (
         <Homepage
           backToHome={() => {
             this.setState(this.state.updateViewState("homepage"));
+          }}
+        />
+      );
+    }
+    else if (this.state.view === "dashboard") {
+      window.location.href = "/dashboard";
+      return (
+        <Homepage
+          backToHome={() => {
+            this.setState(this.state.updateViewState("dashboard"));
           }}
         />
       );
