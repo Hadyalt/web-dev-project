@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj": {}
+    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj": {
+    "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj",
+        "projectUniqueName": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
         "projectName": "webdevproject",
-        "projectPath": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\webdevproject.csproj",
-        "packagesPath": "C:\\Users\\zina\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zina\\Desktop\\webdevproject\\WEB-Project-Hady\\webdevproject\\obj\\",
+        "projectPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\webdevproject.csproj",
+        "packagesPath": "C:\\Users\\dauvi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dauvi\\Documents\\Rotterdam files\\Semester_3\\webdev\\newWebDevProject\\web-dev-project\\webdevproject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\zina\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\dauvi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,29 +43,33 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.CodeAnalysis.Analyzers": {
+              "target": "Package",
+              "version": "[3.3.4, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -75,7 +77,7 @@
             },
             "System.Data.SQLite": {
               "target": "Package",
-              "version": "[1.0.118, )"
+              "version": "[1.0.119, )"
             },
             "sqlite-net-pcl": {
               "target": "Package",

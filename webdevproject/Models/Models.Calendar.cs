@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace StarterKit.Models
 {
     public class User
@@ -59,6 +61,8 @@ namespace StarterKit.Models
         public bool AdminApproval { get; set; }
 
         public required List<Event_Attendance> Event_Attendances { get; set; }
+
+        public double AverageRating { get; set; }
     }
 
     public class Office
@@ -70,9 +74,12 @@ namespace StarterKit.Models
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
+    }
 
-        public required bool IsOccupied { get; set; }
-
+    public class Office_attendance
+    {
+        public int Id { get; set; }
+        public int OfficeId { get; set; }
         public int UserId { get; set; }
     }
 }

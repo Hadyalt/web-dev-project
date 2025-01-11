@@ -28,6 +28,11 @@ public class VotingService : IVoteService
         return _context.VotingOption.Where(v => v.EndTime > DateTime.Now).ToList();
     }
 
+    public List<VotingOption> GetAllVotes()
+    {
+        return _context.VotingOption.ToList();
+    }
+
     // Vote for an event (Public)
     public bool VoteForEvent(int optionId, int userId)
     {
@@ -36,7 +41,7 @@ public class VotingService : IVoteService
         {
             var vote = new Vote { VotingOptionId = optionId, UserId = userId };
             _context.Vote.Add(vote);
-            votingOption.VoteCount += 1; // Update vote count for the event
+            votingOption.VoteCount += 1;
             _context.SaveChanges();
             return true;
         }

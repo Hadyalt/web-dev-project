@@ -15,7 +15,7 @@ namespace webdevproject.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("StarterKit.Models.Admin", b =>
                 {
@@ -128,6 +128,9 @@ namespace webdevproject.Migrations
                     b.Property<bool>("AdminApproval")
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -161,6 +164,7 @@ namespace webdevproject.Migrations
                         {
                             EventId = 1,
                             AdminApproval = true,
+                            AverageRating = 0.0,
                             Description = "Description of event 1",
                             EndTime = new TimeSpan(0, 12, 0, 0, 0),
                             EventDate = new DateOnly(2022, 1, 1),
@@ -172,6 +176,7 @@ namespace webdevproject.Migrations
                         {
                             EventId = 2,
                             AdminApproval = true,
+                            AverageRating = 0.0,
                             Description = "Description of event 2",
                             EndTime = new TimeSpan(0, 13, 0, 0, 0),
                             EventDate = new DateOnly(2023, 1, 1),
@@ -234,14 +239,8 @@ namespace webdevproject.Migrations
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsOccupied")
-                        .HasColumnType("INTEGER");
-
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("OfficeId");
 
@@ -256,10 +255,25 @@ namespace webdevproject.Migrations
                             OfficeId = 1,
                             Date = new DateOnly(2022, 1, 1),
                             EndTime = new TimeSpan(0, 11, 0, 0, 0),
-                            IsOccupied = false,
-                            StartTime = new TimeSpan(0, 10, 0, 0, 0),
-                            UserId = 0
+                            StartTime = new TimeSpan(0, 10, 0, 0, 0)
                         });
+                });
+
+            modelBuilder.Entity("StarterKit.Models.Office_attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OfficeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Office_Attendance");
                 });
 
             modelBuilder.Entity("StarterKit.Models.User", b =>

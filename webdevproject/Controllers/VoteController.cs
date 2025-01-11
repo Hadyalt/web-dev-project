@@ -21,7 +21,7 @@ namespace StarterKit.Controllers
             _loginService = loginService;    
         }
 
-        // 1.1 Create Voting Option (Admin Required)
+        //Creates Voting Option (Admin Required)
         [HttpPost("options")]
         public IActionResult CreateVotingOption([FromBody] VotingOption option)
         {
@@ -34,7 +34,7 @@ namespace StarterKit.Controllers
             return Ok(createdOption);
         }
 
-        // 1.2 Read Voting Options (Public)
+        // Read Voting Options (Public)
         [HttpGet("options")]
         public IActionResult GetVotingOptions()
         {
@@ -42,7 +42,15 @@ namespace StarterKit.Controllers
             return Ok(options);
         }
 
-        // 1.3 Vote for an Event (Public)
+        [HttpGet("options/{voteId}")]
+        public IActionResult GetVoteById([FromRoute] int voteId)
+        {
+            var options = _votingService.GetAllVotes();
+            var option = options.FirstOrDefault(v => v.Id == voteId);
+            return Ok(option);
+        }
+
+        //Vote for an Event (Public)
         [HttpPost("vote")]
         public IActionResult VoteForEvent([FromBody] VoteRequest voteRequest)
         {
@@ -52,7 +60,7 @@ namespace StarterKit.Controllers
             return BadRequest("Failed to cast vote");
         }
 
-        // 1.4 Get Current Voting Results (Public)
+        //Get Current Voting Results (Public)
         [HttpGet("results")]
         public IActionResult GetVotingResults()
         {
@@ -60,7 +68,7 @@ namespace StarterKit.Controllers
             return Ok(results);
         }
 
-        // 1.5 Update Voting Option (Admin Required)
+        //Update Voting Option (Admin Required)
         [HttpPut("options/update/{id}")]
         public IActionResult UpdateVotingOption([FromRoute]int id, [FromBody] VotingOption option)
         {
@@ -75,7 +83,7 @@ namespace StarterKit.Controllers
             return NotFound("Voting option not found");
         }
 
-        // 1.6 Delete Voting Option (Admin Required)
+        //Delete Voting Option (Admin Required)
         [HttpDelete("options/delete/{id}")]
         public IActionResult DeleteVotingOption([FromRoute]int id)
         {
@@ -90,10 +98,9 @@ namespace StarterKit.Controllers
         }
     }
 
-    // This class represents the body of the vote request
     public class VoteRequest
     {
-        public int VotingOptionId { get; set; } // The event that is being voted for
+        public int VotingOptionId { get; set; }
         public int UserId { get; set; }  
     }
 }
