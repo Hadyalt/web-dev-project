@@ -15,7 +15,6 @@ export const login = (username: string, password: string): Promise<boolean> => {
         })
         .then(data => {
             if (data.success) {
-                // Store session-related data in localStorage/sessionStorage or a state management system
                 sessionStorage.setItem("username", data.username);
                 sessionStorage.setItem("userRole", data.userRole);
                 sessionStorage.setItem("userId", data.userId);

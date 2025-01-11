@@ -7,7 +7,7 @@ interface VotePatch {
 }
 
 export const VotingPatch: React.FC<VotePatch> = ({ backToHome }) => {
-    const { voteId } = useParams<{ voteId: string }>(); // Use useParams to get the voteId
+    const { voteId } = useParams<{ voteId: string }>(); 
     const [vote, setVote] = useState({
         eventDetails: '',
         startDate: '',
@@ -17,12 +17,12 @@ export const VotingPatch: React.FC<VotePatch> = ({ backToHome }) => {
         voteCount: 0,
     });
 
-      // Fetch vote data when the page is loaded
+      
       useEffect(() => {
         const fetchVoteData = async () => {
             if (voteId) {
                 try {
-                    const voteData = await getVoteById(parseInt(voteId)); // Fetch vote data based on voteId
+                    const voteData = await getVoteById(parseInt(voteId)); 
                     const formattedVote = {
                       eventDetails: voteData.eventDetails || '',
                       startDate: voteData.startTime.toString().split('T')[0] || '',
@@ -35,19 +35,19 @@ export const VotingPatch: React.FC<VotePatch> = ({ backToHome }) => {
 
                   setVote(formattedVote);
                     
-                    setVote(voteData); // Set fetched data to state
+                    setVote(voteData); 
                 } catch (error) {
                     console.error('Error fetching vote data:', error);
                 }
             }
         };
 
-        fetchVoteData(); // Call fetchVoteData on mount
-    }, [voteId]); // Dependency on voteId, so it refetches if voteId changes
+        fetchVoteData(); 
+    }, [voteId]); 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        const startDate = vote.startTime.toString().split('T')[0]; // Date part
+        const startDate = vote.startTime.toString().split('T')[0]; 
         const combinedStartDateTime = `${startDate}T${value}`;
         if (name === "startTime") {
             setVote(prevEvent => ({ ...prevEvent, [name]: combinedStartDateTime }));
@@ -58,21 +58,21 @@ export const VotingPatch: React.FC<VotePatch> = ({ backToHome }) => {
 
     const handleChange2 = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
-      const endDate = vote.endTime.toString().split('T')[0]; // Date part
+      const endDate = vote.endTime.toString().split('T')[0];
       const combinedEndDateTime = `${endDate}T${value}`;
       setVote(prevEvent => ({ ...prevEvent, [name]: combinedEndDateTime}));
   };
 
   const handleChange3 = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    const startTime = vote.startTime.toString().split('T')[1]; // Date part
+    const startTime = vote.startTime.toString().split('T')[1];
     const combinedEndDateTime = `${value}T${startTime}`;
     setVote(prevEvent => ({ ...prevEvent, [name]: combinedEndDateTime}));
 };
 
 const handleChange4 = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   const { name, value } = e.target;
-  const startTime = vote.endTime.toString().split('T')[1]; // Date part
+  const startTime = vote.endTime.toString().split('T')[1];
   const combinedEndDateTime = `${value}T${startTime}`;
   setVote(prevEvent => ({ ...prevEvent, [name]: combinedEndDateTime}));
 };

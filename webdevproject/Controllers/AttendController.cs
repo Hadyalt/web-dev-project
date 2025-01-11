@@ -22,26 +22,22 @@ namespace StarterKit.Controllers
         [HttpPost("attend")]
         public IActionResult Attend([FromBody] AttendRequest request)
         {
-            // Retrieve the logged-in user
             var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(loggedInUserId))
             {
                 return Unauthorized("User is not logged in.");
             }
-            // Retrieve the event to check availability
             var evnt = _context.Event.FirstOrDefault(e => e.EventId == request.EventId);
             if (evnt == null)
             {
 
                 return NotFound("Event not found.");
             }
-            // Check if the event is still available (based on date and start time)
             if (evnt.EventDate < DateOnly.FromDateTime(DateTime.Now) || 
                 (evnt.EventDate == DateOnly.FromDateTime(DateTime.Now) && evnt.StartTime < TimeSpan.FromTicks(DateTime.Now.TimeOfDay.Ticks)))
             {
                 return BadRequest("Event has already started or passed.");
             }
-            // Record the attendance
             var attendance = new Event_Attendance
             {
 
@@ -59,26 +55,22 @@ namespace StarterKit.Controllers
         [HttpPost("review")]
         public IActionResult Review([FromBody] AttendRequest request)
         {
-            // Retrieve the logged-in user
             var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(loggedInUserId))
             {
                 return Unauthorized("User is not logged in.");
             }
-            // Retrieve the event to check availability
             var evnt = _context.Event.FirstOrDefault(e => e.EventId == request.EventId);
             if (evnt == null)
             {
 
                 return NotFound("Event not found.");
             }
-            // Check if the event is still available (based on date and start time)
             if (evnt.EventDate > DateOnly.FromDateTime(DateTime.Now) || 
                 (evnt.EventDate == DateOnly.FromDateTime(DateTime.Now) && evnt.StartTime > TimeSpan.FromTicks(DateTime.Now.TimeOfDay.Ticks)))
             {
                 return BadRequest("Event has already started or passed.");
             }
-            // Record the attendance
             var attendance = new Event_Attendance
             {
 
@@ -97,14 +89,11 @@ namespace StarterKit.Controllers
         [HttpGet("attendees/{eventId}")]
         public IActionResult GetAttendees(int eventId)
         {
-            // Retrieve the logged-in user
             var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(loggedInUserId))
             {
                 return Unauthorized("User is not logged in.");
             }
-
-            // Retrieve the event attendees
             var attendees = _context.Event_Attendance
                 .Where(ea => ea.EventId == eventId)
                 .Select(ea => new
@@ -116,18 +105,16 @@ namespace StarterKit.Controllers
 
             return Ok(attendees);
         }
-        // GET endpoint to view the list of events attended by a specific user do that by first lookin gin the event_attendance table and using the found event id look in the event table
+    
+    // GET endpoint to view the list of events attended by a specific user do that by first lookin gin the event_attendance table and using the found event id look in the event table
     [HttpGet("events/user")]
     public IActionResult GetEvents()
     {
-        // Retrieve the logged-in user
         var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
         if (string.IsNullOrEmpty(loggedInUserId))
         {
             return Unauthorized("User is not logged in.");
         }
-
-        // Retrieve the events attended by the user
         var eventsId = _context.Event_Attendance
             .Where(ea => ea.UserId == int.Parse(loggedInUserId))
             .Select(ea => ea.EventId)
@@ -138,7 +125,7 @@ namespace StarterKit.Controllers
             .Select(e => new
             {
                 e.EventId,
-                e.Title, // Only select properties you need
+                e.Title,
                 e.Location,
                 e.EventDate,
                 e.Description,
@@ -151,57 +138,28 @@ namespace StarterKit.Controllers
         return Ok(events);
     }
 
-        // [HttpGet("events/user")]
-        // public IActionResult GetEvents()
-        // {
-        //     // Retrieve the logged-in user
-        //     var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
-        //     int userId = int.Parse(loggedInUserId);
-        //     if (string.IsNullOrEmpty(loggedInUserId))
-        //     {
-        //         return Unauthorized("User is not logged in.");
-        //     }
-
-        //     // Retrieve the events attended by the user
-        //     var eventsId = _context.Event_Attendance
-        //         .Where(ea => ea.UserId == userId)
-        //         .Select(ea => new
-        //         {
-        //             ea.EventId,
-        //         }).ToList();
-        //     List<Event> events;
-
-        //     for
-
-        //     return Ok(events);
-        // }
-        // DELETE endpoint to remove a user's attendance for a specific event
-        [HttpDelete("remove/{eventId}")]
-        public IActionResult RemoveAttendance(int eventId)
+    // DELETE endpoint to remove a user's attendance for a specific event
+    [HttpDelete("remove/{eventId}")]
+    public IActionResult RemoveAttendance(int eventId)
+    {
+        var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+        if (string.IsNullOrEmpty(loggedInUserId))
         {
-            // Retrieve the logged-in user
-            var loggedInUserId = _httpContextAccessor.HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(loggedInUserId))
-            {
-                return Unauthorized("User is not logged in.");
-            }
-
-            // Find the attendance record for the user and event
-            var attendance = _context.Event_Attendance
-                .FirstOrDefault(ea => ea.UserId == int.Parse(loggedInUserId) && ea.EventId == eventId);
-
-            if (attendance == null)
-            {
-                return NotFound("No attendance found for the event.");
-            }
-
-            // Remove the attendance
-            _context.Event_Attendance.Remove(attendance);
-            _context.SaveChanges();
-
-            return Ok("You have successfully removed your attendance for the event.");
+            return Unauthorized("User is not logged in.");
         }
+        var attendance = _context.Event_Attendance
+            .FirstOrDefault(ea => ea.UserId == int.Parse(loggedInUserId) && ea.EventId == eventId);
+
+        if (attendance == null)
+        {
+            return NotFound("No attendance found for the event.");
+        }
+        _context.Event_Attendance.Remove(attendance);
+        _context.SaveChanges();
+
+        return Ok("You have successfully removed your attendance for the event.");
     }
+}
 
     // Request model for submitting attendance
     public class AttendRequest

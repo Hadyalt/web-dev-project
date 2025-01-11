@@ -31,8 +31,8 @@ export class VotingPost extends React.Component<VotingPostProps, VotingPostState
         const formattedEndDate = combinedEndDateTime;
         await createVote(
           this.state.EventDetails,
-          formattedStartDate, // need to update
-          formattedEndDate, // need to update
+          formattedStartDate, 
+          formattedEndDate, 
           0
         )
           .then(() => {

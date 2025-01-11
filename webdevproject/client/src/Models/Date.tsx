@@ -67,7 +67,7 @@ export class TimeSpan {
     return new TimeSpan(hours, minutes, seconds);
   }
 
-  // Static method to create a TimeSpan from a string like "HH:mm:ss"
+  // Creates a TimeSpan from a string like "HH:mm:ss"
   static fromString(timeString: string): TimeSpan {
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
     return new TimeSpan(hours, minutes, seconds || 0);

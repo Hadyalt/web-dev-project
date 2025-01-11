@@ -38,47 +38,39 @@ public class LoginService : ILoginService
     {
         Console.WriteLine($"Received Username: {username}");
         Console.WriteLine($"Received Password: {inputPassword}");
-        // Ensure HttpContext is not null before accessing session
         if (_httpContextAccessor.HttpContext == null)
         {
             throw new Exception("HttpContext is null. Make sure HttpContextAccessor is properly registered and available.");
         }
 
         string encypInputPassword = EncryptionHelper.EncryptPassword(inputPassword);
-
-        // First check in Admin table
         string storedHashedPassword = GetStoredPasswordHashFromAdmin(username);
 
-        // If not found in Admin, check in User table
         if (storedHashedPassword == null)
         {   
             storedHashedPassword = GetStoredPasswordHashFromUser(username);
 
             if (storedHashedPassword == null)
             {
-                // User not found in either Admin or User tables
+
                 return LoginStatus.IncorrectUsername;
             }
         }
 
-        // Check if the passwords match
         if (encypInputPassword == storedHashedPassword)
         {
-            // Try to retrieve the user from Admin table first
             var admin = _context.Admin.FirstOrDefault(u => u.UserName == username);
 
-            // If not found in Admin, retrieve from User table
             if (admin == null)
             {
                 var user1 = _context.User.FirstOrDefault(u => u.UserName == username);
                 
                 if (user1 == null)
                 {
-                return LoginStatus.IncorrectUsername; // User not found
+                return LoginStatus.IncorrectUsername; 
                 }
                 
                 else{
-                    // Store both the username and user role in the session
                     _httpContextAccessor.HttpContext.Session.SetString("Username", user1.UserName);
                     _httpContextAccessor.HttpContext.Session.SetString("UserRole", user1.UserRole);
                     _httpContextAccessor.HttpContext.Session.SetString("UserId", user1.UserId.ToString());
@@ -87,7 +79,6 @@ public class LoginService : ILoginService
                 }
             }
 
-            // Store both the username and user role in the session
             _httpContextAccessor.HttpContext.Session.SetString("Username", admin.UserName);
             _httpContextAccessor.HttpContext.Session.SetString("UserRole", admin.UserRole);
             _httpContextAccessor.HttpContext.Session.SetString("UserId", admin.AdminId.ToString());
@@ -116,11 +107,11 @@ public class LoginService : ILoginService
                 {
                     if (reader.Read())
                     {
-                        return reader.GetString(0); // Password hash found in Admin
+                        return reader.GetString(0); 
                     }
                     else
                     {
-                        return null; // User not found in Admin
+                        return null; 
                     }
                 }
             }
@@ -142,11 +133,11 @@ public class LoginService : ILoginService
                 {
                     if (reader.Read())
                     {
-                        return reader.GetString(0); // Password hash found in User
+                        return reader.GetString(0); 
                     }
                     else
                     {
-                        return null; // User not found in User
+                        return null; 
                     }
                 }
             }

@@ -1,6 +1,6 @@
 import React from "react";
 import { DashboardState, initDashboardState } from "./dashboard.state.tsx";
-import { loadEvent, getAttendance } from "./dashboard.api.ts"; // Add getAttendance function import
+import { loadEvent, getAttendance } from "./dashboard.api.ts";
 import { deleteEvent } from "./dashboard.api.ts";
 import { DashboardPostForm } from "../DashboardPost/DashboardPost.tsx";
 import { DashboardPatch } from "../DashboardPatch/dashboardPatch.tsx";
@@ -26,7 +26,6 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
     const userRole = sessionStorage.getItem("userRole");
 
     if (!username || !userRole) {
-      // Redirect to login page
       alert("You are not logged in. Redirecting to login page...");
       window.location.href = "/login";
     } else {
@@ -105,7 +104,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
   fetchAttendance = async (eventId: number) => {
     this.setState({ loadingAttendance: true });
     try {
-      const data = await getAttendance(eventId);  // Call the getAttendance function
+      const data = await getAttendance(eventId); 
       this.setState({ attendance: data, loadingAttendance: false });
     } catch (error) {
       console.error("Error fetching attendance:", error);
@@ -197,7 +196,7 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         <div
         
         style={{
-          position: "relative", // Ensure the parent container has positioning
+          position: "relative", 
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "20px",
@@ -207,9 +206,9 @@ export class DashboardForm extends React.Component<{}, DashboardState> {
         <button
           style={{
             ...styles.button,
-            position: "absolute", // Absolute positioning
-            top: 2,              // Aligns the button to the top
-            right: 2,            // Aligns the button to the right
+            position: "absolute", 
+            top: 2,              
+            right: 2,            
             backgroundColor: "red",
             padding: "10px 15px",
             fontSize: "14px",
