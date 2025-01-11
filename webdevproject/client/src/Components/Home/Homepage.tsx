@@ -439,7 +439,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <table style={styles.table}>
                     <thead>
                             <tr>
-                                <th style={styles.th}>Even Details</th>
+                                <th style={styles.th}>Event Details</th>
                                 <th style={styles.th}>Start date</th>
                                 <th style={styles.th}>Start time</th>
                                 <th style={styles.th}>End date</th>
