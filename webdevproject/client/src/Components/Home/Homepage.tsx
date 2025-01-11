@@ -111,7 +111,6 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                         return false;
                     }
                     try {
-                        // Extract only the date portion
                         const dateOnlyString = voteEvent.startTime.toString().split('T')[0];
                         const eventDate = DateOnly.parse(dateOnlyString);
                         return eventDate.isAfter(today);
@@ -129,15 +128,12 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
     };
 
     loadEvents = () => {
-        // First load user events and then filter events accordingly
         Promise.all([loadEvent(), loadUserEvents()])
             .then(([events, userEvents]) => {
                 const today = DateOnly.fromDate(new Date());
                 
-                // Extract event IDs from userEvents to filter
                 const userEventIds = new Set(userEvents.map((userEvent) => userEvent.eventId));
     
-                // Filter events not in userEvents
                 const futureEvents = events.filter((event) => {
                     const eventDate = DateOnly.parse(event.eventDate.toString());
                     return eventDate.isAfter(today) && !userEventIds.has(event.eventId);
@@ -196,7 +192,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         attendEvent(eventId, userId, FeedBack, Rating)
             .then(() => {
                 alert("Successfully registered for the event!");
-                this.handleReload(); // Reload events and userEvents
+                this.handleReload(); 
             })
             .catch((error) => {
                 alert("Failed to register for the event: " + error.message);
@@ -213,7 +209,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         castVote(VotingOptionId, userId)
             .then(() => {
                 alert("Successfully casted a vote");
-                this.handleReload(); // Reload events and userEvents
+                this.handleReload(); 
             })
             .catch((error) => {
                 alert("Failed to cast a vote for the event: " + error.message);
@@ -229,7 +225,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
         removeAttendance(eventId)
             .then(() => {
                 alert("Successfully removed attendance for the event!");
-                this.handleReload(); // Reload events and user events
+                this.handleReload();
             })
             .catch((error) => {
                 alert("Failed to remove attendance: " + error.message);
@@ -299,7 +295,7 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                 <div
         
                     style={{
-                    position: "relative", // Ensure the parent container has positioning
+                    position: "relative", 
                     justifyContent: "space-between",
                     alignItems: "center",
                     marginBottom: "20px",
@@ -309,9 +305,9 @@ export class Homepage extends React.Component<HomepageProps, HomepageState> {
                     <button
                     style={{
                         ...styles.button,
-                        position: "absolute", // Absolute positioning
-                        top: 2,              // Aligns the button to the top
-                        right: 2,            // Aligns the button to the right
+                        position: "absolute",
+                        top: 2,              
+                        right: 2,            
                         backgroundColor: "red",
                         padding: "10px 15px",
                         fontSize: "14px",

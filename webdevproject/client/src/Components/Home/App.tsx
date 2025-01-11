@@ -16,7 +16,6 @@ import { HomepageEventDetails } from './HomepageEventDetails';
 const RequireAdmin: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const userRole = sessionStorage.getItem("userRole");
   if (userRole !== "admin") {
-    // Redirect to the homepage if the user is not an admin
     alert("You do not have permission to access this page.");
     return <Navigate to="/homepage" replace />;
   }

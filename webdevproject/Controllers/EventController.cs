@@ -55,15 +55,12 @@ namespace StarterKit.Controllers
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 Location = request.Location,
-                AdminApproval = true, // Assuming admin approval is required for creation
-                Event_Attendances = new List<Event_Attendance>() // Initialize as empty list
+                AdminApproval = true, 
+                Event_Attendances = new List<Event_Attendance>() 
             };
-
-            // Add the new event to the database
             _context.Event.Add(newEvent);
             _context.SaveChanges();
 
-            // Retrieve and return the event details (excluding AverageRating)
             var createdEvent = new
             {
                 newEvent.EventId,
@@ -87,7 +84,6 @@ namespace StarterKit.Controllers
         [HttpDelete("delete/{eventId}")]
         public IActionResult Delete(int eventId)
         {
-            // Check if the user is an admin
             if (!_loginService.IsAdminLoggedIn())
             {
                 return Unauthorized("Only admins can delete events.");
@@ -100,7 +96,6 @@ namespace StarterKit.Controllers
                 return NotFound("Event not found.");
             }
 
-            // Remove the event
             _context.Event.Remove(eventToDelete);
             _context.SaveChanges();
 
@@ -121,7 +116,6 @@ namespace StarterKit.Controllers
                 return NotFound("Event not found.");
             }
 
-            // Update fields
             existingEvent.Title = request.Title ?? existingEvent.Title;
             existingEvent.Description = request.Description ?? existingEvent.Description;
             existingEvent.EventDate = request.Date ?? existingEvent.EventDate;

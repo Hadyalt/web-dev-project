@@ -8,7 +8,7 @@ interface DashboardPatchProps {
 }
 
 export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) => {
-    const { eventId } = useParams<{ eventId: string }>(); // Use useParams to get the eventId
+    const { eventId } = useParams<{ eventId: string }>(); 
     const [event, setEvent] = useState({
         title: '',
         description: '',
@@ -21,7 +21,6 @@ export const DashboardPatch: React.FC<DashboardPatchProps> = ({ backToHome }) =>
 
     useEffect(() => {
         if (eventId) {
-            // Fetch event details by ID
             getEventById(parseInt(eventId)).then(setEvent);
         }
     }, [eventId]);

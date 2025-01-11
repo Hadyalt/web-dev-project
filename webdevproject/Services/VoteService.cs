@@ -41,7 +41,7 @@ public class VotingService : IVoteService
         {
             var vote = new Vote { VotingOptionId = optionId, UserId = userId };
             _context.Vote.Add(vote);
-            votingOption.VoteCount += 1; // Update vote count for the event
+            votingOption.VoteCount += 1;
             _context.SaveChanges();
             return true;
         }

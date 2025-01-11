@@ -33,7 +33,7 @@ public class EventService
                             EndTime = reader.GetTimeSpan(5),
                             Location = reader.GetString(6),
                             AdminApproval = reader.GetBoolean(7),
-                            Event_Attendances = GetEventAttendances(eventId) // Fetch event attendances
+                            Event_Attendances = GetEventAttendances(eventId) 
                         };
 
                         eventItem.AverageRating = eventItem.Event_Attendances.Any() ? 

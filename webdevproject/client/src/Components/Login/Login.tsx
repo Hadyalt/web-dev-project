@@ -6,7 +6,7 @@ import { Homepage } from "../Home/Homepage";
 export class LoginForm extends React.Component<{}, LoginState> {
   constructor(props: {}) {
     super(props);
-    this.state = { ...initLoginState, errorMessage: "" }; // Add errorMessage to state
+    this.state = { ...initLoginState, errorMessage: "" };
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
